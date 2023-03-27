@@ -1,0 +1,81 @@
+---
+output: html_fragment
+---
+
+<!--..........................................................................-->
+<!--..........................................................................-->
+
+````{=html}
+```{r, echo=FALSE, results='asis'}
+xfun::file_string('header_02.html')
+```
+````
+
+<!--..........................................................................-->
+<hr />
+
+# What is *R*?
+
+*R* is a powerful programming language and software for statistical computing and graphics.
+
+* *R* is freely available under the "GNU General Public License".
+* *R* project homepage: [https://www.r-project.org/](https://www.r-project.org/).
+
+<!-- According to @PaarschGolyaev2016Gentle *R* is the "lingua franca" among statisticians. -->
+
+<!--..........................................................................-->
+<hr />
+
+# What is *RStudio*?
+
+*R* has no (native) Graphical User Interface (*GUI*) or Integrated Development Environment (*IDE*).
+
+*GUIs*/*IDEs* are provided by third-party software.
+
+One of the most popular and free of charge *GUI*/*IDE* for *R* is *RStudio*.
+
+*RStudio* is not necessary to use *R* but it makes it easier.
+
+<!--..........................................................................-->
+<hr />
+
+# Installation of *R* and *RStudio*
+
+<!--..........................................................................-->
+<!-- <hr /> -->
+
+<p class="head01">
+Step 1: Installation of *R*
+</p>
+
+1. Go to [CRAN Mirrors](https://cran.r-project.org/mirrors.html)
+2. Choose a mirror located close to your internet connection, e.g., "GWDG Göttingen".
+3. Download and install *R* for your operating system, e.g., "Windows".
+
+<!--..........................................................................-->
+<!-- <hr /> -->
+
+<p class="head01">
+Step 2: Installation of *RStudio*
+</p>
+
+1. Go to [download *RStudio*](https://www.rstudio.com/products/rstudio/download/)
+2. Choose "RStudio Desktop Open Source License"
+3. Download and install *RStudio* for your operating system, e.g., "Windows".
+
+<!--..........................................................................-->
+<!-- <hr /> -->
+
+<!-- # References -->
+
+<!-- <div id="refs"></div> -->
+
+<!--..........................................................................-->
+<hr />
+
+<p class="back01">
+[Back To *Start Page*](./index.html)
+</p>
+
+<!--..........................................................................-->
+<hr />
