@@ -1,0 +1,79 @@
+---
+output: html_fragment
+---
+
+<!--..........................................................................-->
+<!--..........................................................................-->
+
+<!-- Include header -->
+
+````{=html}
+```{r, echo=FALSE, results='asis'}
+xfun::file_string('header_02.html')
+```
+````
+
+
+
+<!--..........................................................................-->
+<hr />
+
+# Vorgehensweise {#vorgehensweise}
+
+Dieses Lernmodul beinhaltet zusätzliches Material für die Vorlesung Makroökonomik II.
+
+Schwerpunkt dieses Lernoduls ist die Betrachtung makroökonomischer Inhalte aus empirischer, insbesondere aus beschreibender, empirischer Perspektive.
+
+Dies umfasst Beschaffung, Aufbereitung, Analyse und Darstellung makroökonomischer Daten.
+
+Im Verlauf der Vorlesung werden die einzelnen Inhaltsblöcke unter [Inhalt](#inhalt) verlinkt.
+
+Dies erfordert zum Teil den Einsatz von Software mit entsprechenden Analyse- und Darstellungsmöglichkeiten (z.B. Statistiksoftware *R*, siehe [Wichtig](#wichtig)).
+
+*Motivation: Für die Erstellung und Darstellung der Ergebnisse ist das HTML-Format besser geeignet als die "traditionellen" Vorlesungsfolien.* 
+
+
+
+<!--..........................................................................-->
+<hr />
+
+# Inhalt {#inhalt}
+
+* Wohlstand beschreiben
+  * Volkswirtschaftliche Gesamtrechnung (VGR) [hier](./01_OecdQna_XX.html)
+  * Konjunkturindikatoren [hier](./02_Konjunkturindikatoren_XX.html)
+* Wohlstand erklären und gestalten (geplant)
+  * Makroökonomische "Mengen"
+  * Makroökonomische "Preise"
+  * Wirtschaftspolitische Variablen
+  * FED Prognosen [hier](./04_FedProjektionen_XX.html)
+
+
+
+<!--..........................................................................-->
+<hr />
+
+# Wichtig {#wichtig}
+
+Alle vorlesungs- und prüfungsrelvanten Inhalte werden direkt in dem Lenrmodul angezeigt.
+
+D.h. vorlesungs- und prüfungsrelevant sind die Intepretation der Ergebnisse und nicht die Implementierung.
+
+Bei Interesse können die Ergebnisse anhand der "Codeblöcke" repliziert werden.
+
+Das ist kein *R* Kurs und die Implementierung basiert auf fortgeschrittenen Kenntnissen in *R*.
+
+Weitere Infos zur Installation von *R* und *RStudio* finden Sie [hier](./00_Installation_XX.html).
+
+
+
+<!--..........................................................................--> 
+<!-- THIS IS THE END --> 
+
+<!-- Include bottom -->
+
+````{=html}
+```{r, echo=FALSE, results='asis'}
+xfun::file_string('bottom_01.html')
+```
+````
