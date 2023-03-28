@@ -1,0 +1,666 @@
+---
+output: html_fragment
+bibliography: [HfWU_Makro02_Literatur.bib]
+biblio-style: apalike
+link-citations: no
+---
+
+<!--..........................................................................-->
+<!--..........................................................................-->
+
+<!-- Include header -->
+
+````{=html}
+```{r, echo=FALSE, results='asis'}
+xfun::file_string('header_02.html')
+```
+````
+<!--..........................................................................-->
+<!--..........................................................................-->
+
+```{r,include=FALSE}
+library(knitr)
+knitr::opts_chunk$set(
+  include = TRUE,
+  echo = TRUE,
+  warning = FALSE,
+  message = FALSE,
+  fig.height = 6,
+  fig.width = 10,
+  fig.align = 'center')
+options(scipen=1000000)
+```
+
+```{r,klippy, echo=FALSE, include=TRUE}
+# See: https://rlesur.github.io/klippy/articles/klippy.html
+klippy::klippy(tooltip_message = 'Click to copy', tooltip_success = 'Done', position = c('top', 'right'))
+```
+
+```{r, include=FALSE}
+
+library(fredr)
+
+
+```
+
+<!--..........................................................................-->
+<!--..........................................................................-->
+
+
+
+<!--..........................................................................-->
+<hr />
+
+# FED Projektionen {.tabset .tabset-fade}
+
+<hr />
+
+*Dieses Dokument enthält Projektionen der US Federal Reserve Bank für die US Wirtschaft.* 
+
+<hr />
+
+<!------------------------------------------------------------------------------> 
+## Policy Review {.tabset .tabset-fade}
+
+Am 27. August 2020 veröffentlichte die Fed das Ergebnis ihrer Überprüfung ihrer langfristigen Ziele und Strategien.
+
+Die entscheidende Änderung war die Anpassung des langfristigen inflationsziel wie folgt:
+
+(The FED) "seeks to achieve inflation that averages 2 percent over time."
+
+Quelle: [FED](https://www.federalreserve.gov/newsevents/pressreleases/monetary20200827a.htm)
+
+<!------------------------------------------------------------------------------> 
+## BIP {.tabset .tabset-fade}
+
+<!-- <hr /> -->
+
+<!--..........................................................................--> 
+<button type="button" class="collapsible02"> Dezember 2019 </button>
+<div class="col_content">
+
+<!-- <p class="head01"> -->
+<!-- Dezember 2019 -->
+<!-- </p> -->
+
+![](./Fed/Fed_Projection_12_2019_GDP.png)
+
+</div>
+<!--..........................................................................--> 
+
+
+
+<!--..........................................................................--> 
+<button type="button" class="collapsible02"> September 2020 </button>
+<div class="col_content">
+
+<!-- <p class="head01"> -->
+<!-- September 2020 -->
+<!-- </p> -->
+
+![](./Fed/Fed_Projection_09_2020_GDP.png)
+
+</div>
+<!--..........................................................................--> 
+
+
+
+<!--..........................................................................--> 
+<button type="button" class="collapsible02"> März 2021 </button>
+<div class="col_content">
+
+<!-- <p class="head01"> -->
+<!-- März 2021 -->
+<!-- </p> -->
+
+![](./Fed/Fed_Projection_03_2021_GDP.png)
+
+</div>
+<!--..........................................................................--> 
+
+
+
+<!--..........................................................................--> 
+<button type="button" class="collapsible02"> September 2021 </button>
+<div class="col_content">
+
+<!-- <p class="head01"> -->
+<!-- September 2021 -->
+<!-- </p> -->
+
+![](./Fed/Fed_Projection_09_2021_GDP.png)
+
+</div>
+<!--..........................................................................--> 
+
+
+
+<!--..........................................................................--> 
+<button type="button" class="collapsible02"> März 2022 </button>
+<div class="col_content">
+
+<!-- <p class="head01"> -->
+<!-- März 2022 -->
+<!-- </p> -->
+
+![](./Fed/Fed_Projection_03_2022_GDP.png)
+
+</div>
+<!--..........................................................................--> 
+
+
+
+<!--..........................................................................--> 
+<button type="button" class="collapsible02"> Juni 2022 </button>
+<div class="col_content">
+
+<!-- <p class="head01"> -->
+<!-- Juni 2022 -->
+<!-- </p> -->
+
+![](./Fed/Fed_Projection_06_2022_GDP.png)
+
+</div>
+<!--..........................................................................--> 
+
+
+
+<!--..........................................................................--> 
+<button type="button" class="collapsible02"> September 2022 </button>
+<div class="col_content">
+
+<!-- <p class="head01"> -->
+<!-- September 2022 -->
+<!-- </p> -->
+
+![](./Fed/Fed_Projection_09_2022_GDP.png)
+
+<!-- Quelle: [FED](https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm) -->
+
+</div>
+<!--..........................................................................--> 
+
+
+
+<!------------------------------------------------------------------------------> 
+## Arbeitslosigkeit {.tabset .tabset-fade}
+
+<!--..........................................................................--> 
+<button type="button" class="collapsible02"> Dezember 2019 </button>
+<div class="col_content">
+
+<!-- <p class="head01"> -->
+<!-- Dezember 2019 -->
+<!-- </p> -->
+
+![](./Fed/Fed_Projection_12_2019_Unemployment.png)
+
+</div>
+<!--..........................................................................--> 
+
+
+
+<!--..........................................................................--> 
+<button type="button" class="collapsible02"> September 2020 </button>
+<div class="col_content">
+
+<!-- <p class="head01"> -->
+<!-- September 2020 -->
+<!-- </p> -->
+
+![](./Fed/Fed_Projection_09_2020_Unemployment.png)
+
+</div>
+<!--..........................................................................--> 
+
+
+
+<!--..........................................................................--> 
+<button type="button" class="collapsible02"> März 2021 </button>
+<div class="col_content">
+
+<!-- <p class="head01"> -->
+<!-- März 2021 -->
+<!-- </p> -->
+
+![](./Fed/Fed_Projection_03_2021_Unemployment.png)
+
+</div>
+<!--..........................................................................--> 
+
+
+
+<!--..........................................................................--> 
+<button type="button" class="collapsible02"> September 2021 </button>
+<div class="col_content">
+
+<!-- <p class="head01"> -->
+<!-- September 2021 -->
+<!-- </p> -->
+
+![](./Fed/Fed_Projection_09_2021_Unemployment.png)
+
+</div>
+<!--..........................................................................--> 
+
+
+
+<!--..........................................................................--> 
+<button type="button" class="collapsible02"> März 2022 </button>
+<div class="col_content">
+
+<!-- <p class="head01"> -->
+<!-- März 2022 -->
+<!-- </p> -->
+
+![](./Fed/Fed_Projection_03_2022_Unemployment.png)
+
+</div>
+<!--..........................................................................--> 
+
+
+
+<!--..........................................................................--> 
+<button type="button" class="collapsible02"> Juni 2022 </button>
+<div class="col_content">
+
+<!-- <p class="head01"> -->
+<!-- Juni 2022 -->
+<!-- </p> -->
+
+![](./Fed/Fed_Projection_06_2022_Unemployment.png)
+
+</div>
+<!--..........................................................................--> 
+
+
+
+<!--..........................................................................--> 
+<button type="button" class="collapsible02"> September 2022 </button>
+<div class="col_content">
+
+<!-- <p class="head01"> -->
+<!-- September 2022 -->
+<!-- </p> -->
+
+![](./Fed/Fed_Projection_09_2022_Unemployment.png)
+
+<!-- Quelle: [FED](https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm) -->
+
+</div>
+<!--..........................................................................--> 
+
+
+
+<!------------------------------------------------------------------------------> 
+## Inflation {.tabset .tabset-fade}
+
+<!--..........................................................................--> 
+<button type="button" class="collapsible02"> Dezember 2019 </button>
+<div class="col_content">
+
+<!-- <p class="head01"> -->
+<!-- Dezember 2019 -->
+<!-- </p> -->
+
+![](./Fed/Fed_Projection_12_2019_Inflation.png)
+
+</div>
+<!--..........................................................................--> 
+
+
+
+<!--..........................................................................--> 
+<button type="button" class="collapsible02"> September 2020 </button>
+<div class="col_content">
+
+<!-- <p class="head01"> -->
+<!-- September 2020 -->
+<!-- </p> -->
+
+![](./Fed/Fed_Projection_09_2020_Inflation.png)
+
+</div>
+<!--..........................................................................--> 
+
+
+
+<!--..........................................................................--> 
+<button type="button" class="collapsible02"> März 2021 </button>
+<div class="col_content">
+
+<!-- <p class="head01"> -->
+<!-- März 2021 -->
+<!-- </p> -->
+
+![](./Fed/Fed_Projection_03_2021_Inflation.png)
+
+</div>
+<!--..........................................................................--> 
+
+
+
+<!--..........................................................................--> 
+<button type="button" class="collapsible02"> September 2021 </button>
+<div class="col_content">
+
+<!-- <p class="head01"> -->
+<!-- September 2021 -->
+<!-- </p> -->
+
+![](./Fed/Fed_Projection_09_2021_Inflation.png)
+
+</div>
+<!--..........................................................................--> 
+
+
+
+<!--..........................................................................--> 
+<button type="button" class="collapsible02"> März 2022 </button>
+<div class="col_content">
+
+<!-- <p class="head01"> -->
+<!-- März 2022 -->
+<!-- </p> -->
+
+![](./Fed/Fed_Projection_03_2022_Inflation.png)
+
+</div>
+<!--..........................................................................--> 
+
+
+
+<!--..........................................................................--> 
+<button type="button" class="collapsible02"> Juni 2022 </button>
+<div class="col_content">
+
+<!-- <p class="head01"> -->
+<!-- Juni 2022 -->
+<!-- </p> -->
+
+![](./Fed/Fed_Projection_06_2022_Inflation.png)
+
+</div>
+<!--..........................................................................--> 
+
+
+
+<!--..........................................................................--> 
+<button type="button" class="collapsible02"> September 2022 </button>
+<div class="col_content">
+
+<!-- <p class="head01"> -->
+<!-- September 2022 -->
+<!-- </p> -->
+
+![](./Fed/Fed_Projection_09_2022_Inflation.png)
+
+<!-- Quelle: [FED](https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm) -->
+
+</div>
+<!--..........................................................................--> 
+
+
+
+<!------------------------------------------------------------------------------> 
+## Inflation (Kernrate) {.tabset .tabset-fade}
+
+<!--..........................................................................--> 
+<button type="button" class="collapsible02"> Dezember 2019 </button>
+<div class="col_content">
+
+<!-- <p class="head01"> -->
+<!-- Dezember 2019 -->
+<!-- </p> -->
+
+*Keine Projektionen veröffentlicht!*
+
+</div>
+<!--..........................................................................--> 
+
+
+
+<!--..........................................................................--> 
+<button type="button" class="collapsible02"> September 2020 </button>
+<div class="col_content">
+
+<!-- <p class="head01"> -->
+<!-- September 2020 -->
+<!-- </p> -->
+
+*Keine Projektionen veröffentlicht!*
+
+</div>
+<!--..........................................................................--> 
+
+
+
+<!--..........................................................................--> 
+<button type="button" class="collapsible02"> März 2021 </button>
+<div class="col_content">
+
+<!-- <p class="head01"> -->
+<!-- März 2021 -->
+<!-- </p> -->
+
+![](./Fed/Fed_Projection_03_2021_InflationCore.png)
+
+</div>
+<!--..........................................................................--> 
+
+
+
+<!--..........................................................................--> 
+<button type="button" class="collapsible02"> September 2021 </button>
+<div class="col_content">
+
+<!-- <p class="head01"> -->
+<!-- September 2021 -->
+<!-- </p> -->
+
+![](./Fed/Fed_Projection_09_2021_InflationCore.png)
+
+</div>
+<!--..........................................................................--> 
+
+
+
+<!--..........................................................................--> 
+<button type="button" class="collapsible02"> März 2022 </button>
+<div class="col_content">
+
+<!-- <p class="head01"> -->
+<!-- März 2022 -->
+<!-- </p> -->
+
+![](./Fed/Fed_Projection_03_2022_InflationCore.png)
+
+</div>
+<!--..........................................................................--> 
+
+
+
+<!--..........................................................................--> 
+<button type="button" class="collapsible02"> Juni 2022 </button>
+<div class="col_content">
+
+<!-- <p class="head01"> -->
+<!-- Juni 2022 -->
+<!-- </p> -->
+
+![](./Fed/Fed_Projection_06_2022_InflationCore.png)
+
+</div>
+<!--..........................................................................--> 
+
+
+
+<!--..........................................................................--> 
+<button type="button" class="collapsible02"> September 2022 </button>
+<div class="col_content">
+
+<!-- <p class="head01"> -->
+<!-- September 2022 -->
+<!-- </p> -->
+
+![](./Fed/Fed_Projection_09_2022_InflationCore.png)
+
+<!-- Quelle: [FED](https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm) -->
+
+</div>
+<!--..........................................................................--> 
+
+
+
+<!------------------------------------------------------------------------------> 
+## Dot Plots {.tabset .tabset-fade}
+
+<!--..........................................................................--> 
+<button type="button" class="collapsible02"> Dezember 2019 </button>
+<div class="col_content">
+
+<!-- <p class="head01"> -->
+<!-- Dezember 2019 -->
+<!-- </p> -->
+
+![](./Fed/Fed_Projection_12_2019_DotPlot.png)
+
+</div>
+<!--..........................................................................--> 
+
+
+
+<!--..........................................................................--> 
+<button type="button" class="collapsible02"> September 2020 </button>
+<div class="col_content">
+
+<!-- <p class="head01"> -->
+<!-- September 2020 -->
+<!-- </p> -->
+
+![](./Fed/Fed_Projection_09_2020_DotPlot.png)
+
+</div>
+<!--..........................................................................--> 
+
+
+
+<!--..........................................................................--> 
+<button type="button" class="collapsible02"> März 2021 </button>
+<div class="col_content">
+
+<!-- <p class="head01"> -->
+<!-- März 2021 -->
+<!-- </p> -->
+
+![](./Fed/Fed_Projection_03_2021_DotPlot.png)
+
+</div>
+<!--..........................................................................--> 
+
+
+
+<!--..........................................................................--> 
+<button type="button" class="collapsible02"> September 2021 </button>
+<div class="col_content">
+
+<!-- <p class="head01"> -->
+<!-- September 2021 -->
+<!-- </p> -->
+
+![](./Fed/Fed_Projection_09_2021_DotPlot.png)
+
+</div>
+<!--..........................................................................--> 
+
+
+
+<!--..........................................................................--> 
+<button type="button" class="collapsible02"> März 2022 </button>
+<div class="col_content">
+
+<!-- <p class="head01"> -->
+<!-- März 2022 -->
+<!-- </p> -->
+
+![](./Fed/Fed_Projection_03_2022_DotPlot.png)
+
+</div>
+<!--..........................................................................--> 
+
+
+
+<!--..........................................................................--> 
+<button type="button" class="collapsible02"> Juni 2022 </button>
+<div class="col_content">
+
+<!-- <p class="head01"> -->
+<!-- Juni 2022 -->
+<!-- </p> -->
+
+![](./Fed/Fed_Projection_06_2022_DotPlot.png)
+
+</div>
+<!--..........................................................................--> 
+
+
+
+<!--..........................................................................--> 
+<button type="button" class="collapsible02"> September 2022 </button>
+<div class="col_content">
+
+<!-- <p class="head01"> -->
+<!-- September 2022 -->
+<!-- </p> -->
+
+![](./Fed/Fed_Projection_09_2022_DotPlot.png)
+
+<!-- Quelle: [FED](https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm) -->
+
+</div>
+<!--..........................................................................--> 
+
+
+
+
+
+#
+
+<!--..........................................................................-->
+<hr />
+
+<p class="back01">
+[Zurück zu *Start*](./index.html)
+</p>
+
+<!--..........................................................................-->
+<hr />
+
+
+
+<!--
+
+SOME NOTES
+
+
+-->
+
+<!--..........................................................................-->
+<!-- <hr /> -->
+
+<!-- # References -->
+
+
+
+
+<!--..........................................................................--> 
+<!-- THIS IS THE END --> 
+
+<!-- Include bottom -->
+
+````{=html}
+```{r, echo=FALSE, results='asis'}
+xfun::file_string('bottom_01.html')
+```
+````
+
