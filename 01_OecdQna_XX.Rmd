@@ -37,13 +37,9 @@ klippy::klippy(tooltip_message = 'Click to copy', tooltip_success = 'Done', posi
 
 upd.dat <- TRUE
 
-setwd("C:/Users/Markus/Dropbox/Lehre/HfWU/Makrooekonomik2/Makrooekonomik2_Allgemein/HfWU_Makro02_Html")
-
-source("./Rscripts/r_oecd_helper_functions.R")
+source("./r-scripts/r_oecd_helper_functions.R")
 
 ```
-
-
 
 
 
@@ -79,6 +75,7 @@ Die Daten können über das R-Paket `oecd` direkt in die Software R geladen werd
 library(OECD)
 
 ```
+
 </div>
 <!--..........................................................................--> 
 
@@ -146,8 +143,6 @@ dat.man.fun.xx <- function(dat.fra, arg.lis, col.nam.sel, col.nam.out){
   # arg.lis <- list(X = NULL, MARGIN = 1, FUN = "sum")
   # col.nam.sel <- sub.inp.lis[[ii]]
   # col.nam.out <- sub.inp.lab[[ii]]
-  
-  
   
   
   
@@ -228,8 +223,6 @@ oecd.qna.fun.xx <- function(dat, loc, sub, mea, fre, sta.dat, end.dat, sub.inp.l
   # sta.dat <- sta.dat
   # end.dat <- end.dat
   # sub.inp.lis <- sub.inp.lis
-  
-  
   
   
   
@@ -316,8 +309,6 @@ oecd.qna.fun.xx.chk <- function(dat,loc,sub,mea,fre,sta.dat,end.dat,sub.inp.lis)
   
   
   
-  
-  
   # Download if necessary!
   if(is.null(dat)){
     # Input list
@@ -377,7 +368,6 @@ oecd.qna.fun.xx.chk <- function(dat,loc,sub,mea,fre,sta.dat,end.dat,sub.inp.lis)
   head(dat.04)
   View(dat.04)
   
-  
   # head(gather(dat.02,SUBJECT,ObsValue,sub.sel[1],sub.gx[nn]))
   # View(gather(dat.02,SUBJECT,ObsValue,sub.sel[1],sub.gx[nn]))
   # 
@@ -404,8 +394,6 @@ oecd.qna.fun.xx.chk <- function(dat,loc,sub,mea,fre,sta.dat,end.dat,sub.inp.lis)
 
 
 
-
-
 <!--..........................................................................--> 
 <button type="button" class="collapsible02"> Struktur der Daten: Entstehung </button>
 <div class="col_content">
@@ -416,7 +404,7 @@ oecd.qna.fun.xx.chk <- function(dat,loc,sub,mea,fre,sta.dat,end.dat,sub.inp.lis)
 
 Beispiel: Land Deutschland, 2018  
 
-![](./OECD_QNA_Overview//Oecd_Qna_OutputApproach.png)
+![](./figures/Oecd_Qna_OutputApproach.png)
 
 </div>
 <!--..........................................................................--> 
@@ -431,12 +419,10 @@ Beispiel: Land Deutschland, 2018
 
 Beispiel: Land Deutschland, 2018  
 
-![](./OECD_QNA_Overview//Oecd_Qna_ExpenditureApproach.png)
+![](./figures/Oecd_Qna_ExpenditureApproach.png)
 
 </div>
 <!--..........................................................................--> 
-
-
 
 
 
@@ -459,9 +445,9 @@ qna.str <- OECD_get_data_structure_edit("QNA")
 ```{r, include=FALSE}
 
 if (upd.dat) {
-  save(qna.str, file = "C:/Users/Markus/Dropbox/Lehre/HfWU/Makrooekonomik2/Makrooekonomik2_Allgemein/HfWU_Makro02_Html/qna_str.RData")
+  save(qna.str, file = "./data/qna_str.RData")
 } else {
-  load(file = "C:/Users/Markus/Dropbox/Lehre/HfWU/Makrooekonomik2/Makrooekonomik2_Allgemein/HfWU_Makro02_Html/qna_str.RData")
+  load(file = "./data/qna_str.RData")
 }
 
 ```
@@ -481,13 +467,6 @@ qna.str$VAR_DESC
 
 Die Daten können duch die Funktion `get_dataset` heruntergalden werden.
 
-```{r, include=FALSE}
-
-load(file = "C:/Users/Markus/Dropbox/Lehre/HfWU/Makrooekonomik2/Makrooekonomik2_Allgemein/HfWU_Makro02_Html/qna_dat_00.RData")
-
-```
-
-
 ```{r,include=TRUE,cache=FALSE,eval=TRUE,echo=TRUE}
 
 # > Inputs for download
@@ -498,7 +477,7 @@ mea <- c("LNBQRSA") # Measure: Constant prices seasonal adjusted
 fre <- c("Q") # Frequency: Quarterly frequency
 sta.dat <- as.Date("2005-01-01") # Periods: "yyyy-mm-dd"
 end.dat <- as.Date("2022-10-01")
-# Note: Q1: 2020-01-01; Q2: 2020-04-01; Q3: 2020-07-01; Q3: 2020-10-01
+# Note: Q1: 2020-01-01; Q2: 2020-04-01; Q3: 2020-07-01; Q4: 2020-10-01
 fil <- list(loc, sub, mea, fre) # Collect inputs for get_dataset function
 
 # > Download
@@ -524,9 +503,9 @@ head(qna.dat.00)
 ```{r,include=FALSE,cache=TRUE}
 
 if (upd.dat) {
-  save(qna.dat.00, file = "C:/Users/Markus/Dropbox/Lehre/HfWU/Makrooekonomik2/Makrooekonomik2_Allgemein/HfWU_Makro02_Html/qna_dat_00.RData")
+  save(qna.dat.00, file = "./data/qna_dat_00.RData")
 } else {
-  load("C:/Users/Markus/Dropbox/Lehre/HfWU/Makrooekonomik2/Makrooekonomik2_Allgemein/HfWU_Makro02_Html/qna_dat_00.RData")
+  load("./data/qna_dat_00.RData")
 }
 
 ```
@@ -538,13 +517,11 @@ if (upd.dat) {
 <hr />
 
 <p class="back01">
-[Zurück zur *Startdatei*](./index.html)
+[Zurück zur *Startseite*](./index.html)
 </p>
 
 <!--..........................................................................-->
 <hr />
-
-
 
 
 
@@ -566,7 +543,7 @@ mea <- c("LNBQRSA") # Measure: Constant prices seasonal adjusted
 fre <- c("Q") # Frequency: Quarterly frequency
 sta.dat <- as.Date("2005-01-01") # Periods: "yyyy-mm-dd"
 end.dat <- as.Date("2022-10-01")
-# Note: Q1: 2020-01-01; Q2: 2020-04-01; Q3: 2020-07-01; Q3: 2020-10-01
+# Note: Q1: 2020-01-01; Q2: 2020-04-01; Q3: 2020-07-01; Q4: 2020-10-01
 
 sub <- c("B1_GA","B1GVA","B1GVB_E","B1GVF","B1GVG_I","B1GVJ","B1GVK","B1GVL","B1GVM_N","B1GVO_Q","B1GVR_U","D21_D31")
 sub.agr <- c("B1GVA")
@@ -640,7 +617,7 @@ plt.x
 ```{r, include=FALSE}
 
 # # Save plot
-# ggsave(plot=plt.x,width=10,height=6,dpi=300,filename = "./Figures/DE_QNA_out_x_01.pdf")
+# ggsave(plot=plt.x,width=10,height=6,dpi=300,filename = "./figures/DE_QNA_out_x_01.pdf")
 
 ```
 
@@ -691,8 +668,8 @@ plt.gx
 ```{r}
 
 # Save plot
-ggsave(plot=plt.gx,width=10,height=6,dpi=300,filename = "./Figures/DE_QNA_out_gx_01.pdf")
-ggsave(plot=plt.gx,width=10,height=6,dpi=300,filename = "./Figures/DE_QNA_out_gx_01.svg")
+ggsave(plot=plt.gx,width=10,height=6,dpi=300,filename = "./figures/DE_QNA_out_gx_01.pdf")
+ggsave(plot=plt.gx,width=10,height=6,dpi=300,filename = "./figures/DE_QNA_out_gx_01.svg")
 
 ```
 
@@ -715,7 +692,7 @@ dat %>%
 <hr />
 
 <p class="back01">
-[Zurück zur *Startdatei*](./index.html)
+[Zurück zur *Startseite*](./index.html)
 </p>
 
 <!--..........................................................................-->
@@ -743,7 +720,7 @@ oecd.qna.out <- function(loc, sta.dat, end.dat){
   fre <- c("Q") # Frequency: Quarterly frequency
   # sta.dat <- as.Date("2005-01-01") # Periods: "yyyy-mm-dd"
   # end.dat <- as.Date("2022-10-01")
-  # Note: Q1: 2020-01-01; Q2: 2020-04-01; Q3: 2020-07-01; Q3: 2020-10-01
+  # Note: Q1: 2020-01-01; Q2: 2020-04-01; Q3: 2020-07-01; Q4: 2020-10-01
 
   sub <- c("B1_GA","B1GVA","B1GVB_E","B1GVF","B1GVG_I","B1GVJ","B1GVK","B1GVL","B1GVM_N","B1GVO_Q","B1GVR_U","D21_D31")
   sub.agr <- c("B1GVA")
@@ -840,7 +817,7 @@ oecd.qna.out <- function(loc, sta.dat, end.dat){
 # > Start and end date
 sta.dat <- as.Date("2005-01-01") # Periods: "yyyy-mm-dd"
 end.dat <- as.Date("2022-10-01")
-# Note: Q1: 2020-01-01; Q2: 2020-04-01; Q3: 2020-07-01; Q3: 2020-10-01
+# Note: Q1: 2020-01-01; Q2: 2020-04-01; Q3: 2020-07-01; Q4: 2020-10-01
 
 # > Germany
 loc <- c("DEU")
@@ -931,12 +908,12 @@ grid.arrange(oecd.qna.out.gbr$plt.gx, ncol = 1, top = "Vereinigtes Königreich")
 ```{r}
 
 # Save plots
-# ggsave(plot=oecd.qna.out.fra$plt.gx,width=10,height=6,dpi=300,filename = "./Figures/FRA_QNA_out_gx_01.pdf")
-# ggsave(plot=oecd.qna.out.ita$plt.gx,width=10,height=6,dpi=300,filename = "./Figures/ITA_QNA_out_gx_01.pdf")
-ggsave(plot=oecd.qna.out.ea19$plt.gx,width=10,height=6,dpi=300,filename = "./Figures/EA19_QNA_out_gx_01.pdf")
-# ggsave(plot=oecd.qna.out.gbr$plt.gx,width=10,height=6,dpi=300,filename = "./Figures/GBR_QNA_out_gx_01.pdf")
+# ggsave(plot=oecd.qna.out.fra$plt.gx,width=10,height=6,dpi=300,filename = "./figures/FRA_QNA_out_gx_01.pdf")
+# ggsave(plot=oecd.qna.out.ita$plt.gx,width=10,height=6,dpi=300,filename = "./figures/ITA_QNA_out_gx_01.pdf")
+ggsave(plot=oecd.qna.out.ea19$plt.gx,width=10,height=6,dpi=300,filename = "./figures/EA19_QNA_out_gx_01.pdf")
+# ggsave(plot=oecd.qna.out.gbr$plt.gx,width=10,height=6,dpi=300,filename = "./figures/GBR_QNA_out_gx_01.pdf")
 
-ggsave(plot=oecd.qna.out.ea19$plt.gx,width=10,height=6,dpi=300,filename = "./Figures/EA19_QNA_out_gx_01.svg")
+ggsave(plot=oecd.qna.out.ea19$plt.gx,width=10,height=6,dpi=300,filename = "./figures/EA19_QNA_out_gx_01.svg")
 
 ```
 
@@ -947,7 +924,7 @@ ggsave(plot=oecd.qna.out.ea19$plt.gx,width=10,height=6,dpi=300,filename = "./Fig
 <hr />
 
 <p class="back01">
-[Zurück zur *Startdatei*](./index.html)
+[Zurück zur *Startseite*](./index.html)
 </p>
 
 <!--..........................................................................-->
@@ -975,7 +952,7 @@ mea <- c("LNBQRSA") # Measure: Constant prices seasonal adjusted
 fre <- c("Q") # Frequency: Quarterly frequency
 sta.dat <- as.Date("2005-01-01") # Periods: "yyyy-mm-dd"
 end.dat <- as.Date("2022-10-01")
-# Note: Q1: 2020-01-01; Q2: 2020-04-01; Q3: 2020-07-01; Q3: 2020-10-01
+# Note: Q1: 2020-01-01; Q2: 2020-04-01; Q3: 2020-07-01; Q4: 2020-10-01
 
 sub <- c("B1_GE","P3","P5","B11")
 sub.con <- c("P3")
@@ -1043,7 +1020,7 @@ plt.x
 ```{r}
 
 # # Save plot
-# ggsave(plot = plt.x, width = 10, height = 6, dpi = 300, filename = "./Figures/DE_QNA_exp_x_01.pdf")
+# ggsave(plot = plt.x, width = 10, height = 6, dpi = 300, filename = "./figures/DE_QNA_exp_x_01.pdf")
 
 ```
 
@@ -1093,8 +1070,8 @@ plt.gx
 ```{r}
 
 # Save plot
-ggsave(plot=plt.gx,width=10,height=6,dpi=300,filename = "./Figures/DE_QNA_exp_gx_01.pdf")
-ggsave(plot=plt.gx,width=10,height=6,dpi=300,filename = "./Figures/DE_QNA_exp_gx_01.svg")
+ggsave(plot=plt.gx,width=10,height=6,dpi=300,filename = "./figures/DE_QNA_exp_gx_01.pdf")
+ggsave(plot=plt.gx,width=10,height=6,dpi=300,filename = "./figures/DE_QNA_exp_gx_01.svg")
 
 ```
 
@@ -1105,7 +1082,7 @@ ggsave(plot=plt.gx,width=10,height=6,dpi=300,filename = "./Figures/DE_QNA_exp_gx
 <hr />
 
 <p class="back01">
-[Zurück zur *Startdatei*](./index.html)
+[Zurück zur *Startseite*](./index.html)
 </p>
 
 <!--..........................................................................-->
@@ -1133,7 +1110,7 @@ oecd.qna.exp <- function(loc,sta.dat,end.dat){
   fre <- c("Q") # Frequency: Quarterly frequency
   # sta.dat <- as.Date("2005-01-01") # Periods: "yyyy-mm-dd"
   # end.dat <- as.Date("2022-10-01")
-  # Note: Q1: 2020-01-01; Q2: 2020-04-01; Q3: 2020-07-01; Q3: 2020-10-01
+  # Note: Q1: 2020-01-01; Q2: 2020-04-01; Q3: 2020-07-01; Q4: 2020-10-01
 
   sub <- c("B1_GE","P3","P5","B11")
   sub.con <- c("P3")
@@ -1222,7 +1199,7 @@ oecd.qna.exp <- function(loc,sta.dat,end.dat){
 # > Start and end date
 sta.dat <- as.Date("2005-01-01") # Periods: "yyyy-mm-dd"
 end.dat <- as.Date("2022-10-01")
-# Note: Q1: 2020-01-01; Q2: 2020-04-01; Q3: 2020-07-01; Q3: 2020-10-01
+# Note: Q1: 2020-01-01; Q2: 2020-04-01; Q3: 2020-07-01; Q4: 2020-10-01
 
 # > Germany
 loc <- c("DEU")
@@ -1314,12 +1291,12 @@ grid.arrange(oecd.qna.exp.gbr$plt.gx, ncol = 1, top = "Vereinigtes Königreich")
 ```{r}
 
 # Save plots
-# ggsave(plot=oecd.qna.exp.fra$plt.gx,width=10,height=6,dpi=300,filename = "./Figures/FRA_QNA_exp_gx_01.pdf")
-# ggsave(plot=oecd.qna.exp.ita$plt.gx,width=10,height=6,dpi=300,filename = "./Figures/ITA_QNA_exp_gx_01.pdf")
-ggsave(plot=oecd.qna.exp.ea19$plt.gx,width=10,height=6,dpi=300,filename = "./Figures/EA19_QNA_exp_gx_01.pdf")
-# ggsave(plot=oecd.qna.exp.gbr$plt.gx,width=10,height=6,dpi=300,filename = "./Figures/GBR_QNA_exp_gx_01.pdf")
+# ggsave(plot=oecd.qna.exp.fra$plt.gx,width=10,height=6,dpi=300,filename = "./figures/FRA_QNA_exp_gx_01.pdf")
+# ggsave(plot=oecd.qna.exp.ita$plt.gx,width=10,height=6,dpi=300,filename = "./figures/ITA_QNA_exp_gx_01.pdf")
+ggsave(plot=oecd.qna.exp.ea19$plt.gx,width=10,height=6,dpi=300,filename = "./figures/EA19_QNA_exp_gx_01.pdf")
+# ggsave(plot=oecd.qna.exp.gbr$plt.gx,width=10,height=6,dpi=300,filename = "./figures/GBR_QNA_exp_gx_01.pdf")
 
-ggsave(plot=oecd.qna.exp.ea19$plt.gx,width=10,height=6,dpi=300,filename = "./Figures/EA19_QNA_exp_gx_01.svg")
+ggsave(plot=oecd.qna.exp.ea19$plt.gx,width=10,height=6,dpi=300,filename = "./figures/EA19_QNA_exp_gx_01.svg")
 
 ```
 
@@ -1330,7 +1307,7 @@ ggsave(plot=oecd.qna.exp.ea19$plt.gx,width=10,height=6,dpi=300,filename = "./Fig
 <hr />
 
 <p class="back01">
-[Zurück zur *Startdatei*](./index.html)
+[Zurück zur *Startseite*](./index.html)
 </p>
 
 <!--..........................................................................-->
