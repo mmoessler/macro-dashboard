@@ -42,13 +42,13 @@ Dies erfordert zum Teil den Einsatz von Software mit entsprechenden Analyse- und
 * Wohlstand beschreiben
   * Volkswirtschaftliche Gesamtrechnung (VGR) [hier](./01_OecdQna_XX.html)
   * Konjunkturindikatoren [hier](./02_Konjunkturindikatoren_XX.html)
-* Wohlstand erklären und gestalten (geplant)
-  * Makroökonomische "Mengen"
-  * Makroökonomische "Preise"
-  * Wirtschaftspolitische Variablen
+* Wohlstand erklären und gestalten
+  * Makroökonomische "Mengen" und Preise [hier](./03_MakroVariables_XX.html)
   * FED Prognosen [hier](./04_FedProjektionen_XX.html)
 
-
+  <!-- * Makroökonomische "Mengen" -->
+  <!-- * Makroökonomische "Preise" -->
+  <!-- * Wirtschaftspolitische Variablen -->
 
 <!--..........................................................................-->
 <hr />
