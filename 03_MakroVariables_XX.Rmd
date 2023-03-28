@@ -1,0 +1,2125 @@
+---
+output: html_fragment
+---
+
+<!--..........................................................................-->
+<!--..........................................................................-->
+
+<!-- Include header -->
+
+````{=html}
+```{r, echo=FALSE, results='asis'}
+xfun::file_string('header_02.html')
+```
+````
+
+<!-- SOME NOTES -->
+
+<!-- 
+
+-> Check y-axis ticks for plots! (see, e.g., GDP nominal)
+
+-->
+
+<!--..........................................................................-->
+<!--..........................................................................-->
+
+```{r,include=FALSE}
+library(knitr)
+knitr::opts_chunk$set(
+  include = TRUE,
+  echo = TRUE,
+  warning = FALSE,
+  message = FALSE,
+  fig.height = 6,
+  fig.width = 10,
+  fig.align = 'center')
+options(scipen=1000000)
+```
+
+```{r,klippy, echo=FALSE, include=TRUE}
+# See: https://rlesur.github.io/klippy/articles/klippy.html
+klippy::klippy(tooltip_message = 'Click to copy', tooltip_success = 'Done', position = c('top', 'right'))
+```
+
+```{r, include=FALSE}
+
+library(fredr)
+
+```
+
+<!--..........................................................................-->
+<!--..........................................................................-->
+
+
+
+<!--..........................................................................-->
+<hr>
+
+# Wohlstand Beschreiben und Erklären {.tabset .tabset-fade}
+
+<hr>
+
+*Dieses Dokument enthält ausgewählter Zeitreihen zur Analyse von Wohlstand.* 
+
+<hr>
+
+
+
+<!--..........................................................................-->
+## Einführung {.tabset .tabset-fade}
+
+<span style="font-size:22pt;"> Einführung </span>
+
+<hr>
+
+<!--..........................................................................-->
+### Einordnung
+
+<span style="font-size:20pt;"> Einordnung </span>
+
+<hr>
+
+Für die Einordnung siehe auch Kapitel 2.2 "Vermessung von Wohlstand".
+
+* <u>Mengen</u>:
+    * Einkommen $\left(Y\right)$
+    * Konsum $\left(C\right)$
+    * Investitionen $\left(I\right)$
+    * Liquidität $\left(L\right)$
+    * Nettoexporte $\left(NX\right)$ und Nettokapitalexporte $\left(NKE\right)$
+    * Staatsausgaben $\left(G\right)$
+    * Staatseinnahmen $\left(T\right)$
+* <u>Preise</u>:
+    * Inflationsrate $\left(P, \pi\right)$
+    * Zinsen $\left(i, r\right)$
+    * Wechselkurse $\left(e, \varepsilon\right)$
+
+
+
+<!--..........................................................................-->
+### Vorbereitung
+
+<span style="font-size:20pt;"> Vorbereitung </span>
+
+<hr />
+
+Vorbereitung des *R*-Skripts:
+
+1) Setzen des Arbeitspfades
+
+```{r}
+
+# setwd("... insert-you-directory-here ...")
+
+```
+
+2) Laden der nötigen Pakete zu Datenverarbeitung
+
+```{r}
+
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(kableExtra)
+library(scales)
+library(zoo)
+library(ecm)
+
+```
+
+```{r,include=FALSE}
+
+# see: https://stackoverflow.com/questions/11610377/how-do-i-change-the-formatting-of-numbers-on-an-axis-with-ggplot
+
+```
+
+3) Laden der Grafikvorlage
+
+```{r}
+
+mod.theme.01 <- theme_gray() + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, size = 12),
+                                     axis.text.y = element_text(size = 12),
+                                     plot.title = element_text(size = 16),
+                                     plot.subtitle = element_text(size = 12),
+                                     plot.caption = element_text(size = 12),
+                                     legend.text = element_text(size = 12))
+
+mod.theme.01$legend.position <- c("bottom")
+
+```
+
+```{r, include=FALSE}
+
+# See: https://bookdown.org/rdpeng/RProgDA/building-a-new-theme.html
+
+```
+
+<hr />
+
+Die Daten werden von unterschiedlichen öffentlich zugänglichen Datenbanken heruntergeladen.
+
+Die Daten können entweder auf der Website oder über so genannte Programmierschnittstellen (APIs) heruntergeladen werden.
+
+
+
+<!--..........................................................................-->
+### FRED
+
+<span style="font-size:18pt;"> FRED </span>
+
+<hr />
+
+Die Daten von der Federal Reserve Bank of St. Louis können mit dem *R*-Paket `fredr` heruntergeladen werden.
+
+* Link: [FRED: Startseite](https://fred.stlouisfed.org/)
+
+<hr />
+
+Um Daten über die FRED-API müssen Sie sich zuerst kostenlos registrieren und einen "API Key" beantragen ([siehe](https://fred.stlouisfed.org/docs/api/api_key.html)).
+
+Diesen "API Key" müssen Sie anschließend mit der *R*-Funktion `fredr_set_key` angeben.
+
+```{r, eval=FALSE}
+
+# FRED
+library(fredr)
+# Set your fredr key here
+fredr_set_key("... insert-your-personal-key-here ...")
+
+```
+
+```{r,include=FALSE}
+
+source("../r_set_up.R")
+
+```
+
+<hr />
+
+Zur Schattierung der Rezessionen (siehe: [NBER](https://www.nber.org/research/business-cycle-dating)) verwenden wir die folgende *R*-Funktion.
+
+<!--..........................................................................--> 
+<button type="button" class="collapsible02"> Schattierung Rezessionen </button>
+<div class="cod_content">
+
+```{r}
+
+add_rec_shade <- function(st_date, ed_date, shade_color = "darkgray", zoo.mon = FALSE, zoo.qtr = FALSE) {
+  
+  recession  <-  fredr(series_id = "USRECD",observation_start = as.Date(st_date),observation_end = as.Date(ed_date))
+  
+  recession$diff <- recession$value-lagpad(recession$value, k = 1)
+  recession <- recession[!is.na(recession$diff),]
+  recession.start <- recession[recession$diff == 1,]$date
+  recession.end <- recession[recession$diff == (-1),]$date
+  
+  if(length(recession.start) > length(recession.end)) {
+    recession.end <- c(recession.end, Sys.Date())
+  }
+  if(length(recession.end)>length(recession.start)) {
+    recession.start <- c(min(recession$date), recession.start)
+  }
+  
+  recs <- as.data.frame(cbind(recession.start, recession.end))
+  recs$recession.start <- as.Date(as.numeric(recs$recession.start), origin = as.Date("1970-01-01"))
+  
+  if(zoo.mon == TRUE){
+    recs$recession.start <- as.yearmon(recs$recession.start, "%b%y")
+  }
+  if(zoo.qtr == TRUE){
+    recs$recession.start <- as.yearqtr(recs$recession.start, "%y-Q%q")
+  }
+  
+  recs$recession.end <- as.Date(recs$recession.end, origin = as.Date("1970-01-01"))
+  
+  if(zoo.mon == TRUE){
+    recs$recession.end <- as.yearmon(recs$recession.end, "%b%y")
+  }
+  if(zoo.qtr == TRUE){
+    recs$recession.end <- as.yearqtr(recs$recession.end, "%y-Q%q")
+  }
+  
+  if(nrow(recs) > 0) {
+    rec_shade <- geom_rect(data = recs, inherit.aes = FALSE, 
+                           aes(xmin = recession.start, xmax = recession.end, ymin = -Inf, ymax = +Inf), 
+                           fill = shade_color, alpha = 0.5)
+    
+    return(rec_shade)
+  }
+  
+}
+
+```
+
+```{r, include=FALSE}
+
+# See: https://rpubs.com/FSl/609471 (and edite by MM)
+
+```
+
+</div>
+<!--..........................................................................--> 
+
+
+
+<!--..........................................................................-->
+### Eurostat and ECB
+
+<span style="font-size:18pt;"> Eurostat and ECB </span>
+
+<hr />
+
+Die Daten von Eurostat und der EcB  können mit dem *R*-Paket `eurostat` und `ecb` heruntergeladen werden.
+
+Links:
+
+* [Eurostat: Startseite](https://ec.europa.eu/eurostat/de/home)
+* [ECB: Statistical Data Warehouse](https://sdw.ecb.europa.eu)
+
+```{r}
+
+# eurostat
+library(eurostat)
+# ecb statistical data warehouse
+library(ecb)
+
+```
+
+
+
+<!--..........................................................................-->
+## Mengen {.tabset .tabset-fade}
+
+<span style="font-size:22pt;"> Makroökonomische Mengen: Einkommen </span>
+
+<!--..........................................................................-->
+<!-- <hr /> -->
+
+<!--..........................................................................-->
+<!-- ### Einkommen {.tabset .tabset-fade} -->
+
+<!--..........................................................................-->
+<!-- <hr /> -->
+
+<!-- <span style="font-size:20pt;"> Einkommen </span> -->
+
+<!-- ... -->
+
+<!--..........................................................................-->
+<hr />
+
+<!--..........................................................................-->
+### USA
+
+<!--..........................................................................-->
+<!-- <hr /> -->
+
+<!-- <span style="font-size:18pt;"> USA </span> -->
+
+<!--..........................................................................-->
+<hr />
+
+<span style="text-decoration:underline; font-size:18pt;"> Reales BIP (Niveau) </span>
+
+<!--..........................................................................-->
+<button type="button" class="collapsible01"> *Show Code* </button>
+<div class="cod_content">
+```{r,results=FALSE,fig.show='hide',eval=FALSE}
+
+# Meta data
+met.dat <- fredr_series_search_text("GDPC1")
+
+# Data
+ser.dat <- fredr_series_observations(series_id = met.dat$id[1],
+                                     observation_start = as.Date("1947-01-01"),
+                                     units = "lin")
+
+# Transform date to yearmon class
+ser.dat$date.zoo <- as.yearqtr(ser.dat$date, "%y-Q%q")
+
+# Construct plot
+plot <- ggplot(data = ser.dat, mapping = aes(x=date.zoo, y = value, color = series_id)) +
+  add_rec_shade(min(ser.dat$date), max(ser.dat$date), zoo.mon = FALSE, zoo.qtr = TRUE) +
+  geom_line(color = "black", size = 1) +
+  scale_x_yearqtr(breaks = seq(from = min(ser.dat$date.zoo), to = max(ser.dat$date.zoo), by = 8),
+                  minor_breaks = seq(from = min(ser.dat$date.zoo), to = max(ser.dat$date.zoo), by = 4),
+                  format = "%Y-Q%q",
+                  expand = c(0, 0)) +
+  scale_y_continuous(labels = comma_format(big.mark = ".", decimal.mark = ",")) +
+  labs(title = "Reales Bruttoinlandsprodukt (saisonbereinigt)",
+       subtitle = paste0(c("(Letzter Beobachtungswert: "), as.yearqtr(as.Date(met.dat$observation_end)), c(")")),
+       caption = "Quelle: U.S. Bureau of Economic Analysis", 
+       x = "", y = "Verkettete 2012 US Dollar in Milliarden") +
+  mod.theme.01
+
+# Return plot
+plot
+
+```
+</div>
+<!--..........................................................................-->
+<button type="button" class="collapsible01"> *Show Output* </button>
+<div class="cod_content">
+```{r,echo=FALSE}
+
+# Meta data
+met.dat <- fredr_series_search_text("GDPC1")
+
+# Data
+ser.dat <- fredr_series_observations(series_id = met.dat$id[1],
+                                     observation_start = as.Date("1947-01-01"),
+                                     # observation_start = as.Date("1960-01-01"),
+                                     units = "lin")
+
+# Transform date to yearmon class
+ser.dat$date.zoo <- as.yearqtr(ser.dat$date, "%y-Q%q")
+
+# Construct plot
+plot <- ggplot(data = ser.dat, mapping = aes(x=date.zoo, y = value, color = series_id)) +
+  add_rec_shade(min(ser.dat$date), max(ser.dat$date), zoo.mon = FALSE, zoo.qtr = TRUE) +
+  geom_line(color = "black", size = 1) +
+  scale_x_yearqtr(breaks = seq(from = min(ser.dat$date.zoo), to = max(ser.dat$date.zoo), by = 8),
+                  minor_breaks = seq(from = min(ser.dat$date.zoo), to = max(ser.dat$date.zoo), by = 4),
+                  format = "%Y-Q%q",
+                  expand = c(0, 0)) +
+  scale_y_continuous(labels = comma_format(big.mark = ".", decimal.mark = ",")) +
+  labs(title = "Reales Bruttoinlandsprodukt (saisonbereinigt)",
+       subtitle = paste0(c("(Letzter Beobachtungswert: "), as.yearqtr(as.Date(met.dat$observation_end)), c(")")),
+       caption = "Quelle: U.S. Bureau of Economic Analysis", 
+       x = "", y = "Verkettete 2012 US Dollar in Milliarden") +
+  mod.theme.01
+
+# Return plot
+plot
+
+```
+
+```{r, include=FALSE}
+# Check unit
+met.dat$units[1]
+```
+
+</div>
+<!--..........................................................................-->
+
+<!--..........................................................................-->
+<button type="button" class="collapsible01"> *Letzte Werte* </button>
+<div class="cod_content">
+```{r, echo=FALSE, results=TRUE}
+
+tab <- tail(ser.dat,10)[,c(1,6,3)]
+colnames(tab) <- c("Date", "Period", "Value")
+
+tab %>%
+  kbl(format.args = list(decimal.mark = ',', big.mark = ".")) %>%
+  kable_styling()
+
+```
+</div>
+<!--..........................................................................-->
+
+```{r, include=FALSE}
+
+ggsave(plot=plot, width=10, height=6, dpi=300, filename = "./figures/US_GDP_01.pdf")
+ggsave(plot=plot, width=10, height=6, dpi=300, filename = "./figures/US_GDP_01.svg")
+
+```
+
+<!--..........................................................................-->
+<hr />
+
+<span style="text-decoration:underline; font-size:18pt;"> Reales BIP (Veränderung) </span>
+
+<!--..........................................................................-->
+<button type="button" class="collapsible01"> *Show Code* </button>
+<div class="cod_content">
+```{r,results=FALSE,fig.show='hide',eval=FALSE}
+
+# Meta data
+met.dat <- fredr_series_search_text("GDPC1")
+
+# Data
+ser.dat <- fredr_series_observations(series_id = met.dat$id[1],
+                                     observation_start = as.Date("1947-01-01"),
+                                     units = "pc1")
+
+# Transform date to yearmon class
+ser.dat$date.zoo <- as.yearqtr(ser.dat$date, "%y-Q%q")
+
+# Construct plot
+plot <- ggplot(data = ser.dat, mapping = aes(x=date.zoo, y = value, color = series_id)) +
+  add_rec_shade(min(ser.dat$date), max(ser.dat$date), zoo.mon = FALSE, zoo.qtr = TRUE) +
+  geom_line(color = "black", size = 1) +
+  scale_y_continuous(labels = comma_format(big.mark = ".", decimal.mark = ",")) +
+  scale_x_yearqtr(breaks = seq(from = min(ser.dat$date.zoo), to = max(ser.dat$date.zoo), by = 8),
+                  minor_breaks = seq(from = min(ser.dat$date.zoo), to = max(ser.dat$date.zoo), by = 4),
+                  format = "%Y-Q%q",
+                  expand = c(0, 0)) +
+  labs(title = "Reales Bruttoinlandsprodukt (jährliche Veränderungsrate)",
+       subtitle = paste0(c("(Letzter Beobachtungswert: "), as.yearqtr(as.Date(met.dat$observation_end)), c(")")),
+       caption = "Quelle: U.S. Bureau of Economic Analysis", 
+       x = "", y = "%-Verä. verk. 2012 USD (jähr.)") +
+  mod.theme.01
+
+# Return plot
+plot
+
+```
+</div>
+<!--..........................................................................-->
+<button type="button" class="collapsible01"> *Show Output* </button>
+<div class="cod_content">
+```{r,echo=FALSE}
+
+# Meta data
+met.dat <- fredr_series_search_text("GDPC1")
+
+# Data
+ser.dat <- fredr_series_observations(series_id = met.dat$id[1],
+                                     observation_start = as.Date("1947-01-01"),
+                                     units = "pc1")
+
+# Transform date to yearmon class
+ser.dat$date.zoo <- as.yearqtr(ser.dat$date, "%y-Q%q")
+
+# Construct plot
+plot <- ggplot(data = ser.dat, mapping = aes(x=date.zoo, y = value, color = series_id)) +
+  add_rec_shade(min(ser.dat$date), max(ser.dat$date), zoo.mon = FALSE, zoo.qtr = TRUE) +
+  geom_line(color = "black", size = 1) +
+  scale_y_continuous(labels = comma_format(big.mark = ".", decimal.mark = ",")) +
+  scale_x_yearqtr(breaks = seq(from = min(ser.dat$date.zoo), to = max(ser.dat$date.zoo), by = 8),
+                  minor_breaks = seq(from = min(ser.dat$date.zoo), to = max(ser.dat$date.zoo), by = 4),
+                  format = "%Y-Q%q",
+                  expand = c(0, 0)) +
+  labs(title = "Reales Bruttoinlandsprodukt (jährliche Veränderungsrate)",
+       subtitle = paste0(c("(Letzter Beobachtungswert: "), as.yearqtr(as.Date(met.dat$observation_end)), c(")")),
+       caption = "Quelle: U.S. Bureau of Economic Analysis", 
+       x = "", y = "%-Verä. verk. 2012 USD (jähr.)") +
+  mod.theme.01
+
+# Return plot
+plot
+
+```
+
+</div>
+<!--..........................................................................-->
+
+<!--..........................................................................-->
+<button type="button" class="collapsible01"> *Letzte Werte* </button>
+<div class="cod_content">
+```{r, echo=FALSE, results=TRUE}
+
+tab <- tail(ser.dat,10)[,c(1,6,3)]
+colnames(tab) <- c("Date", "Period", "Value")
+
+tab %>%
+  kbl(format.args = list(decimal.mark = ',', big.mark = ".")) %>%
+  kable_styling()
+
+```
+</div>
+<!--..........................................................................-->
+
+```{r, include=FALSE}
+
+ggsave(plot=plot, width=10, height=6, dpi=300, filename = "./figures/US_GDP_02.pdf")
+ggsave(plot=plot, width=10, height=6, dpi=300, filename = "./figures/US_GDP_02.svg")
+
+```
+
+```{r, include=FALSE}
+
+#..................................................
+# GDP, real, per capita
+
+# Meta data
+met.dat <- fredr_series_search_text("A939RX0Q048SBEA")
+# Data
+ser.dat <- fredr_series_observations(series_id=met.dat$id[1],
+                                     observation_start=as.Date("1947-01-01"),
+                                     units="lin")
+
+# Transform date to yearmon class
+ser.dat$date.zoo <- as.yearqtr(ser.dat$date, "%y-Q%q")
+
+# Construct plot
+plot <- ggplot(data = ser.dat, mapping = aes(x=date.zoo, y = value, color = series_id)) +
+  add_rec_shade(min(ser.dat$date), max(ser.dat$date), zoo.mon = FALSE, zoo.qtr = TRUE) +
+  geom_line(color = "black", size = 1) +
+  scale_y_continuous(labels = comma_format(big.mark = ".", decimal.mark = ",")) +
+  scale_x_yearqtr(breaks = seq(from = min(ser.dat$date.zoo), to = max(ser.dat$date.zoo), by = 8),
+                  minor_breaks = seq(from = min(ser.dat$date.zoo), to = max(ser.dat$date.zoo), by = 4),
+                  format = "%Y-Q%q",
+                  expand = c(0, 0)) +
+  labs(title = "Reales Bruttoinlandsprodukt (BIP) pro Kopf",
+       subtitle = paste0(c("(Letzter Beobachtungswert: "), as.yearqtr(as.Date(met.dat$observation_end)), c(")")),
+       caption = "Quelle: U.S. Bureau of Economic Analysis", 
+       x = "", y = "Verkettete 2012 US Dollar") +
+  mod.theme.01
+
+# Return plot
+plot
+
+ggsave(plot=plot, width=10, height=6, dpi=300, filename = "./figures/US_GDP_03.pdf")
+ggsave(plot=plot, width=10, height=6, dpi=300, filename = "./figures/US_GDP_03.svg")
+
+#..................................................
+# GDP, nominal
+
+# Meta data
+met.dat <- fredr_series_search_text("A191RC")
+# Data
+ser.dat <- fredr_series_observations(series_id=met.dat$id[1],
+                                     observation_start=as.Date("1947-01-01"),
+                                     units="lin")
+
+# Transform date to yearmon class
+ser.dat$date.zoo <- as.yearqtr(ser.dat$date, "%y-Q%q")
+
+# Construct plot
+plot <- ggplot(data = ser.dat, mapping = aes(x=date.zoo, y = value, color = series_id)) +
+  add_rec_shade(min(ser.dat$date), max(ser.dat$date), zoo.mon = FALSE, zoo.qtr = TRUE) +
+  geom_line(color = "black", size = 1) +
+  scale_y_continuous(breaks = seq(0,30000,5000),
+                     labels = comma_format(big.mark = ".", decimal.mark = ",")) +
+  scale_x_yearqtr(breaks = seq(from = min(ser.dat$date.zoo), to = max(ser.dat$date.zoo), by = 8),
+                  minor_breaks = seq(from = min(ser.dat$date.zoo), to = max(ser.dat$date.zoo), by = 4),
+                  format = "%Y-Q%q",
+                  expand = c(0, 0)) +
+  labs(title = "Bruttoinlandsprodukt (BIP)",
+       subtitle = paste0(c("(Letzter Beobachtungswert: "), as.yearqtr(as.Date(met.dat$observation_end)), c(")")),
+       caption = "Quelle: U.S. Bureau of Economic Analysis", 
+       x = "", y = "US Dollar in Milliarden") +
+  mod.theme.01
+
+# Return plot
+plot
+
+ggsave(plot=plot, width=10, height=6, dpi=300, filename = "./figures/US_GDP_04.pdf")
+ggsave(plot=plot, width=10, height=6, dpi=300, filename = "./figures/US_GDP_04.svg")
+
+```
+
+
+
+<!--..........................................................................-->
+### Eurozone
+
+<!--..........................................................................-->
+<!-- <hr /> -->
+
+<!-- <span style="font-size:18pt;"> Eurozone </span> -->
+
+<!--..........................................................................-->
+<hr />
+
+<span style="text-decoration:underline; font-size:18pt;"> Reales BIP (Niveau) </span>
+
+<!--..........................................................................-->
+<button type="button" class="collapsible01"> *Show Code* </button>
+<div class="cod_content">
+```{r,results=FALSE,fig.show='hide',eval=FALSE}
+
+# Data
+ser.dat <- get_eurostat(id = "namq_10_gdp",
+                        time_format = "date",
+                        filters = list(geo = c("DE","FR","EA19"),
+                                       na_item = c("B1G"),
+                                       unit = c("CLV05_MEUR"),
+                                       s_adj = c("SCA"))) 
+
+# Transform date to yearqtr and date class
+ser.dat$date.zoo <- as.yearqtr(as.character(ser.dat$time), "%Y-Q%q")
+ser.dat$date.dat <- as.Date(ser.dat$date.zoo, format = "%Y Q%q")
+
+# Subset data
+ser.dat <- subset(ser.dat, date.dat %in% seq(as.Date("2000-01-01"), as.Date("2023-01-01"), "quarter"))
+
+# Construct plot
+ggplot(data = ser.dat, mapping = aes(x = date.zoo, y = values, color = geo)) +
+  geom_line(size = 1) +
+  scale_y_continuous(labels = comma_format(big.mark = ".", decimal.mark = ",")) +
+  scale_x_yearmon(breaks = seq(from = min(ser.dat$date.zoo), to = max(ser.dat$date.zoo), by = 2),
+                  minor_breaks = seq(from = min(ser.dat$date.zoo), to = max(ser.dat$date.zoo), by = 1),
+                  format = "%b %y",
+                  expand = c(0, 0)) +
+  scale_color_discrete(name = "", labels = c("DEU", "EA19", "FRA")) +
+  labs(title = "Reales Bruttoinlandsprodukt (BIP)",
+       subtitle = paste0(c("(Letzter Beobachtungswert: "), as.yearqtr(as.Date(met.dat$observation_end)), c(")")),
+       caption = "Quelle: Eurostat", 
+       x = "", y = "Verkettete 2005 EUR in Millionen") +
+  mod.theme.01
+
+```
+</div>
+<!--..........................................................................-->
+<button type="button" class="collapsible01"> *Show Output* </button>
+<div class="cod_content">
+```{r,echo=FALSE}
+
+# Data
+ser.dat <- get_eurostat(id = "namq_10_gdp",
+                        time_format = "date",
+                        filters = list(geo = c("DE","FR","EA19"),
+                                       na_item = c("B1G"),
+                                       unit = c("CLV05_MEUR"),
+                                       s_adj = c("SCA"))) 
+
+# Transform date to yearqtr and date class
+ser.dat$date.zoo <- as.yearqtr(as.character(ser.dat$time), "%Y-Q%q")
+ser.dat$date.dat <- as.Date(ser.dat$date.zoo, format = "%Y Q%q")
+
+# Subset data
+ser.dat <- subset(ser.dat, date.dat %in% seq(as.Date("2000-01-01"), as.Date("2023-01-01"), "quarter"))
+
+# Construct plot
+ggplot(data = ser.dat, mapping = aes(x = date.zoo, y = values, color = geo)) +
+  geom_line(size = 1) +
+  scale_y_continuous(labels = comma_format(big.mark = ".", decimal.mark = ",")) +
+  scale_x_yearmon(breaks = seq(from = min(ser.dat$date.zoo), to = max(ser.dat$date.zoo), by = 2),
+                  minor_breaks = seq(from = min(ser.dat$date.zoo), to = max(ser.dat$date.zoo), by = 1),
+                  format = "%b %y",
+                  expand = c(0, 0)) +
+  scale_color_discrete(name = "", labels = c("DEU", "EA19", "FRA")) +
+  labs(title = "Reales Bruttoinlandsprodukt (BIP)",
+       subtitle = paste0(c("(Letzter Beobachtungswert: "), as.yearqtr(as.Date(met.dat$observation_end)), c(")")),
+       caption = "Quelle: Eurostat", 
+       x = "", y = "Verkettete 2005 EUR in Millionen") +
+  mod.theme.01
+
+```
+
+```{r, include=FALSE}
+
+source("./r-scripts/r_eurostat_helper_functions.R")
+
+tmp <- eurostat_eurostat_json_url_edit_xx(id = "namq_10_gdp", filters = list(geo = c("DE","FR","EA19"),
+                                                                             na_item = c("B1G"),
+                                                                             unit = c("CLV05_MEUR"),
+                                                                             s_adj = c("SCA")),
+                                                                             lang = NULL)
+```
+
+```{r, include=FALSE}
+
+# See: https://wikis.ec.europa.eu/display/EUROSTATHELP/API+Statistics+-+data+query
+# see: https://ec.europa.eu/eurostat/web/query-builder/tool
+
+```
+
+</div>
+<!--..........................................................................-->
+
+<!--..........................................................................-->
+<button type="button" class="collapsible01"> *Letzte Werte* </button>
+<div class="cod_content">
+```{r, echo=FALSE, results=TRUE}
+
+tab <- cbind(tail(as.yearqtr(ser.dat[ser.dat$geo %in% c("DE"),]$date.zoo), 10),
+             tail(ser.dat[ser.dat$geo %in% c("DE"), c(6)], 10),
+             tail(ser.dat[ser.dat$geo %in% c("FR"), c(6)], 10),
+             tail(ser.dat[ser.dat$geo %in% c("EA19"), c(6)], 10))
+
+colnames(tab) <- c("Period", "GER", "FRA", "EA19")
+
+tab %>%
+  kbl(format.args = list(decimal.mark = ',', big.mark = ".")) %>%
+  kable_styling()
+
+```
+</div>
+<!--..........................................................................-->
+
+
+
+<!--..........................................................................-->
+## Preise {.tabset .tabset-fade}
+
+<span style="font-size:22pt;"> Makroökonomische Preise </span>
+
+<!--..........................................................................-->
+<hr />
+
+<!--..........................................................................-->
+### Waren und Diensleistungen {.tabset .tabset-fade}
+
+<!--..........................................................................-->
+<hr />
+
+<span style="font-size:20pt;"> Waren und Diensleistungen </span>
+
+<!-- ... -->
+
+<!--..........................................................................-->
+<hr />
+
+<!--..........................................................................-->
+#### USA
+
+<!--..........................................................................-->
+<hr />
+
+<span style="font-size:18pt;"> USA </span>
+
+<!--..........................................................................-->
+<hr />
+
+<span style="text-decoration:underline; font-size:18pt;"> Konsumentenpreisindex </span>
+
+<!--..........................................................................-->
+<button type="button" class="collapsible01"> *Show Code* </button>
+<div class="cod_content">
+```{r,results=FALSE,fig.show='hide',eval=FALSE}
+
+# Meta data
+met.dat <- fredr_series_search_text("CPIAUCSL")
+
+# Data
+ser.dat <- fredr_series_observations(series_id = met.dat$id[1],
+                                     observation_start = as.Date("1999-12-31"),
+                                     units = "pc1")
+
+# Construct plot
+plot <- ggplot(data = ser.dat, mapping = aes(x = date, y = value)) +
+  add_rec_shade(min(ser.dat$date), max(ser.dat$date), zoo.mon = FALSE, zoo.qtr = FALSE) +
+  geom_line(size = 1) +
+  scale_x_date(date_breaks = "1 years",
+               date_minor_breaks = "1 years",
+               date_labels = "%Y",
+               expand = c(0, 0)) +
+  scale_y_continuous(breaks = seq(-5, 15, 1),
+                     labels = comma) + 
+  labs(title = "Konsumentenpreiseindex (Jährliche Veränderungsrate)",
+       subtitle = paste0(c("(Letzter Beobachtungswert: "), as.yearmon(met.dat$observation_end[1]), c(")")),
+       caption = "Quelle: U.S. Bureau of Labor Statistics", 
+       x = "", y = "Prozentual Veränderung (YoY)") +
+  mod.theme.01
+
+# Return plot
+plot
+
+```
+</div>
+<!--..........................................................................-->
+<button type="button" class="collapsible01"> *Show Output* </button>
+<div class="cod_content">
+```{r,echo=FALSE}
+
+# Meta data
+met.dat <- fredr_series_search_text("CPIAUCSL")
+
+# Data
+ser.dat <- fredr_series_observations(series_id = met.dat$id[1],
+                                     observation_start = as.Date("1999-12-31"),
+                                     units = "pc1")
+
+# Construct plot
+plot <- ggplot(data = ser.dat, mapping = aes(x = date, y = value)) +
+  add_rec_shade(min(ser.dat$date), max(ser.dat$date), zoo.mon = FALSE, zoo.qtr = FALSE) +
+  geom_line(size = 1) +
+  scale_x_date(date_breaks = "1 years",
+               date_minor_breaks = "1 years",
+               date_labels = "%Y",
+               expand = c(0, 0)) +
+  scale_y_continuous(breaks = seq(-5, 15, 1),
+                     labels = comma) + 
+  labs(title = "Konsumentenpreiseindex (Jährliche Veränderungsrate)",
+       subtitle = paste0(c("(Letzter Beobachtungswert: "), as.yearmon(met.dat$observation_end[1]), c(")")),
+       caption = "Quelle: U.S. Bureau of Labor Statistics", 
+       x = "", y = "Prozentual Veränderung (YoY)") +
+  mod.theme.01
+
+# Return plot
+plot
+
+```
+
+```{r, include=FALSE}
+# Check unit
+met.dat$units[1]
+```
+
+</div>
+<!--..........................................................................-->
+
+<!--..........................................................................-->
+<button type="button" class="collapsible01"> *Letzte Werte* </button>
+<div class="cod_content">
+```{r, echo=FALSE, results=TRUE}
+
+tab <- cbind(tail(ser.dat, 10)[, c(1)],
+             round(tail(ser.dat, 10)[, c(3)], 2))
+
+colnames(tab) <- c("Datum", "Wert")
+
+tab %>%
+  kbl(format.args = list(decimal.mark = ',', big.mark = ".")) %>%
+  kable_styling()
+
+```
+</div>
+<!--..........................................................................-->
+
+```{r, include=FALSE}
+
+ggsave(plot=plot,width=10,height=6,dpi=300,filename = "./figures/US_CPI.pdf")
+ggsave(plot=plot,width=10,height=6,dpi=300,filename = "./figures/US_CPI.svg")
+
+```
+
+<!--..........................................................................-->
+#### Eurozone
+
+<!--..........................................................................-->
+<hr />
+
+<span style="font-size:18pt;"> Deutschland </span>
+
+<!--..........................................................................-->
+<hr />
+
+<span style="text-decoration:underline; font-size:18pt;"> Konsumentenpreisindex </span>
+
+<!--..........................................................................-->
+<button type="button" class="collapsible01"> *Show Code* </button>
+<div class="cod_content">
+```{r,results=FALSE,fig.show='hide',eval=FALSE}
+
+# Data
+ser.dat <- get_eurostat(id = "prc_hicp_manr",
+                        filters = list(geo = c("DE","FR","EA19"),
+                                     sinceTimePeriod = c("2010M01"),
+                                     unit = c("RCH_A"),
+                                     coicop = c("CP00")))
+
+# Transform date to yearmon and date class
+ser.dat$date.zoo <- as.yearmon(as.character(ser.dat$time), "%Y-%m")
+ser.dat$date.dat <- as.Date(ser.dat$date.zoo, format = "%b %Y")
+
+# Subset data
+ser.dat <- subset(ser.dat, date.dat %in% seq(as.Date("2000-01-01"), as.Date("2023-02-01"), "month"))
+
+# Construct plot
+plot <- ggplot(data = ser.dat, mapping = aes(x = date.zoo, y = values, color = geo)) +
+  geom_line(size = 1) +
+  scale_x_yearmon(breaks = seq(from = min(ser.dat$date.zoo), to = max(ser.dat$date.zoo), by = 1),
+                  minor_breaks = seq(from = min(ser.dat$date.zoo), to = max(ser.dat$date.zoo), by = 1),
+                  format = "%b %Y",
+                  expand = c(0, 0)) +
+  scale_y_continuous(breaks = seq(-5, 15, 1),
+                     labels=comma) +
+  scale_color_discrete(name = "", labels = c("GER","FRA","EA19")) +
+  labs(title = "HVPI (jährliche Veränderungrate)",
+       subtitle = paste0(c("(Letzter Beobachtungswert: "), ser.dat$date.zoo[length(ser.dat$date.zoo)], c(")")),
+       caption = "Quelle: Eurostat", 
+       x = "", y = "Prozent") +
+  mod.theme.01
+
+# Return plot
+plot
+
+```
+</div>
+<!--..........................................................................-->
+<button type="button" class="collapsible01"> *Show Output* </button>
+<div class="cod_content">
+```{r,echo=FALSE}
+
+# Data
+ser.dat <- get_eurostat(id = "prc_hicp_manr",
+                        filters = list(geo = c("DE","FR","EA19"),
+                                     sinceTimePeriod = c("2010M01"),
+                                     unit = c("RCH_A"),
+                                     coicop = c("CP00")))
+
+# Transform date to yearmon and date class
+ser.dat$date.zoo <- as.yearmon(as.character(ser.dat$time), "%Y-%m")
+ser.dat$date.dat <- as.Date(ser.dat$date.zoo, format = "%b %Y")
+
+# Subset data
+ser.dat <- subset(ser.dat, date.dat %in% seq(as.Date("2000-01-01"), as.Date("2023-02-01"), "month"))
+
+# Construct plot
+plot <- ggplot(data = ser.dat, mapping = aes(x = date.zoo, y = values, color = geo)) +
+  geom_line(size = 1) +
+  scale_x_yearmon(breaks = seq(from = min(ser.dat$date.zoo), to = max(ser.dat$date.zoo), by = 1),
+                  minor_breaks = seq(from = min(ser.dat$date.zoo), to = max(ser.dat$date.zoo), by = 1),
+                  format = "%b %Y",
+                  expand = c(0, 0)) +
+  scale_y_continuous(breaks = seq(-5, 15, 1),
+                     labels=comma) +
+  scale_color_discrete(name = "", labels = c("GER","FRA","EA19")) +
+  labs(title = "HVPI (jährliche Veränderungrate)",
+       subtitle = paste0(c("(Letzter Beobachtungswert: "), ser.dat$date.zoo[length(ser.dat$date.zoo)], c(")")),
+       caption = "Quelle: Eurostat", 
+       x = "", y = "Prozent") +
+  mod.theme.01
+
+# Return plot
+plot
+
+```
+
+```{r, include=FALSE}
+
+# Check unit
+met.dat$units[1]
+
+```
+
+</div>
+<!--..........................................................................-->
+
+<!--..........................................................................-->
+<button type="button" class="collapsible01"> *Letzte Werte* </button>
+<div class="cod_content">
+```{r, echo=FALSE, results=TRUE}
+
+tab <- cbind(tail(ser.dat[ser.dat$geo %in% "DE", 6], 10),
+             tail(ser.dat[ser.dat$geo %in% c("DE"), 5], 10),
+             tail(ser.dat[ser.dat$geo %in% c("FR"), 5], 10),
+             tail(ser.dat[ser.dat$geo %in% c("EA19"), 5], 10))
+
+colnames(tab) <- c("Period", "GER", "FRA", "EA19")
+
+tab %>%
+  kbl(format.args = list(decimal.mark = ',', big.mark = ".")) %>%
+  kable_styling()
+
+```
+</div>
+<!--..........................................................................-->
+
+```{r, include=FALSE}
+
+ggsave(plot=plot,width=10,height=6,dpi=300,filename = "./figures/EURO_CPI.pdf")
+ggsave(plot=plot,width=10,height=6,dpi=300,filename = "./figures/EURO_CPI.svg")
+
+```
+
+```{r}
+
+# source("./Rscripts/r_eurostat_helper_functions.R")
+
+```
+
+
+
+<!--..........................................................................-->
+### Liquidität {.tabset .tabset-fade}
+
+<!--..........................................................................-->
+<hr />
+
+<span style="font-size:20pt;"> Liquidität </span>
+
+<!-- ... -->
+
+<!--..........................................................................-->
+<hr />
+
+<!--..........................................................................-->
+#### USA
+
+<!--..........................................................................-->
+<hr />
+
+<span style="font-size:18pt;"> USA </span>
+
+<!--..........................................................................-->
+<hr />
+
+<span style="text-decoration:underline; font-size:18pt;"> FED Funds Zielband (oberes Limit) </span>
+
+<!--..........................................................................-->
+<button type="button" class="collapsible01"> *Show Code* </button>
+<div class="cod_content">
+```{r,results=FALSE,fig.show='hide',eval=FALSE}
+
+# Meta data
+met.dat <- fredr_series_search_text("DFEDTARU")
+
+# Data
+ser.dat <- fredr_series_observations(series_id=met.dat$id[1],
+                                     observation_start=as.Date("1999-12-31"),
+                                     units="lin")
+
+# Construct plot
+plot <- ggplot(data = ser.dat, mapping = aes(x = date, y = value)) +
+  add_rec_shade(min(ser.dat$date), max(ser.dat$date), zoo.mon = FALSE, zoo.qtr = FALSE) +
+  geom_line(size = 1) +
+  scale_y_continuous(name = "Percent", labels = comma) +
+  scale_x_date(date_breaks = "1 years",
+               date_minor_breaks = "1 years",
+               date_labels = "%Y",
+               expand = c(0, 0)) +
+  scale_y_continuous(breaks = seq(0, 10, 0.5)) + 
+  labs(title = "FED Funds Zielband (oberes Limit)",
+       subtitle = paste0(c("(Letzter Beobachtungswert: "), met.dat$observation_end, c(")")),
+       caption = "Quelle: FED", 
+       x = "", y = "Prozent") +
+  mod.theme.01
+
+# Return plot
+plot
+
+```
+</div>
+<!--..........................................................................-->
+<button type="button" class="collapsible01"> *Show Output* </button>
+<div class="cod_content">
+```{r,echo=FALSE}
+
+# Meta data
+met.dat <- fredr_series_search_text("DFEDTARU")
+
+# Data
+ser.dat <- fredr_series_observations(series_id=met.dat$id[1],
+                                     observation_start=as.Date("1999-12-31"),
+                                     units="lin")
+
+# Construct plot
+plot <- ggplot(data = ser.dat, mapping = aes(x = date, y = value)) +
+  add_rec_shade(min(ser.dat$date), max(ser.dat$date), zoo.mon = FALSE, zoo.qtr = FALSE) +
+  geom_line(size = 1) +
+  scale_y_continuous(name = "Percent", labels = comma) +
+  scale_x_date(date_breaks = "1 years",
+               date_minor_breaks = "1 years",
+               date_labels = "%Y",
+               expand = c(0, 0)) +
+  scale_y_continuous(breaks = seq(0, 10, 0.5)) + 
+  labs(title = "FED Funds Zielband (oberes Limit)",
+       subtitle = paste0(c("(Letzter Beobachtungswert: "), met.dat$observation_end, c(")")),
+       caption = "Quelle: FED", 
+       x = "", y = "Prozent") +
+  mod.theme.01
+
+# Return plot
+plot
+
+```
+
+```{r, include=FALSE}
+# Check unit
+met.dat$units[1]
+```
+
+</div>
+<!--..........................................................................-->
+
+<!--..........................................................................-->
+<button type="button" class="collapsible01"> *Letzte Werte* </button>
+<div class="cod_content">
+```{r, echo=FALSE, results=TRUE}
+
+tab <- tail(ser.dat,10)[,c(1,3)]
+colnames(tab) <- c("Datum", "Wert")
+# tab
+
+tab %>%
+  kbl(format.args = list(decimal.mark = ',', big.mark = ".")) %>%
+  kable_styling()
+
+```
+</div>
+<!--..........................................................................-->
+
+```{r, include=FALSE}
+
+ggsave(plot=plot,width=10,height=6,dpi=300,filename = "./figures/US_FEDFUNDS.pdf")
+ggsave(plot=plot,width=10,height=6,dpi=300,filename = "./figures/US_FEDFUNDS.svg")
+
+```
+
+
+
+
+
+<!--..........................................................................-->
+#### Eurozone
+
+<!--..........................................................................-->
+<hr />
+
+<span style="font-size:18pt;"> Eurozone </span>
+
+<!--..........................................................................-->
+<hr />
+
+<span style="text-decoration:underline; font-size:18pt;"> Spitzenrefinanzierungsfazilität </span>
+
+<!--..........................................................................-->
+<button type="button" class="collapsible01"> *Show Code* </button>
+<div class="cod_content">
+```{r,results=FALSE,fig.show='hide',eval=FALSE}
+
+# Df with date sequence for merging 
+date.df <- data.frame(date=seq(as.Date("1999-01-01"), Sys.Date(), by = "day")) 
+
+# Load marginal lending facility
+key <- "FM.B.U2.EUR.4F.KR.MLFR.LEV"
+dat.01 <- get_data(key)
+dat.01$date <- as.Date(dat.01$obstime)
+colnames(dat.01)[9] <- c("mlf_00")
+
+# Merge dates and observations
+dat.02 <- merge(date.df, dat.01, by = "date", all.x = TRUE)
+
+# Fill in NAs
+dat.02$mlf <- dat.02$mlf_00
+for (ii in 2:nrow(dat.02)) {
+  if (is.na(dat.02$mlf_00[ii])) {
+    dat.02$mlf[ii] <- dat.02$mlf[ii-1]
+  } else {
+    dat.02$mlf[ii] <- dat.02$mlf_00[ii]
+  }
+}
+
+# Transform date to yearmon class
+dat.02$date.zoo <- as.yearmon(dat.02$date, "%b%y")
+
+dat <- dat.02
+
+# Construct plot
+plot <- ggplot(data = dat, mapping = aes(x = date.zoo, y = mlf)) +
+  geom_line(color = "black", size = 1) +
+  scale_y_continuous(breaks = seq(0, 10, 0.5),
+                     labels = comma_format(big.mark = ".", decimal.mark = ",")) +
+  scale_x_yearmon(breaks = seq(from = min(dat$date.zoo), to = max(dat$date.zoo), by = 1),
+                  minor_breaks = seq(from = min(dat$date.zoo), to = max(dat$date.zoo), by = 1),
+                  format = "%b %y",
+                  expand = c(0, 0)) +
+  labs(title = "ECB Spitzenrefinanzierungsfazilität",
+       subtitle = paste0(c("(Letzter Beobachtungswert: "), as.Date(dat$date[length(dat$date)]), c(")")),
+       caption = "Quelle: EZB",
+       x = "", y = "Prozent") +
+  mod.theme.01
+
+# Return plot
+plot
+
+```
+</div>
+<!--..........................................................................-->
+<button type="button" class="collapsible01"> *Show Output* </button>
+<div class="cod_content">
+```{r,echo=FALSE}
+
+# Df with date sequence for merging 
+date.df <- data.frame(date=seq(as.Date("1999-01-01"), Sys.Date(), by = "day")) 
+
+# Load marginal lending facility
+key <- "FM.B.U2.EUR.4F.KR.MLFR.LEV"
+dat.01 <- get_data(key)
+dat.01$date <- as.Date(dat.01$obstime)
+colnames(dat.01)[9] <- c("mlf_00")
+
+# Merge dates and observations
+dat.02 <- merge(date.df, dat.01, by = "date", all.x = TRUE)
+
+# Fill in NAs
+dat.02$mlf <- dat.02$mlf_00
+for (ii in 2:nrow(dat.02)) {
+  if (is.na(dat.02$mlf_00[ii])) {
+    dat.02$mlf[ii] <- dat.02$mlf[ii-1]
+  } else {
+    dat.02$mlf[ii] <- dat.02$mlf_00[ii]
+  }
+}
+
+# Transform date to yearmon class
+dat.02$date.zoo <- as.yearmon(dat.02$date, "%b%y")
+
+dat <- dat.02
+
+# Construct plot
+plot <- ggplot(data = dat, mapping = aes(x = date.zoo, y = mlf)) +
+  geom_line(color = "black", size = 1) +
+  scale_y_continuous(breaks = seq(0, 10, 0.5),
+                     labels = comma_format(big.mark = ".", decimal.mark = ",")) +
+  scale_x_yearmon(breaks = seq(from = min(dat$date.zoo), to = max(dat$date.zoo), by = 1),
+                  minor_breaks = seq(from = min(dat$date.zoo), to = max(dat$date.zoo), by = 1),
+                  format = "%b %y",
+                  expand = c(0, 0)) +
+  labs(title = "ECB Spitzenrefinanzierungsfazilität",
+       subtitle = paste0(c("(Letzter Beobachtungswert: "), as.Date(dat$date[length(dat$date)]), c(")")),
+       caption = "Quelle: EZB",
+       x = "", y = "Prozent") +
+  mod.theme.01
+
+# Return plot
+plot
+
+```
+
+</div>
+<!--..........................................................................-->
+
+<!--..........................................................................-->
+<button type="button" class="collapsible01"> *Letzte Werte* </button>
+<div class="cod_content">
+```{r, echo=FALSE, results=TRUE}
+
+tab <- tail(dat,10)[,c(1,11)]
+colnames(tab) <- c("Datum", "Wert")
+# tab
+
+tab %>%
+  kbl(format.args = list(decimal.mark = ',', big.mark = "."),
+      row.names = F) %>%
+  kable_styling()
+
+```
+</div>
+<!--..........................................................................-->
+
+```{r, include=FALSE}
+
+ggsave(plot=plot,width=10,height=6,dpi=300,filename = "./figures/EURO_MLF.pdf")
+ggsave(plot=plot,width=10,height=6,dpi=300,filename = "./figures/EURO_MLF.svg")
+
+```
+
+
+
+<!--..........................................................................-->
+<hr />
+
+<span style="text-decoration:underline; font-size:18pt;"> Hauptrefinanzierungssatz </span>
+
+<!--..........................................................................-->
+<button type="button" class="collapsible01"> *Show Code* </button>
+<div class="cod_content">
+```{r,results=FALSE,fig.show='hide',eval=FALSE}
+
+# Df with date sequence for merging 
+date.df <- data.frame(date=seq(as.Date("1999-01-01"), as.Date("2023-02-28"), by = "day")) 
+date.df <- data.frame(date=seq(as.Date("1999-01-01"), Sys.Date(), by = "day")) 
+
+# Load main refinancing operation (new)
+key <- "FM.B.U2.EUR.4F.KR.MRR_FR.LEV"
+dat.01 <- get_data(key)
+dat.01$date <- as.Date(dat.01$obstime)
+colnames(dat.01)[9] <- c("mro_00")
+
+# Load main refinancing operation (minimum bid rate - old)
+key <- "FM.B.U2.EUR.4F.KR.MRR_MBR.LEV"
+dat.02 <- get_data(key)
+dat.02$date <- as.Date(dat.02$obstime)
+colnames(dat.02)[9] <- c("mro_00")
+
+# Merge main refinancing operation (new)
+
+# Merge dates and observations
+dat.03 <- merge(date.df, dat.01, by = "date", all.x = TRUE)
+
+# Fill in NAs
+dat.03$mro <- dat.03$mro_00
+for (ii in 2:nrow(dat.03)) {
+  if (is.na(dat.03$mro_00[ii])) {
+    dat.03$mro[ii] <- dat.03$mro[ii-1]
+  } else {
+    dat.03$mro[ii] <- dat.03$mro_00[ii]
+  }
+}
+
+# Transform date to yearmon class
+dat.03$date.zoo <- as.yearmon(dat.03$date, "%b%y")
+
+# Merge main refinancing operation (old)
+
+# Merge dates and observations
+dat.04 <- merge(date.df, dat.02, by = "date", all.x = TRUE)
+
+# Fill in NAs
+dat.04$mro <- dat.04$mro_00
+for (ii in 2:nrow(dat.04)) {
+  if (is.na(dat.04$mro_00[ii])) {
+    dat.04$mro[ii] <- dat.04$mro[ii-1]
+  } else {
+    dat.04$mro[ii] <- dat.04$mro_00[ii]
+  }
+}
+
+# Transform date to yearmon class
+dat.04$date.zoo <- as.yearmon(dat.04$date, "%b%y")
+
+# Mege new and old
+
+ii <- which(dat.03$date <= as.Date("2000-06-28"))
+jj <- which(dat.04$date > as.Date("2000-06-28") & dat.04$date <= as.Date("2008-10-15"))
+kk <- which(dat.03$date > as.Date("2008-10-15"))
+
+dat <- rbind(dat.03[ii,], dat.04[jj,], dat.03[kk,]) 
+
+# Construct plot
+plot <- ggplot(data = dat, mapping = aes(x = date.zoo, y = mro)) +
+  geom_line(color = "black", size = 1) +
+  scale_y_continuous(breaks = seq(0, 10, 0.5),
+                     labels = comma_format(big.mark = ".", decimal.mark = ",")) +
+  scale_x_yearmon(breaks = seq(from = min(dat$date.zoo), to = max(dat$date.zoo), by = 1),
+                  minor_breaks = seq(from = min(dat$date.zoo), to = max(dat$date.zoo), by = 1),
+                  format = "%b %y",
+                  expand = c(0, 0)) +
+  labs(title = "ECB Hauptfinanzierungsfazilität",
+       subtitle = paste0(c("(Letzter Beobachtungswert: "), as.Date(dat$date[length(dat$date)]), c(")")),
+       caption = "Quelle: EZB",
+       x = "", y = "Prozent") +
+  mod.theme.01
+
+# Return plot
+plot
+
+```
+</div>
+<!--..........................................................................-->
+<button type="button" class="collapsible01"> *Show Output* </button>
+<div class="cod_content">
+```{r,echo=FALSE}
+
+# Df with date sequence for merging 
+date.df <- data.frame(date=seq(as.Date("1999-01-01"), Sys.Date(), by = "day")) 
+
+# Load main refinancing operation (new)
+key <- "FM.B.U2.EUR.4F.KR.MRR_FR.LEV"
+dat.01 <- get_data(key)
+dat.01$date <- as.Date(dat.01$obstime)
+colnames(dat.01)[9] <- c("mro_00")
+
+# Load main refinancing operation (minimum bid rate - old)
+key <- "FM.B.U2.EUR.4F.KR.MRR_MBR.LEV"
+dat.02 <- get_data(key)
+dat.02$date <- as.Date(dat.02$obstime)
+colnames(dat.02)[9] <- c("mro_00")
+
+# Merge main refinancing operation (new)
+
+# Merge dates and observations
+dat.03 <- merge(date.df, dat.01, by = "date", all.x = TRUE)
+
+# Fill in NAs
+dat.03$mro <- dat.03$mro_00
+for (ii in 2:nrow(dat.03)) {
+  if (is.na(dat.03$mro_00[ii])) {
+    dat.03$mro[ii] <- dat.03$mro[ii-1]
+  } else {
+    dat.03$mro[ii] <- dat.03$mro_00[ii]
+  }
+}
+
+# Transform date to yearmon class
+dat.03$date.zoo <- as.yearmon(dat.03$date, "%b%y")
+
+# Merge main refinancing operation (old)
+
+# Merge dates and observations
+dat.04 <- merge(date.df, dat.02, by = "date", all.x = TRUE)
+
+# Fill in NAs
+dat.04$mro <- dat.04$mro_00
+for (ii in 2:nrow(dat.04)) {
+  if (is.na(dat.04$mro_00[ii])) {
+    dat.04$mro[ii] <- dat.04$mro[ii-1]
+  } else {
+    dat.04$mro[ii] <- dat.04$mro_00[ii]
+  }
+}
+
+# Transform date to yearmon class
+dat.04$date.zoo <- as.yearmon(dat.04$date, "%b%y")
+
+# Mege new and old
+
+ii <- which(dat.03$date <= as.Date("2000-06-28"))
+jj <- which(dat.04$date > as.Date("2000-06-28") & dat.04$date <= as.Date("2008-10-15"))
+kk <- which(dat.03$date > as.Date("2008-10-15"))
+
+dat <- rbind(dat.03[ii,], dat.04[jj,], dat.03[kk,]) 
+
+# Construct plot
+plot <- ggplot(data = dat, mapping = aes(x = date.zoo, y = mro)) +
+  geom_line(color = "black", size = 1) +
+  scale_y_continuous(breaks = seq(0, 10, 0.5),
+                     labels = comma_format(big.mark = ".", decimal.mark = ",")) +
+  scale_x_yearmon(breaks = seq(from = min(dat$date.zoo), to = max(dat$date.zoo), by = 1),
+                  minor_breaks = seq(from = min(dat$date.zoo), to = max(dat$date.zoo), by = 1),
+                  format = "%b %y",
+                  expand = c(0, 0)) +
+  labs(title = "ECB Hauptfinanzierungsfazilität",
+       subtitle = paste0(c("(Letzter Beobachtungswert: "), as.Date(dat$date[length(dat$date)]), c(")")),
+       caption = "Quelle: EZB",
+       x = "", y = "Prozent") +
+  mod.theme.01
+
+# Return plot
+plot
+
+```
+
+</div>
+<!--..........................................................................-->
+
+<!--..........................................................................-->
+<button type="button" class="collapsible01"> *Letzte Werte* </button>
+<div class="cod_content">
+```{r, echo=FALSE, results=TRUE}
+
+tab <- tail(dat,10)[,c(1,11)]
+colnames(tab) <- c("Datum", "Wert")
+# tab
+
+tab %>%
+  kbl(format.args = list(decimal.mark = ',', big.mark = "."),
+      row.names = F) %>%
+  kable_styling()
+
+```
+</div>
+<!--..........................................................................-->
+
+```{r, include=FALSE}
+
+ggsave(plot=plot,width=10,height=6,dpi=300,filename = "./figures/EURO_MRO.pdf")
+ggsave(plot=plot,width=10,height=6,dpi=300,filename = "./figures/EURO_MRO.svg")
+
+```
+
+```{r, include=FALSE}
+
+# See: 
+# See: https://wikis.ec.europa.eu/display/EUROSTATHELP/API+Statistics+-+data+query
+# See: https://ec.europa.eu/eurostat/web/query-builder/getting-started/query-builder
+
+```
+
+
+
+<!--..........................................................................-->
+### Festverzinsliche Wertpapiere {.tabset .tabset-fade}
+
+<!--..........................................................................-->
+<hr />
+
+<span style="font-size:20pt;"> Festverzinsliche Wertpapiere </span>
+
+<!--..........................................................................-->
+<hr />
+
+<!--..........................................................................-->
+#### Risiken
+
+<!--..........................................................................-->
+<hr />
+
+<span style="font-size:18pt;"> Risiken </span>
+
+<!--..........................................................................-->
+<button type="button" class="collapsible01"> *Show Code* </button>
+<div class="cod_content">
+```{r,results=FALSE,fig.show='hide',eval=FALSE}
+
+# Data
+id.lis <- list(usa = "IRLTLT01USM156N", ger = "IRLTLT01DEM156N", ita = "IRLTLT01ITM156N")
+
+ser.lis <- lapply(id.lis,
+                  fredr,
+                  observation_start = as.Date("2000-01-01"),
+                  observation_end = Sys.Date(),
+                  units = "lin")
+
+# Combine series
+ser.dat <- rbind(ser.lis$usa, ser.lis$ger, ser.lis$ita)
+
+# Construct plot
+plot <- ggplot(data = ser.dat, mapping = aes(x = date, y = value, color = series_id)) +
+  geom_line(size = 1) +
+  scale_y_continuous(breaks = seq(-2, 10, 1)) +
+  scale_x_date(date_breaks = "1 years",
+               date_minor_breaks = "1 years",
+               date_labels = "%Y",
+               expand = c(0, 0)) +
+  scale_color_discrete(name = "", labels = c("DEU", "ITA", "USA")) +
+  labs(title = "Rendite Staatsanleihen (10 Jahre)",
+       subtitle = paste0(c("(Letzter Beobachtungswert: "), met.dat$observation_end, c(")")),
+       caption = "Quelle: OECD", 
+       x = "", y = "Prozent") +
+  mod.theme.01
+
+# Return plot
+plot
+
+```
+</div>
+<!--..........................................................................-->
+<button type="button" class="collapsible01"> *Show Output* </button>
+<div class="cod_content">
+```{r,echo=FALSE}
+
+# Data
+id.lis <- list(usa = "IRLTLT01USM156N", ger = "IRLTLT01DEM156N", ita = "IRLTLT01ITM156N")
+
+ser.lis <- lapply(id.lis,
+                  fredr,
+                  observation_start = as.Date("2000-01-01"),
+                  observation_end = Sys.Date(),
+                  units = "lin")
+
+# Combine series
+ser.dat <- rbind(ser.lis$usa, ser.lis$ger, ser.lis$ita)
+
+# Construct plot
+plot <- ggplot(data = ser.dat, mapping = aes(x = date, y = value, color = series_id)) +
+  geom_line(size = 1) +
+  scale_y_continuous(breaks = seq(-2, 10, 1)) +
+  scale_x_date(date_breaks = "1 years",
+               date_minor_breaks = "1 years",
+               date_labels = "%Y",
+               expand = c(0, 0)) +
+  scale_color_discrete(name = "", labels = c("DEU", "ITA", "USA")) +
+  labs(title = "Rendite Staatsanleihen (10 Jahre)",
+       subtitle = paste0(c("(Letzter Beobachtungswert: "), met.dat$observation_end, c(")")),
+       caption = "Quelle: OECD", 
+       x = "", y = "Prozent") +
+  mod.theme.01
+
+# Return plot
+plot
+
+```
+
+```{r, include=FALSE}
+
+# Check unit
+met.dat$units[1]
+
+```
+
+</div>
+<!--..........................................................................-->
+
+<!--..........................................................................-->
+<button type="button" class="collapsible01"> *Letzte Werte* </button>
+<div class="cod_content">
+```{r, echo=FALSE, results=TRUE}
+
+tab <- cbind(tail(ser.lis$ger, 10)[, c(1)],
+             round(tail(ser.lis$ger, 10)[,c(3)], 2),
+             round(tail(ser.lis$ita, 10)[,c(3)], 2),
+             round(tail(ser.lis$usa, 10)[,c(3)], 2))
+
+colnames(tab) <- c("Datum", "DEU", "ITA", "USA")
+
+tab %>%
+  kbl(format.args = list(decimal.mark = ',', big.mark = ".")) %>%
+  kable_styling()
+
+```
+</div>
+<!--..........................................................................-->
+
+```{r, include=FALSE}
+
+ggsave(plot = plot, width = 10, height = 6, dpi = 300, filename = "./figures/INT_RIS.pdf")
+ggsave(plot = plot, width = 10, height = 6, dpi = 300, filename = "./figures/INT_RIS.svg")
+
+```
+
+
+
+<!--..........................................................................-->
+<hr />
+
+<!--..........................................................................-->
+#### Laufzeiten
+
+<!--..........................................................................-->
+<hr />
+
+<span style="font-size:18pt;"> Laufzeiten </span>
+
+<!--..........................................................................-->
+<button type="button" class="collapsible01"> *Show Code* </button>
+<div class="cod_content">
+```{r,results=FALSE,fig.show='hide',eval=FALSE}
+
+# Data
+id.lis <- list(y01 = "DGS1", y05 = "DGS5", y10 = "DGS10")
+
+ser.lis <- lapply(id.lis,
+                  fredr,
+                  observation_start = as.Date("2000-01-01"),
+                  observation_end = Sys.Date(),
+                  units = "lin")
+
+# Combine series
+ser.dat <- rbind(ser.lis$y01, ser.lis$y05, ser.lis$y10)
+
+# Construct plot
+plot <- ggplot(data = ser.dat, mapping = aes(x = date, y = value, color = series_id)) +
+  geom_line(size = 1) +
+  scale_y_continuous(name = "Prozent", labels = comma) +
+  scale_x_date(date_breaks = "1 years",
+               date_minor_breaks = "1 years",
+               date_labels = "%Y",
+               expand = c(0, 0)) +
+  scale_color_discrete(name = "", labels = c("1 Jahr", "10 Jahr", "5 Jahr")) +
+  labs(title = "US Staatsanleihen (feste Laufzeit)",
+       caption = "Quelle: Board of Governors of the Federal Reserve System (US)", 
+       subtitle = paste0(c("(Letzter Beobachtungswert: "), met.dat$observation_end, c(")")),
+       x = "", y = "Percent") +
+  mod.theme.01
+
+# Return plot
+plot
+
+
+```
+</div>
+<!--..........................................................................-->
+<button type="button" class="collapsible01"> *Show Output* </button>
+<div class="cod_content">
+```{r,echo=FALSE}
+
+# Data
+id.lis <- list(y01 = "DGS1", y05 = "DGS5", y10 = "DGS10")
+
+ser.lis <- lapply(id.lis,
+                  fredr,
+                  observation_start = as.Date("2000-01-01"),
+                  observation_end = Sys.Date(),
+                  units = "lin")
+
+# Combine series
+ser.dat <- rbind(ser.lis$y01, ser.lis$y05, ser.lis$y10)
+
+# Construct plot
+plot <- ggplot(data = ser.dat, mapping = aes(x = date, y = value, color = series_id)) +
+  geom_line(size = 1) +
+  scale_y_continuous(name = "Prozent", labels = comma) +
+  scale_x_date(date_breaks = "1 years",
+               date_minor_breaks = "1 years",
+               date_labels = "%Y",
+               expand = c(0, 0)) +
+  scale_color_discrete(name = "", labels = c("1 Jahr", "10 Jahr", "5 Jahr")) +
+  labs(title = "US Staatsanleihen (feste Laufzeit)",
+       caption = "Quelle: Board of Governors of the Federal Reserve System (US)", 
+       subtitle = paste0(c("(Letzter Beobachtungswert: "), met.dat$observation_end, c(")")),
+       x = "", y = "Percent") +
+  mod.theme.01
+
+# Return plot
+plot
+
+```
+
+```{r, include=FALSE}
+
+# Check unit
+met.dat$units[1]
+
+```
+
+</div>
+<!--..........................................................................-->
+
+<!--..........................................................................-->
+<button type="button" class="collapsible01"> *Letzte Werte* </button>
+<div class="cod_content">
+```{r, echo=FALSE, results=TRUE}
+
+tab <- cbind(tail(ser.lis$y01, 10)[, c(1)],
+             round(tail(ser.lis$y01, 10)[,c(3)], 2),
+             round(tail(ser.lis$y05, 10)[,c(3)], 2),
+             round(tail(ser.lis$y10, 10)[,c(3)], 2))
+
+colnames(tab) <- c("Datum", "1 Jahr", "5 Jahre", "10 Jahre")
+
+tab %>%
+  kbl(format.args = list(decimal.mark = ',', big.mark = ".")) %>%
+  kable_styling()
+
+```
+</div>
+<!--..........................................................................-->
+
+```{r, include=FALSE}
+
+ggsave(plot=plot,width=10,height=6,dpi=300,filename = "./figures/INT_MAT.pdf")
+ggsave(plot=plot,width=10,height=6,dpi=300,filename = "./figures/INT_MAT.svg")
+
+```
+
+
+
+<!--..........................................................................-->
+### Wechsekurse {.tabset .tabset-fade}
+
+<!--..........................................................................-->
+<hr />
+
+<span style="font-size:20pt;"> Wechselkurse </span>
+
+<!--..........................................................................-->
+<hr />
+
+<!--..........................................................................-->
+#### EUR-USD
+
+<!--..........................................................................-->
+<hr />
+
+<span style="font-size:18pt;"> EUR-USD </span>
+
+<!--..........................................................................-->
+<button type="button" class="collapsible01"> *Show Code* </button>
+<div class="cod_content">
+```{r,results=FALSE,fig.show='hide',eval=FALSE}
+
+# Meta data
+met.dat <- fredr_series_search_text("DEXUSEU")
+
+# Data
+ser.dat <- fredr_series_observations(series_id = met.dat$id[1],
+                                     observation_start = as.Date("1999-12-31"),
+                                     units = "lin")
+
+# Construct plot
+plot <- ggplot(data = ser.dat, mapping = aes(x = date, y = value)) +
+  add_rec_shade(min(ser.dat$date), max(ser.dat$date), zoo.mon = FALSE, zoo.qtr = FALSE) +
+  geom_line(size = 1) +
+  scale_x_date(date_breaks = "1 years",
+               date_minor_breaks = "1 years",
+               date_labels = "%Y",
+               expand = c(0, 0)) +
+  scale_y_continuous(breaks = seq(0, 2, 0.1),
+                     labels = comma) + 
+  labs(title = "EUR-USD Kurs",
+       subtitle = paste0(c("(Letzter Beobachtungswert: "), met.dat$observation_end, c(")")),
+       caption = "Quelle: Board of Governors of the Federal Reserve System (US)", 
+       x = "", y = "USD für einen EUR") +
+  mod.theme.01
+
+# Return plot
+plot
+
+```
+</div>
+<!--..........................................................................-->
+<button type="button" class="collapsible01"> *Show Output* </button>
+<div class="cod_content">
+```{r,echo=FALSE}
+
+# Meta data
+met.dat <- fredr_series_search_text("DEXUSEU")
+
+# Data
+ser.dat <- fredr_series_observations(series_id = met.dat$id[1],
+                                     observation_start = as.Date("1999-12-31"),
+                                     units = "lin")
+
+# Construct plot
+plot <- ggplot(data = ser.dat, mapping = aes(x = date, y = value)) +
+  add_rec_shade(min(ser.dat$date), max(ser.dat$date), zoo.mon = FALSE, zoo.qtr = FALSE) +
+  geom_line(size = 1) +
+  scale_x_date(date_breaks = "1 years",
+               date_minor_breaks = "1 years",
+               date_labels = "%Y",
+               expand = c(0, 0)) +
+  scale_y_continuous(breaks = seq(0, 2, 0.1),
+                     labels = comma) + 
+  labs(title = "EUR-USD Kurs",
+       subtitle = paste0(c("(Letzter Beobachtungswert: "), met.dat$observation_end, c(")")),
+       caption = "Quelle: Board of Governors of the Federal Reserve System (US)", 
+       x = "", y = "USD für einen EUR") +
+  mod.theme.01
+
+# Return plot
+plot
+
+```
+
+```{r, include=FALSE}
+
+# Check unit
+met.dat$units[1]
+
+```
+
+</div>
+<!--..........................................................................-->
+
+<!--..........................................................................-->
+<button type="button" class="collapsible01"> *Letzte Werte* </button>
+<div class="cod_content">
+```{r, echo=FALSE, results=TRUE}
+
+tab <- cbind(tail(ser.dat, 10)[, c(1)],
+             round(tail(ser.dat, 10)[, c(3)], 2))
+
+colnames(tab) <- c("Datum", "Wert")
+
+tab %>%
+  kbl(format.args = list(decimal.mark = ',', big.mark = ".")) %>%
+  kable_styling()
+
+```
+</div>
+<!--..........................................................................-->
+
+```{r, include=FALSE}
+
+ggsave(plot = plot, width = 10, height = 6, dpi = 300, filename = "./figures/FX_EURUSD.pdf")
+ggsave(plot = plot, width = 10, height = 6, dpi = 300, filename = "./figures/FX_EURUSD.svg")
+
+```
+
+<!--..........................................................................-->
+#### USD-JPY
+
+<!--..........................................................................-->
+<hr />
+
+<span style="font-size:18pt;"> USD-JPY </span>
+
+<!--..........................................................................-->
+<button type="button" class="collapsible01"> *Show Code* </button>
+<div class="cod_content">
+```{r,results=FALSE,fig.show='hide',eval=FALSE}
+
+# Meta data
+met.dat <- fredr_series_search_text("DEXJPUS")
+
+# Data
+ser.dat <- fredr_series_observations(series_id = met.dat$id[1],
+                                     observation_start = as.Date("1999-12-31"),
+                                     units = "lin")
+
+# Construct plot
+plot <- ggplot(data = ser.dat, mapping = aes(x = date, y = value)) +
+  add_rec_shade(min(ser.dat$date), max(ser.dat$date), zoo.mon = FALSE, zoo.qtr = FALSE) +
+  geom_line(size = 1) +
+  scale_x_date(date_breaks = "1 years",
+               date_minor_breaks = "1 years",
+               date_labels = "%Y",
+               expand = c(0, 0)) +
+  scale_y_continuous(breaks = seq(0, 200, 5),
+                     labels = comma) + 
+  labs(title = "USD-JPY Kurs",
+       subtitle = paste0(c("(Letzter Beobachtungswert: "), met.dat$observation_end, c(")")),
+       caption = "Quelle: Board of Governors of the Federal Reserve System (US)", 
+       x = "", y = "JPY für einen USD") +
+  mod.theme.01
+
+# Return plot
+plot
+
+```
+</div>
+<!--..........................................................................-->
+<button type="button" class="collapsible01"> *Show Output* </button>
+<div class="cod_content">
+```{r,echo=FALSE}
+
+# Meta data
+met.dat <- fredr_series_search_text("DEXJPUS")
+
+# Data
+ser.dat <- fredr_series_observations(series_id = met.dat$id[1],
+                                     observation_start = as.Date("1999-12-31"),
+                                     units = "lin")
+
+# Construct plot
+plot <- ggplot(data = ser.dat, mapping = aes(x = date, y = value)) +
+  add_rec_shade(min(ser.dat$date), max(ser.dat$date), zoo.mon = FALSE, zoo.qtr = FALSE) +
+  geom_line(size = 1) +
+  scale_x_date(date_breaks = "1 years",
+               date_minor_breaks = "1 years",
+               date_labels = "%Y",
+               expand = c(0, 0)) +
+  scale_y_continuous(breaks = seq(0, 200, 5),
+                     labels = comma) + 
+  labs(title = "USD-JPY Kurs",
+       subtitle = paste0(c("(Letzter Beobachtungswert: "), met.dat$observation_end, c(")")),
+       caption = "Quelle: Board of Governors of the Federal Reserve System (US)", 
+       x = "", y = "JPY für einen USD") +
+  mod.theme.01
+
+# Return plot
+plot
+
+```
+
+```{r, include=FALSE}
+
+# Check unit
+met.dat$units[1]
+
+```
+
+</div>
+<!--..........................................................................-->
+
+<!--..........................................................................-->
+<button type="button" class="collapsible01"> *Letzte Werte* </button>
+<div class="cod_content">
+```{r, echo=FALSE, results=TRUE}
+
+tab <- cbind(tail(ser.dat, 10)[, c(1)],
+             round(tail(ser.dat, 10)[, c(3)], 2))
+
+colnames(tab) <- c("Datum", "Wert")
+
+tab %>%
+  kbl(format.args = list(decimal.mark = ',', big.mark = ".")) %>%
+  kable_styling()
+
+```
+</div>
+<!--..........................................................................-->
+
+```{r, include=FALSE}
+
+ggsave(plot = plot, width = 10, height = 6, dpi = 300, filename = "./figures/FX_USDJPY.pdf")
+ggsave(plot = plot, width = 10, height = 6, dpi = 300, filename = "./figures/FX_USDJPY.svg")
+
+```
+
+<!--..........................................................................-->
+#### UKP-USD
+
+<!--..........................................................................-->
+<hr />
+
+<span style="font-size:18pt;"> UKP-USD </span>
+
+<!--..........................................................................-->
+<button type="button" class="collapsible01"> *Show Code* </button>
+<div class="cod_content">
+```{r,results=FALSE,fig.show='hide',eval=FALSE}
+
+# Meta data
+met.dat <- fredr_series_search_text("DEXUSUK")
+
+# Data
+ser.dat <- fredr_series_observations(series_id = met.dat$id[1],
+                                     observation_start = as.Date("1999-12-31"),
+                                     units = "lin")
+
+# Construct plot
+plot <- ggplot(data = ser.dat, mapping = aes(x = date, y = value)) +
+  add_rec_shade(min(ser.dat$date), max(ser.dat$date), zoo.mon = FALSE, zoo.qtr = FALSE) +
+  geom_line(size = 1) +
+  scale_x_date(date_breaks = "1 years",
+               date_minor_breaks = "1 years",
+               date_labels = "%Y",
+               expand = c(0, 0)) +
+  scale_y_continuous(breaks = seq(0, 3, 0.05),
+                     labels = comma) + 
+  labs(title = "EUR-USD Kurs",
+       subtitle = paste0(c("(Letzter Beobachtungswert: "), met.dat$observation_end, c(")")),
+       caption = "Quelle: Board of Governors of the Federal Reserve System (US)", 
+       x = "", y = "USD für einen UKP") +
+  mod.theme.01
+
+# Return plot
+plot
+
+```
+</div>
+<!--..........................................................................-->
+<button type="button" class="collapsible01"> *Show Output* </button>
+<div class="cod_content">
+```{r,echo=FALSE}
+
+# Meta data
+met.dat <- fredr_series_search_text("DEXUSUK")
+
+# Data
+ser.dat <- fredr_series_observations(series_id = met.dat$id[1],
+                                     observation_start = as.Date("1999-12-31"),
+                                     units = "lin")
+
+# Construct plot
+plot <- ggplot(data = ser.dat, mapping = aes(x = date, y = value)) +
+  add_rec_shade(min(ser.dat$date), max(ser.dat$date), zoo.mon = FALSE, zoo.qtr = FALSE) +
+  geom_line(size = 1) +
+  scale_x_date(date_breaks = "1 years",
+               date_minor_breaks = "1 years",
+               date_labels = "%Y",
+               expand = c(0, 0)) +
+  scale_y_continuous(breaks = seq(0, 3, 0.05),
+                     labels = comma) + 
+  labs(title = "EUR-USD Kurs",
+       subtitle = paste0(c("(Letzter Beobachtungswert: "), met.dat$observation_end, c(")")),
+       caption = "Quelle: Board of Governors of the Federal Reserve System (US)", 
+       x = "", y = "USD für einen UKP") +
+  mod.theme.01
+
+# Return plot
+plot
+
+```
+
+```{r, include=FALSE}
+
+# Check unit
+met.dat$units[1]
+
+```
+
+</div>
+<!--..........................................................................-->
+
+<!--..........................................................................-->
+<button type="button" class="collapsible01"> *Letzte Werte* </button>
+<div class="cod_content">
+```{r, echo=FALSE, results=TRUE}
+
+tab <- cbind(tail(ser.dat, 10)[, c(1)],
+             round(tail(ser.dat, 10)[, c(3)], 2))
+
+colnames(tab) <- c("Datum", "Wert")
+
+tab %>%
+  kbl(format.args = list(decimal.mark = ',', big.mark = ".")) %>%
+  kable_styling()
+
+```
+</div>
+<!--..........................................................................-->
+
+```{r, include=FALSE}
+
+ggsave(plot = plot, width = 10, height = 6, dpi = 300, filename = "./figures/FX_UKPUSD.pdf")
+ggsave(plot = plot, width = 10, height = 6, dpi = 300, filename = "./figures/FX_UKPUSD.svg")
+
+```
+
+
+
+#
+
+<!--..........................................................................-->
+<hr />
+
+<p class="back01">
+[Zurück zur *Startdatei*](./index.html)
+</p>
+
+<!--..........................................................................-->
+<hr />
+
+
+
+<!--..........................................................................--> 
+<!-- THIS IS THE END --> 
+
+<!-- Include bottom -->
+
+````{=html}
+```{r, echo=FALSE, results='asis'}
+xfun::file_string('bottom_01.html')
+```
+````
