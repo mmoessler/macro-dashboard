@@ -31,31 +31,7 @@ options(scipen=1)
 
 ```
 
-```{r, include=FALSE}
 
-library(curl)
-
-library(magrittr)
-library(dplyr)
-
-library(rvest)
-
-```
-
-```{r set-up, include=FALSE}
-
-# Selection code chunks to evaluate ----
-ifo.load.01.eval <- FALSE
-ifo.load.02.eval <- TRUE
-
-eu.load.01.eval <- FALSE
-eu.load.02.eval <- TRUE
-
-ism.load.01.eval <- TRUE
-
-gfk.load.01.eval <- TRUE
-
-```
 
 <!--..........................................................................-->
 <!--..........................................................................-->
@@ -390,112 +366,6 @@ Der Ifo Geschäftsklima Index ist eine der wichtigsten Messzahlen um die Stimmun
 Ergebnisse
 </p>
 
-```{r, include=FALSE}
-
-if(ifo.load.01.eval) {
-  
-  # setwd("C:/Users/Markus/Dropbox/Lehre/HfWU/Makrooekonomik2/Makrooekonomik2_Allgemein/HfWU_Makro02_Html")
-
-  ifo_load_fun <- function(per.01){
-    
-    # # inputs
-    # per.01 <- c("202207")
-    # # per.01 <- per.vec[ii]
-    
-    per.sub.01 <- substring(per.01, first = 1, last = 4)
-    per.sub.02 <- substring(per.01, first = 5, last = 6)
-    
-    per.02 <- paste0(substr(per.01, start = 1, stop = 4), "-", substr(per.01, start = 5, stop = 6) )
-    
-    # url <- paste0("https://www.ifo.de/sites/default/files/secure/umfragen-gsk/ku-",per.01,"/ku-",per.02,"-pm-geschaeftsklima-DT.pdf")
-    # url <- paste0("https://www.ifo.de/sites/default/files/",per.02,"/ku-",per.02,"-pm-geschaeftsklima-DT_3.pdf")
-    # url <- paste0("https://www.ifo.de/sites/default/files/2022-06/ku-2022-06-pm-geschaeftsklima-DT_3.pdf")
-    url <- paste0("https://www.ifo.de/sites/default/files/secure/umfragen-gsk/ku-",per.01,"/ku-",per.02,"-pm-geschaeftsklima-DT.pdf") # update: 25.10.2022
-    
-    # print(url)
-    destfile <- paste0("./reports/ifo_index.pdf")
-    # print(destfile)
-    
-    curl::curl_download(url, destfile)
-  
-  }
-  
-  year <- "2023"
-  per.vec <- paste(year,sprintf("%02d", 1:12),sep = "")
-  
-  ii <- 12
-  while(ii != 0) {
-    
-    continue <- FALSE
-    tryCatch( ifo_load_fun(per.vec[ii]),
-              error = function(e) { continue <<- TRUE } )
-    if(continue==TRUE){
-      ii <- ii - 1
-    } else {
-      # stop(paste0("current month:",ii))
-      break
-    }
-  
-  }
-  
-  paste0("current month: ",ii)
-  
-}
-
-if(ifo.load.02.eval) {
-  
-  ifo_scrap_fun <- function(destfile = c("./reports/ifo_index.pdf")) {
-  
-    # destfile = c("./reports/ifo_index.pdf")
-    
-    #..................................................
-    # 1st web scrapping
-    url.01 <- read_html("https://www.ifo.de/umfrage/ifo-geschaeftsklima-deutschland")
-    class(url.01)
-    
-    #..................................................
-    # 1st a-href's
-    a.href.01 <- url.01 %>%
-      html_elements("a") %>%
-      html_attr("href")
-    
-    ii <- grep(c("fakten"), a.href.01)[1] # finds the first links to /fakten
-    a.href.01[ii] # check
-    
-    #..................................................
-    # 2nd web scrapping
-    # paste(c("https://www.ifo.de"), lin[ii], sep = "")
-    
-    url.02 <- paste(c("https://www.ifo.de"), a.href.01[ii], sep = "") %>%
-      read_html()
-    
-    # c("https://www.ifo.de/fakten/2022-10-25/ifo-geschaeftsklima-weiter-schlecht-oktober-2022")
-    
-    #..................................................
-    # 2nd a-href's
-    a.href.02 <- url.02 %>%
-      html_elements("a") %>%
-      html_attr("href")
-    
-    a.href.02
-    
-    ii <- grep(c("pdf"), a.href.02)[1] # finds the first links to .pdf
-    a.href.02[ii] # check
-    
-    # destfile <- c("ifo.pdf")
-    
-    # download report
-    paste(c("https://www.ifo.de"), a.href.02[ii], sep = "") %>% 
-      curl::curl_download(destfile)
-  
-  }
-
-  ifo_scrap_fun()
-  
-}
-
-```
-
 <!--..........................................................................--> 
 <button type="button" class="collapsible02"> Aktuelle Veröffentlichung </button>
 <div class="col_content">
@@ -571,112 +441,6 @@ Außerdem wird als weiterer Teil des generellen "Wirtschaftsvertrauens" im Rahme
 Ergebnisse
 </p>
 
-```{r, include=FALSE}
-
-if(eu.load.01.eval) {
-  
-  # setwd("C:/Users/Markus/Dropbox/Lehre/HfWU/Makrooekonomik2/Makrooekonomik2_Allgemein/HfWU_Makro02_Html")
-
-  eu_load_fun <- function(per.01){
-  
-    # # inputs
-    # per.01 <- c("202203")
-    # per.01 <- per.vec[ii]
-    
-    
-    
-    per.01 <- paste0(substr(per.01, start = 1, stop = 4), "_", substr(per.01, start = 5, stop = 6) )
-    
-    url <- paste0("https://ec.europa.eu/info/sites/default/files/bcs_",per.01,"_en.pdf")
-    # print(url)
-    destfile <- paste0("./reports/eu_sentiment.pdf")
-    # print(destfile)
-    
-    curl::curl_download(url, destfile)
-  
-  }
-  
-  year <- "2023"
-  per.vec <- paste(year,sprintf("%02d", 1:12),sep = "")
-  
-  ii <- 12
-  # while(ii != 0) {
-  #   
-  #   continue <- FALSE
-  #   tryCatch( eu_load_fun(per.vec[ii]),
-  #             error = function(e) { continue <<- TRUE })
-  #   if(continue==TRUE){
-  #     ii <- ii - 1
-  #   } else {
-  #     # stop(paste0("current month:",ii))
-  #     break
-  #   }
-  # 
-  # }
-  
-  paste0("current month: ",ii)
-  
-  # 25.10.2022: THIS IS NOT WORKING ANYMORE!
-  
-  # USE_MANUAL
-  
-  # Link: 
-
-}
-
-if(eu.load.02.eval) {
-  
-  eu_scrap_fun <- function(destfile = "./reports/eu_sentiment.pdf", year = 2023) {
-  
-    # library(rvest)
-    
-    #..................................................
-    # 1st web scrapping
-    url.01 <- read_html("https://economy-finance.ec.europa.eu/economic-forecast-and-surveys/business-and-consumer-surveys/download-business-and-consumer-survey-data/press-releases_en")
-    class(url.01)
-    
-    #..................................................
-    # 1st a-href's
-    a.href.01 <- url.01 %>%
-      html_elements("a") %>%
-      html_attr("href")
-    
-    a.href.01
-    # filename=bcs_2022_10_en.pdf
-    
-    
-    # year <- "2023"
-    per.vec <- paste("filename=bcs", year, sprintf("%02d", 1:12), "en", sep = "_")
-    per.vec
-    
-    lin.vec.01 <- rep(NA, 12)
-    for (ii in 1:12) {
-      
-      jj <- grep(per.vec[ii], a.href.01)[1]
-      lin.vec.01[ii] <- a.href.01[jj]
-      
-    }
-    
-    lin.vec.01
-    lin.vec.02 <- lin.vec.01[!is.na(lin.vec.01)]
-    lin.vec.02
-    
-    lin.vec <- lin.vec.02[length(lin.vec.02)] # the current release is at the bottom
-    
-    # destfile <- c("./reports/eu_sentiment.pdf")
-    
-    # download report
-    paste(c("https://economy-finance.ec.europa.eu"), lin.vec, sep = "") %>% 
-      curl::curl_download(destfile)
-  
-  }
-
-  eu_scrap_fun()
-  
-}
-
-```
-
 <!--..........................................................................--> 
 <button type="button" class="collapsible02"> Aktuelle Veröffentlichung </button>
 <div class="col_content">
@@ -747,90 +511,6 @@ Dazu gibt es zwei Umfragen, eine im verarbeitenden Gewerbe sowie eine im Dienstl
 <p class="head01">
 Ergebnisse
 </p>
-
-```{r, include=FALSE}
-
-if(ism.load.01.eval) {
-  
-  # setwd("C:/Users/Markus/Dropbox/Lehre/HfWU/Makrooekonomik2/Makrooekonomik2_Allgemein/HfWU_Makro02_Html")
-
-  # Manufacturing
-  ism_man_load_fun <- function(per.01){
-    
-    # per.01 <- c("202205")
-  
-    
-    
-    url <- paste0("https://www.ismworld.org/globalassets/pub/research-and-surveys/rob/pmi/rob",per.01,"pmi.pdf")
-  
-    # print(url)
-    destfile <- paste0("./reports/ism_man_index.pdf")
-    # print(destfile)
-    
-    curl::curl_download(url, destfile)
-  
-  }
-  
-  year <- "2023"
-  per.vec <- paste(year,sprintf("%02d", 1:12),sep = "")
-  
-  ii <- 12
-  while(ii != 0) {
-    
-    continue <- FALSE
-    tryCatch( ism_man_load_fun(per.vec[ii]),
-              error = function(e) { continue <<- TRUE })
-    if(continue==TRUE){
-      ii <- ii - 1
-    } else {
-      # stop(paste0("current month:",ii))
-      break
-    }
-  
-  }
-  
-  paste0("current month:",ii)
-  
-  # Service
-  ism_ser_load_fun <- function(per.01){
-    
-    # per.01 <- c("202205")
-  
-    
-    
-    url <- paste0("https://www.ismworld.org/globalassets/pub/research-and-surveys/rob/nmi/rob",per.01,"svcs.pdf")
-    
-    # print(url)
-    destfile <- paste0("./reports/ism_ser_index.pdf")
-    # print(destfile)
-    
-    curl::curl_download(url, destfile)
-  
-  }
-  
-  year <- "2023"
-  per.vec <- paste(year,sprintf("%02d", 1:12),sep = "")
-  
-  ii <- 12
-  while(ii != 0) {
-    
-    continue <- FALSE
-    tryCatch( ism_ser_load_fun(per.vec[ii]),
-              error = function(e) { continue <<- TRUE })
-    if(continue==TRUE){
-      ii <- ii - 1
-    } else {
-      # stop(paste0("current month:",ii))
-      break
-    }
-  
-  }
-  
-  paste0("current month:",ii)
-
-}
-
-```
 
 <!--..........................................................................--> 
 <button type="button" class="collapsible02"> Aktuelle Veröffentlichung: Verarbeitendes Gewerbe </button>
@@ -930,60 +610,6 @@ Das GfK Konsumentenvertrauen ist eine der wichtigsten Messzahlen um die Simmung 
 <p class="head01">
 Ergebnisse
 </p>
-
-```{r, include=FALSE}
-
-if(gfk.load.01.eval) {
-  
-  # setwd("C:/Users/Markus/Dropbox/Lehre/HfWU/Makrooekonomik2/Makrooekonomik2_Allgemein/HfWU_Makro02_Html")
-
-  gfk_load_fun <- function(per.01){
-    
-    # inputs
-    # per.01 <- c("20220628")
-    # per.01 <- per.vec[ii]
-    
-    
-    
-    # per.02 <- paste0(substr(per.01, start = 1, stop = 4), "-", substr(per.01, start = 5, stop = 6) )
-    
-    url <- paste0("https://www.gfk.com/hubfs/website/editorial_ui_pdfs/",per.01,"_PM_Konsumklima_Deutschland_dfin.pdf")
-    # print(url)
-    destfile <- paste0("./reports/gfk_index.pdf")
-    # print(destfile)
-    
-    curl::curl_download(url, destfile)
-  
-  }
-
-  year <- "2023"
-  per.vec <- paste(year,sprintf("%02d", 1:12),sep = "")
-  day <- c("20","21","22","23","24","25","26","27","28","29","30","31")
-  
-  tmp <- expand.grid(day,per.vec)
-  per.vec <- paste(tmp[,2],tmp[,1],sep="")
-  per.vec
-  
-  ii <- 144
-  while(ii != 0) {
-    
-    continue <- FALSE
-    tryCatch( gfk_load_fun(per.vec[ii]),
-              error = function(e) { continue <<- TRUE })
-    if(continue==TRUE){
-      ii <- ii - 1
-    } else {
-      # stop(paste0("current month:",ii))
-      break
-    }
-  
-  }
-  
-  paste0("current month:",ii)
-
-}
-
-```
 
 <!--..........................................................................--> 
 <button type="button" class="collapsible02"> Aktuelle Veröffentlichung </button>
@@ -1153,8 +779,7 @@ tab %>%
 ```{r,include=FALSE,purl=TRUE}
 
 # Save plot
-ggsave(plot = plot, width = 8, height = 6, dpi = 300, filename = "./Figures/UMCSENT_lev.pdf")
-ggsave(plot = plot, width = 8, height = 6, dpi = 300, filename = "./Figures/UMCSENT_lev.svg")
+ggsave(plot = plot, width = 8, height = 6, dpi = 300, filename = "./figures/UMCSENT_lev.pdf")
 
 ```
 
@@ -1221,17 +846,15 @@ ggsave(plot = plot, width = 8, height = 6, dpi = 300, filename = "./Figures/UMCS
 <!--..........................................................................-->
 <button type="button" class="collapsible01"> *Show Code* </button>
 <div class="cod_content">
-```{r,results=FALSE,fig.show='hide',eval=FALSE, eval=FALSE}
+```{r,results=FALSE,fig.show='hide',eval=FALSE}
+
+source("./r-scripts/r_eurostat_helper_functions.R")
+
+# Url
+url <- "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/sts_inpr_m?format=JSON&geo=DE&geo=FR&geo=EA19&freq=M&unit=I15&s_adj=SCA&indic_bt=PROD&nace_r2=B-D"
 
 # Data
-ser.dat <- get_eurostat(id = "sts_inpr_m",
-                        filters = list(precision = c(1),
-                                       geo = c("DE","FR","EA19"),
-                                       unit = c("I15"),
-                                       s_adj = c("SCA"),
-                                       indic_bt = c("PROD"), # volume index of production
-                                       sinceTimePeriod = c("2015M01"),
-                                       nace_r2 = c("B-D")))
+ser.dat <- get_eurostat_xx(url = url)
 
 # Transform date to yearmon class
 ser.dat$date.zoo <- as.yearmon(ser.dat$time, "%b%y")
@@ -1259,17 +882,15 @@ plot
 <!--..........................................................................-->
 <button type="button" class="collapsible01"> *Show Output* </button>
 <div class="cod_content">
-```{r,echo=FALSE, eval=FALSE}
+```{r,echo=FALSE}
+
+source("./r-scripts/r_eurostat_helper_functions.R")
+
+# Url
+url <- "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/sts_inpr_m?format=JSON&geo=DE&geo=FR&geo=EA19&freq=M&unit=I15&s_adj=SCA&indic_bt=PROD&nace_r2=B-D"
 
 # Data
-ser.dat <- get_eurostat(id = "sts_inpr_m",
-                        filters = list(precision = c(1),
-                                       geo = c("DE","FR","EA19"),
-                                       unit = c("I15"),
-                                       s_adj = c("SCA"),
-                                       indic_bt = c("PROD"), # volume index of production
-                                       sinceTimePeriod = c("2015M01"),
-                                       nace_r2 = c("B-D")))
+ser.dat <- get_eurostat_xx(url = url)
 
 # Transform date to yearmon class
 ser.dat$date.zoo <- as.yearmon(ser.dat$time, "%b%y")
@@ -1300,11 +921,11 @@ plot
 <!--..........................................................................-->
 <button type="button" class="collapsible01"> *Letzte Werte* </button>
 <div class="col_content">
-```{r, echo=FALSE, results=TRUE, eval=FALSE}
+```{r, echo=FALSE, results=TRUE}
 
-tab <- cbind(tail(ser.dat[ser.dat$geo %in% c("DE"),c(6,7)],10),
-             tail(ser.dat[ser.dat$geo %in% c("FR"),c(7)],10),
-             tail(ser.dat[ser.dat$geo %in% c("EA19"),c(7)],10))
+tab <- cbind(tail(ser.dat[ser.dat$geo %in% c("DE"),c(7,8)],10),
+             tail(ser.dat[ser.dat$geo %in% c("FR"),c(8)],10),
+             tail(ser.dat[ser.dat$geo %in% c("EA19"),c(8)],10))
 
 colnames(tab) <- c("Zeitraum", "DEU", "FRA", "EURO-19")
 
@@ -1321,81 +942,9 @@ tab %>%
 ```{r,include=FALSE, eval=FALSE}
 
 # Save plot
-ggsave(plot=plot, width=8, height=6, dpi=300, filename = "./Figures/EU_INDPRO_lev.pdf")
+ggsave(plot=plot, width=8, height=6, dpi=300, filename = "./figures/EU_INDPRO_lev.pdf")
 
 ```
-
-
-
-```{r}
-
-type <- c("code")
-stringsAsFactors <- FALSE
-
-url <- "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/sts_inpr_m?format=JSON&geo=DE&geo=FR&geo=EA19&freq=M&unit=I15&s_adj=SCA&indic_bt=PROD&nace_r2=B-D"
-url
-
-resp <- httr::RETRY("GET", url, terminate_on = c(404))
-
-jdat <- jsonlite::fromJSON(url)
-
-dims <- jdat$dimension
-ids <- jdat$id
-dims_list <- lapply(dims[rev(ids)], function(x) {
-  y <- x$category$label
-  if (type[1] == "label") {
-    y <- unlist(y, use.names = FALSE)
-  } else if (type[1] == "code") {
-    y <- names(unlist(y))
-  } else if (type[1] == "both") {
-    y <- unlist(y)
-  } else {
-    stop("Invalid type ", type)
-  }
-})
-variables <- expand.grid(dims_list, KEEP.OUT.ATTRS = FALSE, stringsAsFactors = stringsAsFactors)
-dat <- as.data.frame(variables[rev(names(variables))])
-vals <- unlist(jdat$value, use.names = FALSE)
-dat$values <- rep(NA, nrow(dat))
-inds <- 1 + as.numeric(names(jdat$value))
-
-dat$values[inds] <- vals
-data <- tibble::as_tibble(dat)
-data
-
-
-data$time <- as.Date(as.yearmon(data$time))
-
-ser.dat <- subset(data, time %in% seq(as.Date("2015-01-01"), Sys.Date(), by = "month"))
-head(ser.dat)
-
-
-# Transform date to yearmon class
-ser.dat$date.zoo <- as.yearmon(ser.dat$time, "%b%y")
-
-# Construct plot
-plot <- ggplot(data = ser.dat, mapping = aes(x = date.zoo, y = values, color = geo)) +
-  geom_line(size = 1) +
-  scale_x_yearmon(breaks = seq(from = min(ser.dat$date.zoo), to = max(ser.dat$date.zoo), by = 3/12),
-                  minor_breaks = seq(from = min(ser.dat$date.zoo), to = max(ser.dat$date.zoo), by = 1/12),
-                  format = "%b %y",
-                  expand = c(0, 0)) +
-  scale_y_continuous(breaks = seq(0, 200, 5)) + 
-  scale_color_discrete(name = "", labels = c("DEU","EURO-19","FRA")) +
-  labs(title = "Industrieproduktion (saison- und kalenderbereinigt)",
-       subtitle = paste0(c("(Letzter Beobachtungswert: "), as.yearmon(as.Date(ser.dat$time[length(ser.dat$time)])), c(")")),
-       caption = "Quelle: Eurostat", 
-       x = "", y = "Mengenindex (2015=100)") +
-  mod.theme.01
-
-# Return plot
-plot
-
-ggsave(plot=plot, width=8, height=6, dpi=300, filename = "./Figures/EU_INDPRO_lev.svg")
-
-```
-
-
 
 <!--..........................................................................-->
 <hr />
@@ -1546,8 +1095,7 @@ tab %>%
 ```{r,include=FALSE,purl=TRUE}
 
 # Save plot
-ggsave(plot = plot, width = 8, height = 6, dpi = 300, filename = "./Figures/US_INDPRO_lev.pdf")
-ggsave(plot = plot, width = 8, height = 6, dpi = 300, filename = "./Figures/US_INDPRO_lev.svg")
+ggsave(plot = plot, width = 8, height = 6, dpi = 300, filename = "./figures/US_INDPRO_lev.pdf")
 
 ```
 
@@ -1605,162 +1153,15 @@ ggsave(plot = plot, width = 8, height = 6, dpi = 300, filename = "./Figures/US_I
 <!--..........................................................................-->
 <button type="button" class="collapsible01"> *Show Code* </button>
 <div class="cod_content">
-```{r,results=FALSE,fig.show='hide', eval=FALSE}
+```{r,results=FALSE,fig.show='hide',eval=FALSE}
+
+source("./r-scripts/r_eurostat_helper_functions.R")
+
+# Url
+url <- "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/sts_inpr_m?format=JSON&geo=DE&geo=FR&geo=EA19&freq=M&unit=I15&s_adj=SCA&indic_bt=PROD&nace_r2=B-D"
 
 # Data
-ser.dat <- get_eurostat(id = "sts_trtu_m",
-                        filters=list(precision = c(1),
-                                     geo = c("DE","FR","EA19"),
-                                     unit = c("I15"),
-                                     s_adj = c("SCA"),
-                                     indic_bt = c("TOVV"), # index of deflated turnover
-                                     sinceTimePeriod = c("2015M01"),
-                                     nace_r2 = c("G47"))) # retail trade, except of motor vehicles and motor cycles
-
-# Transform date to yearmon class
-ser.dat$date.zoo <- as.yearmon(ser.dat$time,"%b%y")
-
-# Omit NA
-# ser.dat <- na.omit(ser.dat)
-
-# Construct plot
-plot <- ggplot(data = ser.dat, mapping = aes(x = date.zoo, y = values, color = geo)) +
-  geom_line(size = 1) +
-  scale_x_yearmon(breaks = seq(from = min(ser.dat$date.zoo), to = max(ser.dat$date.zoo), by = 3/12),
-                  minor_breaks = seq(from = min(ser.dat$date.zoo), to = max(ser.dat$date.zoo), by = 1/12),
-                  format = "%b %y",
-                  expand = c(0, 0)) +
-  scale_y_continuous(breaks = seq(0, 200, 10)) + 
-  scale_color_discrete(name = "", labels = c("DEU","EURO-19","FRA")) +
-  labs(title = "Einzelhandelsumsätze (saison-, kalender- und preisbereinigt)",
-       subtitle = paste0(c("(Letzter Beobachtungswert: "), as.yearmon(as.Date(ser.dat$time[length(ser.dat$time)])), c(")")),
-       caption = "Quelle: Eurostat", 
-       x = "", y = "Index 2015=100") +
-  mod.theme.01
-
-# Print plot
-plot
-
-```
-</div>
-<!--..........................................................................-->
-<button type="button" class="collapsible01"> *Show Output* </button>
-<div class="cod_content">
-```{r,echo=FALSE, eval=FALSE}
-
-# Data
-ser.dat <- get_eurostat(id = "sts_trtu_m",
-                        filters=list(precision = c(1),
-                                     geo = c("DE","FR","EA19"),
-                                     unit = c("I15"),
-                                     s_adj = c("SCA"),
-                                     indic_bt = c("TOVV"), # index of deflated turnover
-                                     sinceTimePeriod = c("2015M01"),
-                                     nace_r2 = c("G47"))) # retail trade, except of motor vehicles and motor cycles
-
-# Transform date to yearmon class
-ser.dat$date.zoo <- as.yearmon(ser.dat$time,"%b%y")
-
-# Omit NA
-# ser.dat <- na.omit(ser.dat)
-
-# Construct plot
-plot <- ggplot(data = ser.dat, mapping = aes(x = date.zoo, y = values, color = geo)) +
-  geom_line(size = 1) +
-  scale_x_yearmon(breaks = seq(from = min(ser.dat$date.zoo), to = max(ser.dat$date.zoo), by = 3/12),
-                  minor_breaks = seq(from = min(ser.dat$date.zoo), to = max(ser.dat$date.zoo), by = 1/12),
-                  format = "%b %y",
-                  expand = c(0, 0)) +
-  scale_y_continuous(breaks = seq(0, 200, 10)) + 
-  scale_color_discrete(name = "", labels = c("DEU","EURO-19","FRA")) +
-  labs(title = "Einzelhandelsumsätze (saison-, kalender- und preisbereinigt)",
-       subtitle = paste0(c("(Letzter Beobachtungswert: "), as.yearmon(as.Date(ser.dat$time[length(ser.dat$time)])), c(")")),
-       caption = "Quelle: Eurostat", 
-       x = "", y = "Index 2015=100") +
-  mod.theme.01
-
-# Print plot
-plot
-
-```
-
-</div>
-<!--..........................................................................-->
-
-<!--..........................................................................-->
-<button type="button" class="collapsible01"> *Letzte Werte* </button>
-<div class="col_content">
-```{r, echo=FALSE, results=TRUE, eval=FALSE}
-
-tab <- cbind(tail(ser.dat[ser.dat$geo %in% c("DE"),c(6,7)],10),
-             tail(ser.dat[ser.dat$geo %in% c("FR"),c(7)],10),
-             tail(ser.dat[ser.dat$geo %in% c("EA19"),c(7)],10))
-
-colnames(tab) <- c("Zeitraum", "DEU", "FRA", "EURO-19")
-
-tab$Zeitraum <- as.yearmon(as.Date(tab$Zeitraum))
-
-# tab
-tab %>%
-  kbl(format.args = list(decimal.mark = ',', big.mark = ".")) %>%
-  kable_styling()
-
-```
-</div>
-<!--..........................................................................-->
-
-
-```{r,include=FALSE, eval=FALSE}
-
-# Save plot
-ggsave(plot=plot, width=8, height=6, dpi=300, filename = "./Figures/EU_RETSAL_lev.pdf")
-
-```
-
-
-
-```{r}
-
-type <- c("code")
-stringsAsFactors <- FALSE
-
-url <- "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/sts_trtu_m?format=JSON&geo=DE&geo=FR&geo=EA19&freq=M&unit=I15&s_adj=SCA&indic_bt=TOVV&nace_r2=G47"
-url
-
-resp <- httr::RETRY("GET", url, terminate_on = c(404))
-
-jdat <- jsonlite::fromJSON(url)
-
-dims <- jdat$dimension
-ids <- jdat$id
-dims_list <- lapply(dims[rev(ids)], function(x) {
-  y <- x$category$label
-  if (type[1] == "label") {
-    y <- unlist(y, use.names = FALSE)
-  } else if (type[1] == "code") {
-    y <- names(unlist(y))
-  } else if (type[1] == "both") {
-    y <- unlist(y)
-  } else {
-    stop("Invalid type ", type)
-  }
-})
-variables <- expand.grid(dims_list, KEEP.OUT.ATTRS = FALSE, stringsAsFactors = stringsAsFactors)
-dat <- as.data.frame(variables[rev(names(variables))])
-vals <- unlist(jdat$value, use.names = FALSE)
-dat$values <- rep(NA, nrow(dat))
-inds <- 1 + as.numeric(names(jdat$value))
-
-dat$values[inds] <- vals
-data <- tibble::as_tibble(dat)
-data
-
-
-data$time <- as.Date(as.yearmon(data$time))
-
-ser.dat <- subset(data, time %in% seq(as.Date("2015-01-01"), Sys.Date(), by = "month"))
-head(ser.dat)
-
+ser.dat <- get_eurostat_xx(url = url)
 
 # Transform date to yearmon class
 ser.dat$date.zoo <- as.yearmon(ser.dat$time, "%b%y")
@@ -1783,11 +1184,75 @@ plot <- ggplot(data = ser.dat, mapping = aes(x = date.zoo, y = values, color = g
 # Return plot
 plot
 
-ggsave(plot=plot, width=8, height=6, dpi=300, filename = "./Figures/EU_RETSAL_lev.svg")
+```
+</div>
+<!--..........................................................................-->
+<button type="button" class="collapsible01"> *Show Output* </button>
+<div class="cod_content">
+```{r,echo=FALSE}
+
+source("./r-scripts/r_eurostat_helper_functions.R")
+
+# Url
+url <- "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/sts_inpr_m?format=JSON&geo=DE&geo=FR&geo=EA19&freq=M&unit=I15&s_adj=SCA&indic_bt=PROD&nace_r2=B-D"
+
+# Data
+ser.dat <- get_eurostat_xx(url = url)
+
+# Transform date to yearmon class
+ser.dat$date.zoo <- as.yearmon(ser.dat$time, "%b%y")
+
+# Construct plot
+plot <- ggplot(data = ser.dat, mapping = aes(x = date.zoo, y = values, color = geo)) +
+  geom_line(size = 1) +
+  scale_x_yearmon(breaks = seq(from = min(ser.dat$date.zoo), to = max(ser.dat$date.zoo), by = 3/12),
+                  minor_breaks = seq(from = min(ser.dat$date.zoo), to = max(ser.dat$date.zoo), by = 1/12),
+                  format = "%b %y",
+                  expand = c(0, 0)) +
+  scale_y_continuous(breaks = seq(0, 200, 10)) + 
+  scale_color_discrete(name = "", labels = c("DEU","EURO-19","FRA")) +
+  labs(title = "Einzelhandelsumsätze (saison-, kalender- und preisbereinigt)",
+       subtitle = paste0(c("(Letzter Beobachtungswert: "), as.yearmon(as.Date(ser.dat$time[length(ser.dat$time)])), c(")")),
+       caption = "Quelle: Eurostat", 
+       x = "", y = "Index 2015=100") +
+  mod.theme.01
+
+# Return plot
+plot
 
 ```
 
+</div>
+<!--..........................................................................-->
 
+<!--..........................................................................-->
+<button type="button" class="collapsible01"> *Letzte Werte* </button>
+<div class="col_content">
+```{r, echo=FALSE, results=TRUE}
+
+tab <- cbind(tail(ser.dat[ser.dat$geo %in% c("DE"),c(7,8)],10),
+             tail(ser.dat[ser.dat$geo %in% c("FR"),c(8)],10),
+             tail(ser.dat[ser.dat$geo %in% c("EA19"),c(8)],10))
+
+colnames(tab) <- c("Zeitraum", "DEU", "FRA", "EURO-19")
+
+tab$Zeitraum <- as.yearmon(as.Date(tab$Zeitraum))
+
+# tab
+tab %>%
+  kbl(format.args = list(decimal.mark = ',', big.mark = ".")) %>%
+  kable_styling()
+
+```
+</div>
+<!--..........................................................................-->
+
+```{r,include=FALSE, eval=FALSE}
+
+# Save plot
+ggsave(plot=plot, width=8, height=6, dpi=300, filename = "./figures/EU_RETSAL_lev.pdf")
+
+```
 
 <!--..........................................................................-->
 <hr />
@@ -1927,8 +1392,7 @@ tab %>%
 ```{r,include=FALSE}
 
 # Save plot
-ggsave(plot=plot, width=8, height=6, dpi=300, filename = "./Figures/US_RETSAL_lev.pdf")
-ggsave(plot=plot, width=8, height=6, dpi=300, filename = "./Figures/US_RETSAL_lev.svg")
+ggsave(plot=plot, width=8, height=6, dpi=300, filename = "./figures/US_RETSAL_lev.pdf")
 
 ```
 
@@ -1942,22 +1406,6 @@ ggsave(plot=plot, width=8, height=6, dpi=300, filename = "./Figures/US_RETSAL_le
 <!--..........................................................................-->
 <hr />
 
-
-
-
-
-<!--
-
-SOME NOTES
-
-
-
--->
-
-<!--..........................................................................-->
-<!-- <hr /> -->
-
-<!-- # References -->
 
 
 
