@@ -221,13 +221,13 @@ source("../r_set_up.R")
 </div>
 <!--..........................................................................--> 
 
-<u>Schritt 5</u>: Definiere Funktion zur Darstellung der Daten
+<u>Schritt 5</u>: Lade Funktion zur Darstellung der Daten
 
 <!--..........................................................................--> 
 <button type="button" class="collapsible02"> Lade Funktion </button>
 <div class="col_content">
 
-Funktionen zur Verarbeitung der heruntergeladenen Daten:
+Funktion zur Schattierung der US Rezessionen:
 
 ```{r}
 
@@ -292,7 +292,7 @@ add_rec_shade <- function(st_date, ed_date, shade_color = "darkgray", zoo.mon = 
 </div>
 <!--..........................................................................--> 
 
-<u>Schritt 6</u>: Definiere Grafikvorlage zur Darstellung der Daten
+<u>Schritt 6</u>: Lade Grafikvorlage zur Darstellung der Daten
 
 <!--..........................................................................--> 
 <button type="button" class="collapsible02"> Lade Grafikvorlage </button>
@@ -379,9 +379,9 @@ mod.theme.01$legend.position <- c("bottom")
 Weitere Informationen
 </p>
 
-Der Ifo Geschäftsklima Index ist eine der wichtigsten Messzahlen um die Stimmung in der "realen" Wirtschaft darzustellen.
+Der Ifo Geschäftsklima Index ist eine der wichtigsten Messzahlen um die Stimmung in der "realen" Wirtschaft in Deutschland darzustellen.
 
-Dem gegenüber steht der ZEW-Index für die Abbildung der Stimmung auf den Finanzmärkten. 
+<!-- Dem gegenüber steht der ZEW-Index für die Abbildung der Stimmung auf den Finanzmärkten.  -->
 
 <!--..........................................................................-->
 <hr />
@@ -501,7 +501,7 @@ if(ifo.load.02.eval) {
 <div class="col_content">
 
 <center>
-<embed src="Pdfs/ifo_index.pdf" width="900" height="1000" type="application/pdf">
+<embed src="reports/ifo_index.pdf" width="900" height="1000" type="application/pdf">
 </center>
 
 <br>
@@ -682,7 +682,7 @@ if(eu.load.02.eval) {
 <div class="col_content">
 
 <center>
-<embed src="Pdfs/eu_sentiment.pdf" width="900" height="1000" type="application/pdf">
+<embed src="reports/eu_sentiment.pdf" width="900" height="1000" type="application/pdf">
 </center>
 
 <br>
@@ -837,7 +837,7 @@ if(ism.load.01.eval) {
 <div class="col_content">
 
 <center>
-<embed src="Pdfs/ism_man_index.pdf" width="900" height="1000" type="application/pdf">
+<embed src="reports/ism_man_index.pdf" width="900" height="1000" type="application/pdf">
 </center>
 
 <br>
@@ -856,7 +856,7 @@ Quelle: ISM Institut
 <div class="col_content">
 
 <center>
-<embed src="Pdfs/ism_ser_index.pdf" width="900" height="1000" type="application/pdf">
+<embed src="reports/ism_ser_index.pdf" width="900" height="1000" type="application/pdf">
 </center>
 
 <br>
@@ -990,7 +990,7 @@ if(gfk.load.01.eval) {
 <div class="col_content">
 
 <center>
-<embed src="Pdfs/gfk_index.pdf" width="900" height="1000" type="application/pdf">
+<embed src="reports/gfk_index.pdf" width="900" height="1000" type="application/pdf">
 </center>
 
 <br>
