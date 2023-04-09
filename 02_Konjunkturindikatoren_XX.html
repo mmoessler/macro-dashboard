@@ -289,8 +289,8 @@ pre code {
 <div id="einordnung" class="section level2">
 <h2>Einordnung</h2>
 <!--..........................................................................-->
-<hr />
-<p><span style="font-size:20pt;"> Einordnung </span></p>
+<!-- <hr /> -->
+<!-- <span style="font-size:20pt;"> Einordnung </span> -->
 <!--..........................................................................-->
 <hr />
 <p>Für die Einordnung siehe auch Kapitel 2.2 “Vermessung von Wohlstand”.</p>
@@ -332,60 +332,42 @@ USA
 <div id="vorbereitung" class="section level2 tabset tabset-fade">
 <h2 class="tabset tabset-fade">Vorbereitung</h2>
 <!--..........................................................................-->
-<hr />
-<p><span style="font-size:20pt;"> Vorbereitung </span></p>
+<!-- <hr /> -->
+<!-- <span style="font-size:20pt;"> Vorbereitung </span> -->
 <!--..........................................................................-->
 <hr />
-<p>Die Daten werden von unterschiedlichen öffentlich zugänglichen Datenbanken herunterladen.</p>
-<p>Die Daten können entweder auf der Website oder über so genannte Programmierschnittstellen (APIs) heruntergeladen werden.</p>
+<p>Die Veröffentlichungen der Umfragen der wichtigsten <em>Stimmungsindikatoren</em> werden zum größten Teil aus dem Internet heruntergeladen und eingebunden. (<a href="https://github.com/mmoessler/macro-dashboard/blob/main/r-scripts/r_web_scraping_functions.R">siehe</a>)</p>
+<p>Die Werte der wichtigsten <em>Aktivitätsindikatoren</em> werden zum größten Teil von öffentlich zugänglichen Datenbanken herunterladen, aufereitet und dargestellt.</p>
+<p>Dabei können die Daten entweder auf der entsprechenden Website oder über so genannte Programmierschnittstellen (APIs) heruntergeladen werden.</p>
+<p>Für das Herunterladen der Daten über die APIs von <a href="https://fred.stlouisfed.org/docs/api/fred/">FRED</a> und <a href="https://ec.europa.eu/eurostat/de/data/web-services">eurostat</a> und die Darstellung der Daten müssen die folgenden Schritte zur Vorbereitung durchgeführt werden.</p>
 <!--..........................................................................-->
 <hr>
 <p><u>Schritt 1</u>: Setze dein Arbeitsverzeichniss</p>
-<!--..........................................................................-->
-<button type="button" class="collapsible02">
-Arbeitsverzeichniss
-</button>
-<div class="col_content">
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">&quot;... insert-you-directory-here ...&quot;</span>)</span></code></pre></div>
-</div>
 <!--..........................................................................-->
+<hr />
 <p><u>Schritt 2</u>: Lade Pakete zum Herungeralden der Daten</p>
-<!--..........................................................................-->
-<button type="button" class="collapsible02">
-Lade Pakete I
-</button>
-<div class="col_content">
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(eurostat)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fredr)</span></code></pre></div>
-</div>
 <!--..........................................................................-->
+<hr />
 <p><u>Schritt 3</u>: Registriere dich bei <em>FRED</em> und fordere eines API Schlüssels an</p>
 <ol style="list-style-type: decimal">
 <li><a href="https://fredhelp.stlouisfed.org/fred/account/fred-account-features/register/">FRED Konto</a></li>
 <li><a href="https://fred.stlouisfed.org/docs/api/api_key.html">API Schlüssel</a></li>
 </ol>
-<!--..........................................................................-->
-<button type="button" class="collapsible02">
-API Schlüssel
-</button>
-<div class="col_content">
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fredr_set_key</span>(<span class="st">&quot;... insert-your-personal-key-here ...&quot;</span>)</span></code></pre></div>
-</div>
 <!--..........................................................................-->
+<hr />
 <p><u>Schritt 4</u>: Lade Pakete zur Verarbeitung der heruntergeladenen Daten</p>
-<!--..........................................................................-->
-<button type="button" class="collapsible02">
-Lade Pakete II
-</button>
-<div class="col_content">
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scales)</span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(zoo)</span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span></code></pre></div>
-</div>
 <!--..........................................................................-->
+<hr />
 <p><u>Schritt 5</u>: Lade Funktion zur Darstellung der Daten</p>
 <!--..........................................................................-->
 <button type="button" class="collapsible02">
@@ -450,13 +432,10 @@ Lade Funktion
 <span id="cb5-55"><a href="#cb5-55" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 </div>
 <!--..........................................................................-->
-<p><u>Schritt 6</u>: Lade Grafikvorlage zur Darstellung der Daten</p>
 <!--..........................................................................-->
-<button type="button" class="collapsible02">
-Lade Grafikvorlage
-</button>
-<div class="col_content">
-<p>Grafikvorlage für <em>ggplot</em>:</p>
+<hr />
+<p><u>Schritt 6</u>: Lade Grafikvorlage zur Darstellung der Daten</p>
+<!-- Grafikvorlage für *ggplot*: -->
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>mod.theme<span class="fl">.01</span> <span class="ot">&lt;-</span> <span class="fu">theme_gray</span>() <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>, <span class="at">size =</span> <span class="dv">12</span>),</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>),</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">16</span>),</span>
@@ -465,8 +444,6 @@ Lade Grafikvorlage
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>))</span>
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>mod.theme<span class="fl">.01</span><span class="sc">$</span>legend.position <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;bottom&quot;</span>)</span></code></pre></div>
-</div>
-<!--..........................................................................-->
 <!--..........................................................................-->
 <hr />
 <p class="back01">
@@ -481,16 +458,16 @@ Lade Grafikvorlage
 <div id="simmung" class="section level2 tabset tabset-fade">
 <h2 class="tabset tabset-fade">Simmung</h2>
 <!--..........................................................................-->
-<hr />
-<p><span style="font-size:20pt;"> Simmung </span></p>
+<!-- <hr /> -->
+<!-- <span style="font-size:20pt;"> Simmung </span> -->
 <!--..........................................................................-->
 <hr />
 <!--..........................................................................-->
 <div id="produzenten" class="section level3 tabset tabset-fade">
 <h3 class="tabset tabset-fade">Produzenten</h3>
 <!--..........................................................................-->
-<hr />
-<p><span style="font-size:20pt;"> Produzenten </span></p>
+<!-- <hr /> -->
+<!-- <span style="font-size:20pt;"> Produzenten </span> -->
 <!--..........................................................................-->
 <hr />
 <!--..........................................................................-->
@@ -501,26 +478,19 @@ Lade Grafikvorlage
 <p><span style="text-decoration:underline; font-size:20pt;">Ifo Geschäftsklima Index</span></p>
 <!--..........................................................................-->
 <hr />
-<p class="head01">
-Überblick
-</p>
+<p><span style="text-decoration:underline; font-size:18pt;">Überblick</span></p>
 <ul>
-<li>Einordnung: Produzenten, generell</li>
-<li>Region: Deutschland</li>
-<li>Herausgeber: Ifo-Institut (<a href="https://www.ifo.de/umfrage/ifo-geschaeftsklimaindex">siehe</a>)</li>
+<li><u>Einordnung</u>: Produzenten (generell)</li>
+<li><u>Region</u>: Deutschland</li>
+<li><u>Herausgeber</u>: Ifo-Institut (<a href="https://www.ifo.de/umfrage/ifo-geschaeftsklimaindex">siehe</a>)</li>
 </ul>
 <!--..........................................................................-->
 <hr />
-<p class="head01">
-Weitere Informationen
-</p>
-<p>Der Ifo Geschäftsklima Index ist eine der wichtigsten Messzahlen um die Stimmung in der “realen” Wirtschaft in Deutschland darzustellen.</p>
-<!-- Dem gegenüber steht der ZEW-Index für die Abbildung der Stimmung auf den Finanzmärkten.  -->
+<p><span style="text-decoration:underline; font-size:18pt;">Weitere Informationen</span></p>
+<p>Der <em>Ifo Geschäftsklima Index</em> ist eine der wichtigsten Messzahlen für die Stimmung bei den deutschen Produzenten.</p>
 <!--..........................................................................-->
 <hr />
-<p class="head01">
-Ergebnisse
-</p>
+<p><span style="text-decoration:underline; font-size:18pt;">Ergebnisse</span></p>
 <!--..........................................................................-->
 <button type="button" class="collapsible02">
 Aktuelle Veröffentlichung
@@ -555,28 +525,22 @@ Quelle: Ifo Institut
 <p><span style="text-decoration:underline; font-size:20pt;">EU Sentiment</span></p>
 <!--..........................................................................-->
 <hr />
-<p class="head01">
-Überblick
-</p>
+<p><span style="text-decoration:underline; font-size:18pt;">Überblick</span></p>
 <ul>
-<li>Einordnung: Produzenten (generell) und Konsumenten</li>
-<li>Region: EU und Eurozone</li>
-<li>Herausgeber: Europäische Kommission (<a href="https://ec.europa.eu/info/business-economy-euro/indicators-statistics/economic-databases/business-and-consumer-surveys/download-business-and-consumer-survey-data/press-releases_de">siehe</a>)</li>
+<li><u>Einordnung</u>: Produzenten (generell) und Konsumenten</li>
+<li><u>Region</u>: EU und Eurozone</li>
+<li><u>Herausgeber</u>: Europäische Kommission (<a href="https://ec.europa.eu/info/business-economy-euro/indicators-statistics/economic-databases/business-and-consumer-surveys/download-business-and-consumer-survey-data/press-releases_de">siehe</a>)</li>
 </ul>
 <!--..........................................................................-->
 <hr />
-<p class="head01">
-Weitere Informationen
-</p>
-<p>Die Stimmungsindikatoren von der Europäischen Kommission sind eine der wichtigsten Messzahlen um die Stimmung in der “realen” Wirtschaft in der EU und der Eurozone darzustellen.</p>
-<p>Die Stimmung in der gesamten Wirtschaft (Produzenten und Konsumenten) wird durch das “Wirtschaftsvertrauen” (“Economic Sentiment”) dargestellt.</p>
-<p>Ein wichtiger Teil des generellen “Wirtschaftsvertrauens” ist das “Konsumentenvertrauen” (“Consumer Confidence”) das auch als eigene Veröffentlichung eine Woche vor der Veröffentlichung des generellen “Wirtschaftsvertauens” als vorläufige Schätzung veröffentlicht wird.</p>
-<p>Außerdem wird als weiterer Teil des generellen “Wirtschaftsvertrauens” im Rahmen des “Unternehmensvertrauens” (“Business Confidence”) die Stimmung in den verschiedenen Sektoren auf Seiten der Produzenten erhoben.</p>
+<p><span style="text-decoration:underline; font-size:18pt;">Weitere Informationen</span></p>
+<p>Die Stimmungsindikatoren von der <em>Europäischen Kommission</em> sind eine der wichtigsten Messzahlen für die Stimmung in der Wirtschaft der EU und Eurozone.</p>
+<p>Die Stimmung in der gesamten Wirtschaft (Produzenten und Konsumenten) wird durch das “<em>Wirtschaftsvertrauen</em>” (“<em>Economic Sentiment</em>”) dargestellt.</p>
+<p>Ein wichtiger Teil des generellen “<em>Wirtschaftsvertrauens</em>” ist das “<em>Konsumentenvertrauen</em>” (“<em>Consumer Confidence</em>”).</p>
+<p>Ein weiterer wichtiger Teil des generellen “<em>Wirtschaftsvertrauens</em>” ist das “<em>Unternehmensvertrauens</em>” (“<em>Business Confidence</em>”).</p>
 <!--..........................................................................-->
 <hr />
-<p class="head01">
-Ergebnisse
-</p>
+<p><span style="text-decoration:underline; font-size:18pt;">Ergebnisse</span></p>
 <!--..........................................................................-->
 <button type="button" class="collapsible02">
 Aktuelle Veröffentlichung
@@ -611,26 +575,20 @@ Quelle: Europäische Kommission
 <p><span style="text-decoration:underline; font-size:20pt;">ISM: PMIs</span></p>
 <!--..........................................................................-->
 <hr />
-<p class="head01">
-Überblick
-</p>
+<p><span style="text-decoration:underline; font-size:18pt;">Überblick</span></p>
 <ul>
-<li>Einordnung: Anbieter, veratbeitendes Gewerbe und Dienstleistungen</li>
-<li>Region: USA</li>
-<li>Herausgeber: Institute for Supply Management (ISM) (<a href="https://www.ismworld.org/supply-management-news-and-reports/reports/ism-report-on-business/">siehe</a>)</li>
+<li><u>Einordnung</u>: Anbieter, veratbeitendes Gewerbe und Dienstleistungen</li>
+<li><u>Region</u>: USA</li>
+<li><u>Herausgeber</u>: Institute for Supply Management (ISM) (<a href="https://www.ismworld.org/supply-management-news-and-reports/reports/ism-report-on-business/">siehe</a>)</li>
 </ul>
 <!--..........................................................................-->
 <hr />
-<p class="head01">
-Weitere Informationen
-</p>
-<p>Die Einkaufsmanagerindizes vom Instiute for Supply Management sind neben den offiziellen Umfragen eine der wichtigsten Messzahlen um die Stimmung bei den Anbietern in den USA abzubilden.</p>
-<p>Dazu gibt es zwei Umfragen, eine im verarbeitenden Gewerbe sowie eine im Dienstleistungssektor.</p>
+<p><span style="text-decoration:underline; font-size:18pt;">Weitere Informationen</span></p>
+<p>Die <em>Einkaufsmanagerindizes</em> vom Instiute for Supply Management (ISM) sind eine der wichtigsten Messzahlen für die Stimmung bei den US Produzenten.</p>
+<p>Es gibt zwei Umfragen, eine im <em>verarbeitenden Gewerbe</em> sowie eine im <em>Dienstleistungssektor</em>.</p>
 <!--..........................................................................-->
 <hr />
-<p class="head01">
-Ergebnisse
-</p>
+<p><span style="text-decoration:underline; font-size:18pt;">Ergebnisse</span></p>
 <!--..........................................................................-->
 <button type="button" class="collapsible02">
 Aktuelle Veröffentlichung: Verarbeitendes Gewerbe
@@ -678,8 +636,8 @@ Quelle: ISM Institut
 <div id="konsumenten" class="section level3 tabset tabset-fade">
 <h3 class="tabset tabset-fade">Konsumenten</h3>
 <!--..........................................................................-->
-<hr />
-<p><span style="font-size:20pt;"> Konsumenten </span></p>
+<!-- <hr /> -->
+<!-- <span style="font-size:20pt;"> Konsumenten </span> -->
 <!--..........................................................................-->
 <hr />
 <!--..........................................................................-->
@@ -690,25 +648,19 @@ Quelle: ISM Institut
 <p><span style="text-decoration:underline; font-size:20pt;">GfK Konsumklima</span></p>
 <!--..........................................................................-->
 <hr />
-<p class="head01">
-Überblick
-</p>
+<p><span style="text-decoration:underline; font-size:18pt;">Überblick</span></p>
 <ul>
-<li>Einordnung: Konsumenten</li>
-<li>Region: Deutschland</li>
-<li>Herausgeber: GfK (<a href="https://www.gfk.com/de/home">siehe</a>)</li>
+<li><u>Einordnung</u>: Konsumenten</li>
+<li><u>Region</u>: Deutschland</li>
+<li><u>Herausgeber</u>: GfK (<a href="https://www.gfk.com/de/home">siehe</a>)</li>
 </ul>
 <!--..........................................................................-->
 <hr />
-<p class="head01">
-Weitere Informationen
-</p>
-<p>Das GfK Konsumentenvertrauen ist eine der wichtigsten Messzahlen um die Simmung bei den Konsumenten in Deutschland darzustellen.</p>
+<p><span style="text-decoration:underline; font-size:18pt;">Weitere Informationen</span></p>
+<p>Das <em>GfK Konsumentenvertrauen</em> ist eine der wichtigsten Messzahlen für die Stimmung bei den deutschen Konsumenten.</p>
 <!--..........................................................................-->
 <hr />
-<p class="head01">
-Ergebnisse
-</p>
+<p><span style="text-decoration:underline; font-size:18pt;">Ergebnisse</span></p>
 <!--..........................................................................-->
 <button type="button" class="collapsible02">
 Aktuelle Veröffentlichung
@@ -743,25 +695,19 @@ Quelle: GfK
 <p><span style="text-decoration:underline; font-size:20pt;">UoM Consumer Confidence</span></p>
 <!--..........................................................................-->
 <hr />
-<p class="head01">
-Überblick
-</p>
+<p><span style="text-decoration:underline; font-size:18pt;">Überblick</span></p>
 <ul>
-<li>Einordnung: Konsumenten</li>
-<li>Region: USA</li>
-<li>Herausgeber: University of Michigan (<a href="https://data.sca.isr.umich.edu/">siehe</a>)</li>
+<li><u>Einordnung</u>: Konsumenten</li>
+<li><u>Region</u>: USA</li>
+<li><u>Herausgeber</u>: University of Michigan (<a href="https://data.sca.isr.umich.edu/">siehe</a>)</li>
 </ul>
 <!--..........................................................................-->
 <hr />
-<p class="head01">
-Weitere Informationen
-</p>
-<p>Das UoM Konsumentenvertrauen ist eine der wichtigsten Messzahlen um die Stimmung bei den Konsumenten in den USA darzustellen.</p>
+<p><span style="text-decoration:underline; font-size:18pt;">Weitere Informationen</span></p>
+<p>Das <em>UoM Konsumentenvertrauen</em> ist eine der wichtigsten Messzahlen für die Stimmung bei den US Konsumenten.</p>
 <!--..........................................................................-->
 <hr />
-<p class="head01">
-Ergebnisse
-</p>
+<p><span style="text-decoration:underline; font-size:18pt;">Ergebnisse</span></p>
 <!--..........................................................................-->
 <button type="button" class="collapsible01">
 <em>Show Code</em>
@@ -889,16 +835,16 @@ Feb 2023
 <div id="aktivität" class="section level2 tabset tabset-fade">
 <h2 class="tabset tabset-fade">Aktivität</h2>
 <!--..........................................................................-->
-<hr />
-<p><span style="font-size:20pt;"> Aktivität </span></p>
+<!-- <hr /> -->
+<!-- <span style="font-size:20pt;"> Aktivität </span> -->
 <!--..........................................................................-->
 <hr />
 <!--..........................................................................-->
 <div id="produzenten-1" class="section level3 tabset tabset-fade">
 <h3 class="tabset tabset-fade">Produzenten</h3>
 <!--..........................................................................-->
-<hr />
-<p><span style="font-size:20pt;"> Produzenten </span></p>
+<!-- <hr /> -->
+<!-- <span style="font-size:20pt;"> Produzenten </span> -->
 <!--..........................................................................-->
 <hr />
 <!--..........................................................................-->
@@ -909,16 +855,20 @@ Feb 2023
 <!-- <span style="font-size:20pt;"> Industrieproduktion </span> -->
 <!--..........................................................................-->
 <hr />
-<p><span style="text-decoration:underline; font-size:18pt;"> Überblick </span></p>
+<p><span style="text-decoration:underline; font-size:18pt;">Überblick</span></p>
 <ul>
-<li>Einordnung: Produzenten, verarbeitendes Gewerbe</li>
-<li>Region: EU Mitgliedstaaten</li>
-<li>Herausgeber: Eurostat (<a href="https://ec.europa.eu/eurostat/de/home">siehe</a>)</li>
-<li>Bereinigung: Saison-, Kalender- und Preisbereinigung</li>
+<li><u>Einordnung</u>: Produzenten, verarbeitendes Gewerbe</li>
+<li><u>Region</u>: EU Mitgliedstaaten</li>
+<li><u>Herausgeber</u>: Eurostat (<a href="https://ec.europa.eu/eurostat/de/home">siehe</a>)</li>
+<li><u>Bereinigung</u>: Saison-, kalender- und preisbereinigung</li>
 </ul>
 <!--..........................................................................-->
 <hr />
-<p><span style="text-decoration:underline; font-size:18pt;"> Werte </span></p>
+<p><span style="text-decoration:underline; font-size:18pt;">Weitere Informationen</span></p>
+<p>Die Industrieproduktion ist die wichtigste Messzahl um die Aktivität bei den Produzenten darzustellen.</p>
+<!--..........................................................................-->
+<hr />
+<p><span style="text-decoration:underline; font-size:18pt;">Werte</span></p>
 <!--..........................................................................-->
 <button type="button" class="collapsible01">
 <em>Show Code</em>
@@ -1146,26 +1096,20 @@ NA
 <p><span style="text-decoration:underline; font-size:20pt;">USA Industrieproduktion</span></p>
 <!--..........................................................................-->
 <hr />
-<p class="head01">
-Überblick
-</p>
+<p><span style="text-decoration:underline; font-size:18pt;">Überblick</span></p>
 <ul>
-<li>Einordnung: Produzenten</li>
-<li>Region: USA</li>
-<li>Herausgeber: Board of Governors of the Federal Reserve System (<a href="https://www.federalreserve.gov/releases/g17/current/default.htm">siehe</a>)</li>
-<li>Bereinigung: Saison- und Preisbereinigung, keine Kalenderbereingung</li>
+<li><u>Einordnung</u>: Produzenten</li>
+<li><u>Region</u>: USA</li>
+<li><u>Herausgeber</u>: Board of Governors of the Federal Reserve System (<a href="https://www.federalreserve.gov/releases/g17/current/default.htm">siehe</a>)</li>
+<li><u>Bereinigung</u>: Saison- und preisbereinigung, keine kalenderbereingung</li>
 </ul>
 <!--..........................................................................-->
 <hr />
-<p class="head01">
-Weitere Informationen
-</p>
+<p><span style="text-decoration:underline; font-size:18pt;">Weitere Informationen</span></p>
 <p>Die Industrieproduktion ist die wichtigste Messzahl um die Aktivität bei den Produzenten darzustellen.</p>
 <!--..........................................................................-->
 <hr />
-<p class="head01">
-Ergebnisse
-</p>
+<p><span style="text-decoration:underline; font-size:18pt;">Ergebnisse</span></p>
 <!--..........................................................................-->
 <button type="button" class="collapsible01">
 <em>Show Code</em>
@@ -1323,8 +1267,8 @@ Feb 2023
 <div id="konsumenten-1" class="section level3 tabset tabset-fade">
 <h3 class="tabset tabset-fade">Konsumenten</h3>
 <!--..........................................................................-->
-<hr />
-<p><span style="font-size:20pt;"> Konsumenten </span></p>
+<!-- <hr /> -->
+<!-- <span style="font-size:20pt;"> Konsumenten </span> -->
 <!--..........................................................................-->
 <hr />
 <!--..........................................................................-->
@@ -1335,16 +1279,20 @@ Feb 2023
 <!-- <span style="font-size:20pt;"> Einzelhandelsumsätze </span> -->
 <!--..........................................................................-->
 <hr />
-<p><span style="text-decoration:underline; font-size:18pt;"> Überblick </span></p>
+<p><span style="text-decoration:underline; font-size:18pt;">Überblick</span></p>
 <ul>
-<li>Einordnung: Konsumenten</li>
-<li>Region: EU Mitgliedsstaaten</li>
-<li>Herausgeber: Eurostat (<a href="https://ec.europa.eu/eurostat/de/home">siehe</a>)</li>
-<li>Bereinigung: Saison-, Kalender- und Preisbereinigung</li>
+<li><u>Einordnung</u>: Konsumenten</li>
+<li><u>Region</u>: EU Mitgliedsstaaten</li>
+<li><u>Herausgeber</u>: Eurostat (<a href="https://ec.europa.eu/eurostat/de/home">siehe</a>)</li>
+<li><u>Bereinigung</u>: Saison-, Kalender- und Preisbereinigung</li>
 </ul>
 <!--..........................................................................-->
 <hr />
-<p><span style="text-decoration:underline; font-size:18pt;"> Werte </span></p>
+<p><span style="text-decoration:underline; font-size:18pt;">Weitere Informationen</span></p>
+<p>Die Einzelhandelsumsätze ist eine der wichtigsten Messzahlen um die Aktivität bei den Konsumenten darzustellen.</p>
+<!--..........................................................................-->
+<hr />
+<p><span style="text-decoration:underline; font-size:18pt;">Werte</span></p>
 <!--..........................................................................-->
 <button type="button" class="collapsible01">
 <em>Show Code</em>
@@ -1569,13 +1517,17 @@ NA
 <h4>US Einzelhandelsumsätze</h4>
 <!--..........................................................................-->
 <hr />
-<p><span style="text-decoration:underline; font-size:18pt;"> Überblick </span></p>
+<p><span style="text-decoration:underline; font-size:18pt;">Überblick</span></p>
 <ul>
-<li>Einordnung: Konsumenten</li>
-<li>Region: USA</li>
-<li>Herausgeber: U.S. Census Bureau (<a href="https://www.census.gov/">siehe</a>)</li>
-<li>Bereinigung: Saisonbereinigung, keine Kalender- und Preisbereinigung</li>
+<li><u>Einordnung</u>: Konsumenten</li>
+<li><u>Region</u>: USA</li>
+<li><u>Herausgeber</u>: U.S. Census Bureau (<a href="https://www.census.gov/">siehe</a>)</li>
+<li><u>Bereinigung</u>: Saisonbereinigung, keine kalender- und preisbereinigung</li>
 </ul>
+<!--..........................................................................-->
+<hr />
+<p><span style="text-decoration:underline; font-size:18pt;">Weitere Informationen</span></p>
+<p>Die Einzelhandelsumsätze ist eine der wichtigsten Messzahlen um die Aktivität bei den Konsumenten darzustellen.</p>
 <!--..........................................................................-->
 <hr />
 <p><span style="text-decoration:underline; font-size:18pt;"> Werte </span></p>
