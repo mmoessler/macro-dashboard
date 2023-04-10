@@ -17,7 +17,7 @@ xfun::file_string('header_02.html')
 
 <!-- 
 
--> Check y-axis ticks for plots! (see, e.g., GDP nominal)
+...
 
 -->
 
@@ -69,9 +69,9 @@ library(fredr)
 <!--..........................................................................-->
 ## Einführung {.tabset .tabset-fade}
 
-<span style="font-size:22pt;"> Einführung </span>
+<!-- <span style="font-size:22pt;"> Einführung </span> -->
 
-<hr>
+<!-- <hr> -->
 
 <!--..........................................................................-->
 ### Einordnung
@@ -102,7 +102,7 @@ Für die Einordnung siehe auch Kapitel 2.2 "Vermessung von Wohlstand".
 
 <span style="font-size:20pt;"> Vorbereitung </span>
 
-<hr />
+<hr>
 
 Vorbereitung des *R*-Skripts:
 
@@ -155,7 +155,7 @@ mod.theme.01$legend.position <- c("bottom")
 
 ```
 
-<hr />
+<hr>
 
 Die Daten werden von unterschiedlichen öffentlich zugänglichen Datenbanken heruntergeladen.
 
@@ -168,13 +168,13 @@ Die Daten können entweder auf der Website oder über so genannte Programmiersch
 
 <span style="font-size:18pt;"> FRED </span>
 
-<hr />
+<hr>
 
 Die Daten von der Federal Reserve Bank of St. Louis können mit dem *R*-Paket `fredr` heruntergeladen werden.
 
 * Link: [FRED: Startseite](https://fred.stlouisfed.org/)
 
-<hr />
+<hr>
 
 Um Daten über die FRED-API müssen Sie sich zuerst kostenlos registrieren und einen "API Key" beantragen ([siehe](https://fred.stlouisfed.org/docs/api/api_key.html)).
 
@@ -195,7 +195,7 @@ source("../r_set_up.R")
 
 ```
 
-<hr />
+<hr>
 
 Zur Schattierung der Rezessionen (siehe: [NBER](https://www.nber.org/research/business-cycle-dating)) verwenden wir die folgende *R*-Funktion.
 
@@ -205,6 +205,7 @@ Zur Schattierung der Rezessionen (siehe: [NBER](https://www.nber.org/research/bu
 
 ```{r}
 
+# See: https://rpubs.com/FSl/609471 (and edite by MM)
 add_rec_shade <- function(st_date, ed_date, shade_color = "darkgray", zoo.mon = FALSE, zoo.qtr = FALSE) {
   
   recession  <-  fredr(series_id = "USRECD",observation_start = as.Date(st_date),observation_end = as.Date(ed_date))
@@ -252,12 +253,6 @@ add_rec_shade <- function(st_date, ed_date, shade_color = "darkgray", zoo.mon = 
 
 ```
 
-```{r, include=FALSE}
-
-# See: https://rpubs.com/FSl/609471 (and edite by MM)
-
-```
-
 </div>
 <!--..........................................................................--> 
 
@@ -268,7 +263,7 @@ add_rec_shade <- function(st_date, ed_date, shade_color = "darkgray", zoo.mon = 
 
 <span style="font-size:18pt;"> Eurostat and ECB </span>
 
-<hr />
+<hr>
 
 Die Daten von Eurostat und der EcB  können mit dem *R*-Paket `eurostat` und `ecb` heruntergeladen werden.
 
@@ -291,34 +286,28 @@ library(ecb)
 <!--..........................................................................-->
 ## Mengen {.tabset .tabset-fade}
 
-<span style="font-size:22pt;"> Makroökonomische Mengen: Einkommen </span>
+<!-- <span style="font-size:22pt;"> Makroökonomische Mengen: Einkommen </span> -->
 
 <!--..........................................................................-->
-<!-- <hr /> -->
+<!-- <hr> -->
 
 <!--..........................................................................-->
 <!-- ### Einkommen {.tabset .tabset-fade} -->
 
 <!--..........................................................................-->
-<!-- <hr /> -->
+<!-- <hr> -->
 
 <!-- <span style="font-size:20pt;"> Einkommen </span> -->
 
 <!-- ... -->
 
 <!--..........................................................................-->
-<hr />
-
-<!--..........................................................................-->
 ### USA
 
 <!--..........................................................................-->
-<!-- <hr /> -->
+<!-- <hr> -->
 
 <!-- <span style="font-size:18pt;"> USA </span> -->
-
-<!--..........................................................................-->
-<hr />
 
 <span style="text-decoration:underline; font-size:18pt;"> Reales BIP (Niveau) </span>
 
@@ -422,12 +411,11 @@ tab %>%
 ```{r, include=FALSE}
 
 ggsave(plot=plot, width=10, height=6, dpi=300, filename = "./figures/US_GDP_01.pdf")
-ggsave(plot=plot, width=10, height=6, dpi=300, filename = "./figures/US_GDP_01.svg")
 
 ```
 
 <!--..........................................................................-->
-<hr />
+<hr>
 
 <span style="text-decoration:underline; font-size:18pt;"> Reales BIP (Veränderung) </span>
 
@@ -525,7 +513,6 @@ tab %>%
 ```{r, include=FALSE}
 
 ggsave(plot=plot, width=10, height=6, dpi=300, filename = "./figures/US_GDP_02.pdf")
-ggsave(plot=plot, width=10, height=6, dpi=300, filename = "./figures/US_GDP_02.svg")
 
 ```
 
@@ -563,7 +550,6 @@ plot <- ggplot(data = ser.dat, mapping = aes(x=date.zoo, y = value, color = seri
 plot
 
 ggsave(plot=plot, width=10, height=6, dpi=300, filename = "./figures/US_GDP_03.pdf")
-ggsave(plot=plot, width=10, height=6, dpi=300, filename = "./figures/US_GDP_03.svg")
 
 #..................................................
 # GDP, nominal
@@ -598,7 +584,6 @@ plot <- ggplot(data = ser.dat, mapping = aes(x=date.zoo, y = value, color = seri
 plot
 
 ggsave(plot=plot, width=10, height=6, dpi=300, filename = "./figures/US_GDP_04.pdf")
-ggsave(plot=plot, width=10, height=6, dpi=300, filename = "./figures/US_GDP_04.svg")
 
 ```
 
@@ -608,12 +593,9 @@ ggsave(plot=plot, width=10, height=6, dpi=300, filename = "./figures/US_GDP_04.s
 ### Eurozone
 
 <!--..........................................................................-->
-<!-- <hr /> -->
+<!-- <hr> -->
 
 <!-- <span style="font-size:18pt;"> Eurozone </span> -->
-
-<!--..........................................................................-->
-<hr />
 
 <span style="text-decoration:underline; font-size:18pt;"> Reales BIP (Niveau) </span>
 
@@ -622,35 +604,39 @@ ggsave(plot=plot, width=10, height=6, dpi=300, filename = "./figures/US_GDP_04.s
 <div class="cod_content">
 ```{r,results=FALSE,fig.show='hide',eval=FALSE}
 
-# Data
-ser.dat <- get_eurostat(id = "namq_10_gdp",
-                        time_format = "date",
-                        filters = list(geo = c("DE","FR","EA19"),
-                                       na_item = c("B1G"),
-                                       unit = c("CLV05_MEUR"),
-                                       s_adj = c("SCA"))) 
+source("./r-scripts/r_eurostat_helper_functions.R")
 
-# Transform date to yearqtr and date class
-ser.dat$date.zoo <- as.yearqtr(as.character(ser.dat$time), "%Y-Q%q")
-ser.dat$date.dat <- as.Date(ser.dat$date.zoo, format = "%Y Q%q")
+# Url
+url <- "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/namq_10_gdp?format=JSON&geo=DE&geo=FR&geo=EA19&freq=Q&unit=CLV15_MEUR&na_item=B1G&s_adj=SCA"
+
+# Data
+ser.dat <- get_eurostat_xx(url = url)
+
+# Transform date to date class
+ser.dat$date.dat <- as.Date(as.yearqtr(as.character(ser.dat$time), "%Y-Q%q"))
+# Transform date to yearmon class
+ser.dat$date.zoo <- as.yearqtr(ser.dat$date.dat, "%Y Q%q")
 
 # Subset data
-ser.dat <- subset(ser.dat, date.dat %in% seq(as.Date("2000-01-01"), as.Date("2023-01-01"), "quarter"))
+ser.dat <- subset(ser.dat, date.dat %in% seq(as.Date("2000-01-01"), Sys.Date(), "quarter"))
 
 # Construct plot
-ggplot(data = ser.dat, mapping = aes(x = date.zoo, y = values, color = geo)) +
+plot <- ggplot(data = ser.dat, mapping = aes(x = date.zoo, y = values/1000, color = geo)) +
   geom_line(size = 1) +
   scale_y_continuous(labels = comma_format(big.mark = ".", decimal.mark = ",")) +
-  scale_x_yearmon(breaks = seq(from = min(ser.dat$date.zoo), to = max(ser.dat$date.zoo), by = 2),
+  scale_x_yearqtr(breaks = seq(from = min(ser.dat$date.zoo), to = max(ser.dat$date.zoo), by = 2),
                   minor_breaks = seq(from = min(ser.dat$date.zoo), to = max(ser.dat$date.zoo), by = 1),
-                  format = "%b %y",
+                  format = "%Y Q%q",
                   expand = c(0, 0)) +
   scale_color_discrete(name = "", labels = c("DEU", "EA19", "FRA")) +
   labs(title = "Reales Bruttoinlandsprodukt (BIP)",
        subtitle = paste0(c("(Letzter Beobachtungswert: "), as.yearqtr(as.Date(met.dat$observation_end)), c(")")),
        caption = "Quelle: Eurostat", 
-       x = "", y = "Verkettete 2005 EUR in Millionen") +
+       x = "", y = "Verkettete 2005 EUR in Milliarden") +
   mod.theme.01
+
+# Return plot
+plot
 
 ```
 </div>
@@ -659,53 +645,39 @@ ggplot(data = ser.dat, mapping = aes(x = date.zoo, y = values, color = geo)) +
 <div class="cod_content">
 ```{r,echo=FALSE}
 
-# Data
-ser.dat <- get_eurostat(id = "namq_10_gdp",
-                        time_format = "date",
-                        filters = list(geo = c("DE","FR","EA19"),
-                                       na_item = c("B1G"),
-                                       unit = c("CLV05_MEUR"),
-                                       s_adj = c("SCA"))) 
+source("./r-scripts/r_eurostat_helper_functions.R")
 
-# Transform date to yearqtr and date class
-ser.dat$date.zoo <- as.yearqtr(as.character(ser.dat$time), "%Y-Q%q")
-ser.dat$date.dat <- as.Date(ser.dat$date.zoo, format = "%Y Q%q")
+# Url
+url <- "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/namq_10_gdp?format=JSON&geo=DE&geo=FR&geo=EA19&freq=Q&unit=CLV15_MEUR&na_item=B1G&s_adj=SCA"
+
+# Data
+ser.dat <- get_eurostat_xx(url = url)
+
+# Transform date to date class
+ser.dat$date.dat <- as.Date(as.yearqtr(as.character(ser.dat$time), "%Y-Q%q"))
+# Transform date to yearmon class
+ser.dat$date.zoo <- as.yearqtr(ser.dat$date.dat, "%Y Q%q")
 
 # Subset data
-ser.dat <- subset(ser.dat, date.dat %in% seq(as.Date("2000-01-01"), as.Date("2023-01-01"), "quarter"))
+ser.dat <- subset(ser.dat, date.dat %in% seq(as.Date("2000-01-01"), Sys.Date(), "quarter"))
 
 # Construct plot
-ggplot(data = ser.dat, mapping = aes(x = date.zoo, y = values, color = geo)) +
+plot <- ggplot(data = ser.dat, mapping = aes(x = date.zoo, y = values/1000, color = geo)) +
   geom_line(size = 1) +
   scale_y_continuous(labels = comma_format(big.mark = ".", decimal.mark = ",")) +
-  scale_x_yearmon(breaks = seq(from = min(ser.dat$date.zoo), to = max(ser.dat$date.zoo), by = 2),
+  scale_x_yearqtr(breaks = seq(from = min(ser.dat$date.zoo), to = max(ser.dat$date.zoo), by = 2),
                   minor_breaks = seq(from = min(ser.dat$date.zoo), to = max(ser.dat$date.zoo), by = 1),
-                  format = "%b %y",
+                  format = "%Y Q%q",
                   expand = c(0, 0)) +
   scale_color_discrete(name = "", labels = c("DEU", "EA19", "FRA")) +
   labs(title = "Reales Bruttoinlandsprodukt (BIP)",
        subtitle = paste0(c("(Letzter Beobachtungswert: "), as.yearqtr(as.Date(met.dat$observation_end)), c(")")),
        caption = "Quelle: Eurostat", 
-       x = "", y = "Verkettete 2005 EUR in Millionen") +
+       x = "", y = "Verkettete 2005 EUR in Milliarden") +
   mod.theme.01
 
-```
-
-```{r, include=FALSE}
-
-source("./r-scripts/r_eurostat_helper_functions.R")
-
-tmp <- eurostat_eurostat_json_url_edit_xx(id = "namq_10_gdp", filters = list(geo = c("DE","FR","EA19"),
-                                                                             na_item = c("B1G"),
-                                                                             unit = c("CLV05_MEUR"),
-                                                                             s_adj = c("SCA")),
-                                                                             lang = NULL)
-```
-
-```{r, include=FALSE}
-
-# See: https://wikis.ec.europa.eu/display/EUROSTATHELP/API+Statistics+-+data+query
-# see: https://ec.europa.eu/eurostat/web/query-builder/tool
+# Return plot
+plot
 
 ```
 
@@ -718,9 +690,9 @@ tmp <- eurostat_eurostat_json_url_edit_xx(id = "namq_10_gdp", filters = list(geo
 ```{r, echo=FALSE, results=TRUE}
 
 tab <- cbind(tail(as.yearqtr(ser.dat[ser.dat$geo %in% c("DE"),]$date.zoo), 10),
-             tail(ser.dat[ser.dat$geo %in% c("DE"), c(6)], 10),
-             tail(ser.dat[ser.dat$geo %in% c("FR"), c(6)], 10),
-             tail(ser.dat[ser.dat$geo %in% c("EA19"), c(6)], 10))
+             tail(ser.dat[ser.dat$geo %in% c("DE"), c(7)]/1000, 10),
+             tail(ser.dat[ser.dat$geo %in% c("FR"), c(7)]/1000, 10),
+             tail(ser.dat[ser.dat$geo %in% c("EA19"), c(7)]/1000, 10))
 
 colnames(tab) <- c("Period", "GER", "FRA", "EA19")
 
@@ -737,34 +709,30 @@ tab %>%
 <!--..........................................................................-->
 ## Preise {.tabset .tabset-fade}
 
-<span style="font-size:22pt;"> Makroökonomische Preise </span>
+<!-- <span style="font-size:22pt;"> Makroökonomische Preise </span> -->
 
 <!--..........................................................................-->
-<hr />
+<!-- <hr> -->
 
 <!--..........................................................................-->
 ### Waren und Diensleistungen {.tabset .tabset-fade}
 
 <!--..........................................................................-->
-<hr />
+<!-- <hr> -->
 
-<span style="font-size:20pt;"> Waren und Diensleistungen </span>
+<!-- <span style="font-size:20pt;"> Waren und Diensleistungen </span> -->
 
 <!-- ... -->
 
 <!--..........................................................................-->
-<hr />
+<!-- <hr> -->
 
 <!--..........................................................................-->
 #### USA
 
-<!--..........................................................................-->
-<hr />
-
 <span style="font-size:18pt;"> USA </span>
 
-<!--..........................................................................-->
-<hr />
+<hr>
 
 <span style="text-decoration:underline; font-size:18pt;"> Konsumentenpreisindex </span>
 
@@ -865,20 +833,15 @@ tab %>%
 ```{r, include=FALSE}
 
 ggsave(plot=plot,width=10,height=6,dpi=300,filename = "./figures/US_CPI.pdf")
-ggsave(plot=plot,width=10,height=6,dpi=300,filename = "./figures/US_CPI.svg")
 
 ```
 
 <!--..........................................................................-->
 #### Eurozone
 
-<!--..........................................................................-->
-<hr />
-
 <span style="font-size:18pt;"> Deutschland </span>
 
-<!--..........................................................................-->
-<hr />
+<hr>
 
 <span style="text-decoration:underline; font-size:18pt;"> Konsumentenpreisindex </span>
 
@@ -887,19 +850,21 @@ ggsave(plot=plot,width=10,height=6,dpi=300,filename = "./figures/US_CPI.svg")
 <div class="cod_content">
 ```{r,results=FALSE,fig.show='hide',eval=FALSE}
 
-# Data
-ser.dat <- get_eurostat(id = "prc_hicp_manr",
-                        filters = list(geo = c("DE","FR","EA19"),
-                                     sinceTimePeriod = c("2010M01"),
-                                     unit = c("RCH_A"),
-                                     coicop = c("CP00")))
+source("./r-scripts/r_eurostat_helper_functions.R")
 
-# Transform date to yearmon and date class
-ser.dat$date.zoo <- as.yearmon(as.character(ser.dat$time), "%Y-%m")
-ser.dat$date.dat <- as.Date(ser.dat$date.zoo, format = "%b %Y")
+# Url
+url <- "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/prc_hicp_manr?format=JSON&geo=DE&geo=FR&geo=EA19&freq=M&unit=RCH_A&coicop=CP00"
+
+# Data
+ser.dat <- get_eurostat_xx(url = url)
+
+# Transform date to date class
+ser.dat$date.dat <- as.Date(as.yearmon(ser.dat$time))
+# Transform date to yearmon class
+ser.dat$date.zoo <- as.yearmon(ser.dat$date.dat, "%b%y")
 
 # Subset data
-ser.dat <- subset(ser.dat, date.dat %in% seq(as.Date("2000-01-01"), as.Date("2023-02-01"), "month"))
+ser.dat <- subset(ser.dat, date.dat %in% seq(as.Date("2015-01-01"), Sys.Date(), by = "month"))
 
 # Construct plot
 plot <- ggplot(data = ser.dat, mapping = aes(x = date.zoo, y = values, color = geo)) +
@@ -912,7 +877,7 @@ plot <- ggplot(data = ser.dat, mapping = aes(x = date.zoo, y = values, color = g
                      labels=comma) +
   scale_color_discrete(name = "", labels = c("GER","FRA","EA19")) +
   labs(title = "HVPI (jährliche Veränderungrate)",
-       subtitle = paste0(c("(Letzter Beobachtungswert: "), ser.dat$date.zoo[length(ser.dat$date.zoo)], c(")")),
+       subtitle = paste0(c("(Letzter Beobachtungswert: "), as.yearmon(as.Date(ser.dat$date.dat[length(ser.dat$time)])), c(")")),
        caption = "Quelle: Eurostat", 
        x = "", y = "Prozent") +
   mod.theme.01
@@ -927,19 +892,21 @@ plot
 <div class="cod_content">
 ```{r,echo=FALSE}
 
-# Data
-ser.dat <- get_eurostat(id = "prc_hicp_manr",
-                        filters = list(geo = c("DE","FR","EA19"),
-                                     sinceTimePeriod = c("2010M01"),
-                                     unit = c("RCH_A"),
-                                     coicop = c("CP00")))
+source("./r-scripts/r_eurostat_helper_functions.R")
 
-# Transform date to yearmon and date class
-ser.dat$date.zoo <- as.yearmon(as.character(ser.dat$time), "%Y-%m")
-ser.dat$date.dat <- as.Date(ser.dat$date.zoo, format = "%b %Y")
+# Url
+url <- "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/prc_hicp_manr?format=JSON&geo=DE&geo=FR&geo=EA19&freq=M&unit=RCH_A&coicop=CP00"
+
+# Data
+ser.dat <- get_eurostat_xx(url = url)
+
+# Transform date to date class
+ser.dat$date.dat <- as.Date(as.yearmon(ser.dat$time))
+# Transform date to yearmon class
+ser.dat$date.zoo <- as.yearmon(ser.dat$date.dat, "%b%y")
 
 # Subset data
-ser.dat <- subset(ser.dat, date.dat %in% seq(as.Date("2000-01-01"), as.Date("2023-02-01"), "month"))
+ser.dat <- subset(ser.dat, date.dat %in% seq(as.Date("2015-01-01"), Sys.Date(), by = "month"))
 
 # Construct plot
 plot <- ggplot(data = ser.dat, mapping = aes(x = date.zoo, y = values, color = geo)) +
@@ -952,7 +919,7 @@ plot <- ggplot(data = ser.dat, mapping = aes(x = date.zoo, y = values, color = g
                      labels=comma) +
   scale_color_discrete(name = "", labels = c("GER","FRA","EA19")) +
   labs(title = "HVPI (jährliche Veränderungrate)",
-       subtitle = paste0(c("(Letzter Beobachtungswert: "), ser.dat$date.zoo[length(ser.dat$date.zoo)], c(")")),
+       subtitle = paste0(c("(Letzter Beobachtungswert: "), as.yearmon(as.Date(ser.dat$date.dat[length(ser.dat$time)])), c(")")),
        caption = "Quelle: Eurostat", 
        x = "", y = "Prozent") +
   mod.theme.01
@@ -977,10 +944,10 @@ met.dat$units[1]
 <div class="cod_content">
 ```{r, echo=FALSE, results=TRUE}
 
-tab <- cbind(tail(ser.dat[ser.dat$geo %in% "DE", 6], 10),
-             tail(ser.dat[ser.dat$geo %in% c("DE"), 5], 10),
-             tail(ser.dat[ser.dat$geo %in% c("FR"), 5], 10),
-             tail(ser.dat[ser.dat$geo %in% c("EA19"), 5], 10))
+tab <- cbind(tail(ser.dat[ser.dat$geo %in% "DE", 8], 10),
+             tail(ser.dat[ser.dat$geo %in% c("DE"), 6], 10),
+             tail(ser.dat[ser.dat$geo %in% c("FR"), 6], 10),
+             tail(ser.dat[ser.dat$geo %in% c("EA19"), 6], 10))
 
 colnames(tab) <- c("Period", "GER", "FRA", "EA19")
 
@@ -995,13 +962,6 @@ tab %>%
 ```{r, include=FALSE}
 
 ggsave(plot=plot,width=10,height=6,dpi=300,filename = "./figures/EURO_CPI.pdf")
-ggsave(plot=plot,width=10,height=6,dpi=300,filename = "./figures/EURO_CPI.svg")
-
-```
-
-```{r}
-
-# source("./Rscripts/r_eurostat_helper_functions.R")
 
 ```
 
@@ -1011,25 +971,22 @@ ggsave(plot=plot,width=10,height=6,dpi=300,filename = "./figures/EURO_CPI.svg")
 ### Liquidität {.tabset .tabset-fade}
 
 <!--..........................................................................-->
-<hr />
+<!-- <hr> -->
 
-<span style="font-size:20pt;"> Liquidität </span>
+<!-- <span style="font-size:20pt;"> Liquidität </span> -->
 
 <!-- ... -->
 
 <!--..........................................................................-->
-<hr />
+<!-- <hr> -->
 
 <!--..........................................................................-->
 #### USA
 
-<!--..........................................................................-->
-<hr />
-
 <span style="font-size:18pt;"> USA </span>
 
 <!--..........................................................................-->
-<hr />
+<hr>
 
 <span style="text-decoration:underline; font-size:18pt;"> FED Funds Zielband (oberes Limit) </span>
 
@@ -1129,24 +1086,15 @@ tab %>%
 ```{r, include=FALSE}
 
 ggsave(plot=plot,width=10,height=6,dpi=300,filename = "./figures/US_FEDFUNDS.pdf")
-ggsave(plot=plot,width=10,height=6,dpi=300,filename = "./figures/US_FEDFUNDS.svg")
 
 ```
-
-
 
 
 
 <!--..........................................................................-->
 #### Eurozone
 
-<!--..........................................................................-->
-<hr />
-
 <span style="font-size:18pt;"> Eurozone </span>
-
-<!--..........................................................................-->
-<hr />
 
 <span style="text-decoration:underline; font-size:18pt;"> Spitzenrefinanzierungsfazilität </span>
 
@@ -1278,21 +1226,22 @@ tab %>%
 ```{r, include=FALSE}
 
 ggsave(plot=plot,width=10,height=6,dpi=300,filename = "./figures/EURO_MLF.pdf")
-ggsave(plot=plot,width=10,height=6,dpi=300,filename = "./figures/EURO_MLF.svg")
 
 ```
 
 
 
+<div style="display:none">
+
 <!--..........................................................................-->
-<hr />
+<hr>
 
 <span style="text-decoration:underline; font-size:18pt;"> Hauptrefinanzierungssatz </span>
 
 <!--..........................................................................-->
 <button type="button" class="collapsible01"> *Show Code* </button>
 <div class="cod_content">
-```{r,results=FALSE,fig.show='hide',eval=FALSE}
+```{r,results=FALSE,fig.show='hide',eval=FALSE, eval=FALSE}
 
 # Df with date sequence for merging 
 date.df <- data.frame(date=seq(as.Date("1999-01-01"), as.Date("2023-02-28"), by = "day")) 
@@ -1377,7 +1326,7 @@ plot
 <!--..........................................................................-->
 <button type="button" class="collapsible01"> *Show Output* </button>
 <div class="cod_content">
-```{r,echo=FALSE}
+```{r,echo=FALSE, eval=FALSE}
 
 # Df with date sequence for merging 
 date.df <- data.frame(date=seq(as.Date("1999-01-01"), Sys.Date(), by = "day")) 
@@ -1464,7 +1413,7 @@ plot
 <!--..........................................................................-->
 <button type="button" class="collapsible01"> *Letzte Werte* </button>
 <div class="cod_content">
-```{r, echo=FALSE, results=TRUE}
+```{r, echo=FALSE, results=TRUE, eval=FALSE}
 
 tab <- tail(dat,10)[,c(1,11)]
 colnames(tab) <- c("Datum", "Wert")
@@ -1479,20 +1428,13 @@ tab %>%
 </div>
 <!--..........................................................................-->
 
-```{r, include=FALSE}
+```{r, include=FALSE, eval=FALSE}
 
 ggsave(plot=plot,width=10,height=6,dpi=300,filename = "./figures/EURO_MRO.pdf")
-ggsave(plot=plot,width=10,height=6,dpi=300,filename = "./figures/EURO_MRO.svg")
 
 ```
 
-```{r, include=FALSE}
-
-# See: 
-# See: https://wikis.ec.europa.eu/display/EUROSTATHELP/API+Statistics+-+data+query
-# See: https://ec.europa.eu/eurostat/web/query-builder/getting-started/query-builder
-
-```
+</div>
 
 
 
@@ -1500,18 +1442,15 @@ ggsave(plot=plot,width=10,height=6,dpi=300,filename = "./figures/EURO_MRO.svg")
 ### Festverzinsliche Wertpapiere {.tabset .tabset-fade}
 
 <!--..........................................................................-->
-<hr />
+<!-- <hr> -->
 
-<span style="font-size:20pt;"> Festverzinsliche Wertpapiere </span>
+<!-- <span style="font-size:20pt;"> Festverzinsliche Wertpapiere </span> -->
 
 <!--..........................................................................-->
-<hr />
+<!-- <hr> -->
 
 <!--..........................................................................-->
 #### Risiken
-
-<!--..........................................................................-->
-<hr />
 
 <span style="font-size:18pt;"> Risiken </span>
 
@@ -1622,20 +1561,13 @@ tab %>%
 ```{r, include=FALSE}
 
 ggsave(plot = plot, width = 10, height = 6, dpi = 300, filename = "./figures/INT_RIS.pdf")
-ggsave(plot = plot, width = 10, height = 6, dpi = 300, filename = "./figures/INT_RIS.svg")
 
 ```
 
 
 
 <!--..........................................................................-->
-<hr />
-
-<!--..........................................................................-->
 #### Laufzeiten
-
-<!--..........................................................................-->
-<hr />
 
 <span style="font-size:18pt;"> Laufzeiten </span>
 
@@ -1673,7 +1605,6 @@ plot <- ggplot(data = ser.dat, mapping = aes(x = date, y = value, color = series
 
 # Return plot
 plot
-
 
 ```
 </div>
@@ -1747,7 +1678,6 @@ tab %>%
 ```{r, include=FALSE}
 
 ggsave(plot=plot,width=10,height=6,dpi=300,filename = "./figures/INT_MAT.pdf")
-ggsave(plot=plot,width=10,height=6,dpi=300,filename = "./figures/INT_MAT.svg")
 
 ```
 
@@ -1757,18 +1687,15 @@ ggsave(plot=plot,width=10,height=6,dpi=300,filename = "./figures/INT_MAT.svg")
 ### Wechsekurse {.tabset .tabset-fade}
 
 <!--..........................................................................-->
-<hr />
+<!-- <hr> -->
 
-<span style="font-size:20pt;"> Wechselkurse </span>
+<!-- <span style="font-size:20pt;"> Wechselkurse </span> -->
 
 <!--..........................................................................-->
-<hr />
+<!-- <hr> -->
 
 <!--..........................................................................-->
 #### EUR-USD
-
-<!--..........................................................................-->
-<hr />
 
 <span style="font-size:18pt;"> EUR-USD </span>
 
@@ -1871,15 +1798,11 @@ tab %>%
 ```{r, include=FALSE}
 
 ggsave(plot = plot, width = 10, height = 6, dpi = 300, filename = "./figures/FX_EURUSD.pdf")
-ggsave(plot = plot, width = 10, height = 6, dpi = 300, filename = "./figures/FX_EURUSD.svg")
 
 ```
 
 <!--..........................................................................-->
 #### USD-JPY
-
-<!--..........................................................................-->
-<hr />
 
 <span style="font-size:18pt;"> USD-JPY </span>
 
@@ -1982,15 +1905,11 @@ tab %>%
 ```{r, include=FALSE}
 
 ggsave(plot = plot, width = 10, height = 6, dpi = 300, filename = "./figures/FX_USDJPY.pdf")
-ggsave(plot = plot, width = 10, height = 6, dpi = 300, filename = "./figures/FX_USDJPY.svg")
 
 ```
 
 <!--..........................................................................-->
 #### UKP-USD
-
-<!--..........................................................................-->
-<hr />
 
 <span style="font-size:18pt;"> UKP-USD </span>
 
@@ -2093,7 +2012,6 @@ tab %>%
 ```{r, include=FALSE}
 
 ggsave(plot = plot, width = 10, height = 6, dpi = 300, filename = "./figures/FX_UKPUSD.pdf")
-ggsave(plot = plot, width = 10, height = 6, dpi = 300, filename = "./figures/FX_UKPUSD.svg")
 
 ```
 
@@ -2102,14 +2020,16 @@ ggsave(plot = plot, width = 10, height = 6, dpi = 300, filename = "./figures/FX_
 #
 
 <!--..........................................................................-->
-<hr />
+<hr>
 
 <p class="back01">
 [Zurück zur *Startdatei*](./index.html)
 </p>
 
 <!--..........................................................................-->
-<hr />
+<hr>
+
+
 
 
 
