@@ -795,7 +795,7 @@ oecd.qna.out <- function(loc, sta.dat, end.dat){
                     minor_breaks = seq(as.yearqtr(oecd.qna.res$sta.dat), as.yearqtr(oecd.qna.res$end.dat), 0.25)[-1],
                     format = "%Y-Q%q",
                     expand = c(0, 0)) +
-    scale_y_continuous(breaks = seq(-10, 10, 2))
+    scale_y_continuous(breaks = seq(-20, 20, 2))
   
   ret.lis <- list(plt.x=plt.x, plt.gx=plt.gx, out.01.res=out.01.res, lab.inp=lab.inp)
   
@@ -1177,7 +1177,7 @@ oecd.qna.exp <- function(loc,sta.dat,end.dat){
                     minor_breaks = seq(as.yearqtr(oecd.qna.res$sta.dat), as.yearqtr(oecd.qna.res$end.dat),0.25)[-1],
                     format = "%Y-Q%q",
                     expand = c(0, 0)) +
-    scale_y_continuous(breaks = seq(-10, 10, 2))
+    scale_y_continuous(breaks = seq(-20, 20, 2))
   
   ret.lis <- list(plt.x = plt.x, plt.gx = plt.gx, exp.01.res = exp.01.res, lab.inp = lab.inp)
   
