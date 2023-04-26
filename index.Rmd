@@ -22,7 +22,7 @@ xfun::file_string('header_02.html')
 
 Dieses Lernmodul beinhaltet zusätzliches Material für die Vorlesung Makroökonomik II.
 
-Schwerpunkt dieses Lernoduls ist die Betrachtung makroökonomischer Inhalte aus empirischer, insbesondere aus beschreibender, empirischer Perspektive.
+Schwerpunkt dieses Lernoduls ist die Betrachtung makroökonomischer Inhalte aus empirischer, insbesondere aus beschreibender/empirischer Perspektive.
 
 Dies umfasst Beschaffung, Aufbereitung, Analyse und Darstellung makroökonomischer Daten.
 
