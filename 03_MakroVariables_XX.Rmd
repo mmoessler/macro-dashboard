@@ -1229,9 +1229,7 @@ ggsave(plot=plot,width=10,height=6,dpi=300,filename = "./figures/EURO_MLF.pdf")
 
 ```
 
-
-
-<div style="display:none">
+<!-- <div style="display:none"> -->
 
 <!--..........................................................................-->
 <hr>
@@ -1241,7 +1239,7 @@ ggsave(plot=plot,width=10,height=6,dpi=300,filename = "./figures/EURO_MLF.pdf")
 <!--..........................................................................-->
 <button type="button" class="collapsible01"> *Show Code* </button>
 <div class="cod_content">
-```{r,results=FALSE,fig.show='hide',eval=FALSE, eval=FALSE}
+```{r,results=FALSE,fig.show='hide',eval=FALSE}
 
 # Df with date sequence for merging 
 date.df <- data.frame(date=seq(as.Date("1999-01-01"), as.Date("2023-02-28"), by = "day")) 
@@ -1326,7 +1324,7 @@ plot
 <!--..........................................................................-->
 <button type="button" class="collapsible01"> *Show Output* </button>
 <div class="cod_content">
-```{r,echo=FALSE, eval=FALSE}
+```{r,echo=FALSE, eval=TRUE}
 
 # Df with date sequence for merging 
 date.df <- data.frame(date=seq(as.Date("1999-01-01"), Sys.Date(), by = "day")) 
@@ -1413,7 +1411,7 @@ plot
 <!--..........................................................................-->
 <button type="button" class="collapsible01"> *Letzte Werte* </button>
 <div class="cod_content">
-```{r, echo=FALSE, results=TRUE, eval=FALSE}
+```{r, echo=FALSE, results=TRUE, eval=TRUE}
 
 tab <- tail(dat,10)[,c(1,11)]
 colnames(tab) <- c("Datum", "Wert")
@@ -1428,13 +1426,13 @@ tab %>%
 </div>
 <!--..........................................................................-->
 
-```{r, include=FALSE, eval=FALSE}
+```{r, include=FALSE, eval=TRUE}
 
 ggsave(plot=plot,width=10,height=6,dpi=300,filename = "./figures/EURO_MRO.pdf")
 
 ```
 
-</div>
+<!-- </div> -->
 
 
 
