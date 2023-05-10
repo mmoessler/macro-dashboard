@@ -1,5 +1,7 @@
 ---
 output: html_fragment
+editor_options: 
+  chunk_output_type: console
 ---
 
 <!--..........................................................................-->
