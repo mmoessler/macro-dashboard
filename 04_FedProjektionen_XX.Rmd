@@ -3,6 +3,8 @@ output: html_fragment
 bibliography: [HfWU_Makro02_Literatur.bib]
 biblio-style: apalike
 link-citations: no
+editor_options: 
+  chunk_output_type: console
 ---
 
 <!--..........................................................................-->
