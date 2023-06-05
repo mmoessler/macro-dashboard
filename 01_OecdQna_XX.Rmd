@@ -33,14 +33,6 @@ options(width=9999)
 klippy::klippy(tooltip_message = 'Click to copy', tooltip_success = 'Done', position = c('top', 'right'))
 ```
 
-```{r,include=FALSE}
-
-upd.dat <- TRUE
-
-source("./r-scripts/r_oecd_helper_functions.R")
-
-```
-
 
 
 <!--..........................................................................-->
@@ -471,7 +463,7 @@ Die Daten können duch die Funktion `get_dataset` heruntergalden werden.
 
 # > Inputs for download
 # loc <- qna.str$LOCATION[,1]
-loc <- c("DEU", "FRA", "ITA", "EA19", "GBR", "USA")
+loc <- c("DEU", "FRA", "ITA", "EA20", "GBR", "USA")
 sub <- qna.str$SUBJECT[,1]
 mea <- c("LNBQRSA") # Measure: Constant prices seasonal adjusted
 fre <- c("Q") # Frequency: Quarterly frequency
@@ -832,8 +824,8 @@ oecd.qna.out.ita <- oecd.qna.out(loc, sta.dat, end.dat)
 # loc <- c("USA")
 # oecd.qna.out.usa <- oecd.qna.out(loc, sta.dat, end.dat)
 # > Eurozone
-loc <- c("EA19")
-oecd.qna.out.ea19 <- oecd.qna.out(loc, sta.dat, end.dat)
+loc <- c("EA20")
+oecd.qna.out.EA20 <- oecd.qna.out(loc, sta.dat, end.dat)
 # > United Kingdom
 loc <- c("GBR")
 oecd.qna.out.gbr <- oecd.qna.out(loc, sta.dat, end.dat)
@@ -858,7 +850,7 @@ grid.arrange(oecd.qna.out.fra$plt.x, oecd.qna.out.fra$plt.gx, ncol = 2, top = "F
 # > Italy ----
 grid.arrange(oecd.qna.out.ita$plt.x, oecd.qna.out.ita$plt.gx, ncol = 2, top = "Italien")
 # > Euro Area ----
-grid.arrange(oecd.qna.out.ea19$plt.x, oecd.qna.out.ea19$plt.gx, ncol=2, top = "Eurozone")
+grid.arrange(oecd.qna.out.EA20$plt.x, oecd.qna.out.EA20$plt.gx, ncol=2, top = "Eurozone")
 # > United Kingdom ----
 grid.arrange(oecd.qna.out.gbr$plt.x, oecd.qna.out.gbr$plt.gx, ncol = 2, top = "Vereinigtes Königreich")
 
@@ -875,7 +867,7 @@ grid.arrange(oecd.qna.out.fra$plt.x, ncol = 1, top = "Frankreich")
 # > Italy ----
 grid.arrange(oecd.qna.out.ita$plt.x, ncol = 1, top = "Italien")
 # > Euro Area ----
-grid.arrange(oecd.qna.out.ea19$plt.x,ncol = 1, top = "Eurozone")
+grid.arrange(oecd.qna.out.EA20$plt.x,ncol = 1, top = "Eurozone")
 # > United Kingdom ----
 grid.arrange(oecd.qna.out.gbr$plt.x, ncol = 1, top = "Vereinigtes Königreich")
 
@@ -899,7 +891,7 @@ grid.arrange(oecd.qna.out.fra$plt.gx, ncol = 1, top = "Frankreich")
 # > Italy ----
 grid.arrange(oecd.qna.out.ita$plt.gx, ncol = 1, top = "Italien")
 # > Euro Area ----
-grid.arrange(oecd.qna.out.ea19$plt.gx, ncol = 1, top = "Eurozone")
+grid.arrange(oecd.qna.out.EA20$plt.gx, ncol = 1, top = "Eurozone")
 # > United Kingdom ----
 grid.arrange(oecd.qna.out.gbr$plt.gx, ncol = 1, top = "Vereinigtes Königreich")
 
@@ -910,10 +902,10 @@ grid.arrange(oecd.qna.out.gbr$plt.gx, ncol = 1, top = "Vereinigtes Königreich")
 # Save plots
 # ggsave(plot=oecd.qna.out.fra$plt.gx,width=10,height=6,dpi=300,filename = "./figures/FRA_QNA_out_gx_01.pdf")
 # ggsave(plot=oecd.qna.out.ita$plt.gx,width=10,height=6,dpi=300,filename = "./figures/ITA_QNA_out_gx_01.pdf")
-ggsave(plot=oecd.qna.out.ea19$plt.gx,width=10,height=6,dpi=300,filename = "./figures/EA19_QNA_out_gx_01.pdf")
+ggsave(plot=oecd.qna.out.EA20$plt.gx,width=10,height=6,dpi=300,filename = "./figures/EA20_QNA_out_gx_01.pdf")
 # ggsave(plot=oecd.qna.out.gbr$plt.gx,width=10,height=6,dpi=300,filename = "./figures/GBR_QNA_out_gx_01.pdf")
 
-ggsave(plot=oecd.qna.out.ea19$plt.gx,width=10,height=6,dpi=300,filename = "./figures/EA19_QNA_out_gx_01.svg")
+ggsave(plot=oecd.qna.out.EA20$plt.gx,width=10,height=6,dpi=300,filename = "./figures/EA20_QNA_out_gx_01.svg")
 
 ```
 
@@ -1214,8 +1206,8 @@ oecd.qna.exp.ita <- oecd.qna.exp(loc, sta.dat, end.dat)
 loc <- c("USA")
 oecd.qna.exp.usa <- oecd.qna.exp(loc, sta.dat, end.dat)
 # > Eurozone
-loc <- c("EA19")
-oecd.qna.exp.ea19 <- oecd.qna.exp(loc, sta.dat, end.dat)
+loc <- c("EA20")
+oecd.qna.exp.EA20 <- oecd.qna.exp(loc, sta.dat, end.dat)
 # > United Kingdom
 loc <- c("GBR")
 oecd.qna.exp.gbr <- oecd.qna.exp(loc, sta.dat, end.dat)
@@ -1240,7 +1232,7 @@ grid.arrange(oecd.qna.exp.usa$plt.x,oecd.qna.exp.usa$plt.gx,ncol=2,top="USA")
 # > Italy ----
 grid.arrange(oecd.qna.exp.ita$plt.x,oecd.qna.exp.ita$plt.gx,ncol=2,top="Italien")
 # > Euro Area ----
-grid.arrange(oecd.qna.exp.ea19$plt.x,oecd.qna.exp.ea19$plt.gx,ncol=2,top="Eurozone")
+grid.arrange(oecd.qna.exp.EA20$plt.x,oecd.qna.exp.EA20$plt.gx,ncol=2,top="Eurozone")
 # > United Kingdom ----
 grid.arrange(oecd.qna.exp.gbr$plt.x,oecd.qna.exp.gbr$plt.gx,ncol=2,top="Vereinigtes Königreich")
 
@@ -1257,7 +1249,7 @@ grid.arrange(oecd.qna.exp.usa$plt.x, ncol = 1, top = "USA")
 # > Italy ----
 grid.arrange(oecd.qna.exp.ita$plt.x, ncol = 1, top = "Italien")
 # > Euro Area ----
-grid.arrange(oecd.qna.exp.ea19$plt.x,ncol = 1, top = "Eurozone")
+grid.arrange(oecd.qna.exp.EA20$plt.x,ncol = 1, top = "Eurozone")
 # > United Kingdom ----
 grid.arrange(oecd.qna.exp.gbr$plt.x, ncol = 1, top = "Vereinigtes Königreich")
 
@@ -1282,7 +1274,7 @@ grid.arrange(oecd.qna.exp.usa$plt.gx, ncol = 1, top = "USA")
 # > Italy ----
 grid.arrange(oecd.qna.exp.ita$plt.gx, ncol = 1, top = "Italien")
 # > Euro Area ----
-grid.arrange(oecd.qna.exp.ea19$plt.gx, ncol = 1, top = "Eurozone")
+grid.arrange(oecd.qna.exp.EA20$plt.gx, ncol = 1, top = "Eurozone")
 # > United Kingdom ----
 grid.arrange(oecd.qna.exp.gbr$plt.gx, ncol = 1, top = "Vereinigtes Königreich")
 
@@ -1293,10 +1285,10 @@ grid.arrange(oecd.qna.exp.gbr$plt.gx, ncol = 1, top = "Vereinigtes Königreich")
 # Save plots
 # ggsave(plot=oecd.qna.exp.fra$plt.gx,width=10,height=6,dpi=300,filename = "./figures/FRA_QNA_exp_gx_01.pdf")
 # ggsave(plot=oecd.qna.exp.ita$plt.gx,width=10,height=6,dpi=300,filename = "./figures/ITA_QNA_exp_gx_01.pdf")
-ggsave(plot=oecd.qna.exp.ea19$plt.gx,width=10,height=6,dpi=300,filename = "./figures/EA19_QNA_exp_gx_01.pdf")
+ggsave(plot=oecd.qna.exp.EA20$plt.gx,width=10,height=6,dpi=300,filename = "./figures/EA20_QNA_exp_gx_01.pdf")
 # ggsave(plot=oecd.qna.exp.gbr$plt.gx,width=10,height=6,dpi=300,filename = "./figures/GBR_QNA_exp_gx_01.pdf")
 
-ggsave(plot=oecd.qna.exp.ea19$plt.gx,width=10,height=6,dpi=300,filename = "./figures/EA19_QNA_exp_gx_01.svg")
+ggsave(plot=oecd.qna.exp.EA20$plt.gx,width=10,height=6,dpi=300,filename = "./figures/EA20_QNA_exp_gx_01.svg")
 
 ```
 
