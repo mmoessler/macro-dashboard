@@ -24,4 +24,4 @@ https://raw.githack.com/mmoessler/macro-dashboard/main/index.html
 Business cycle indicators
 
 * Run the r script `r-scripts/r_web_scraping_functions.R` to scrap the reports for the selected business cycle indicators.
-* Render the r markdown `02_Konjunkturindikatoren_XX` to include the selected reports and the selected macro variables.
+* Render the r markdown `02_business_indicators` to include the selected reports and the selected macro variables.
