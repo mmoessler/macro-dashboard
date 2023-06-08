@@ -6,11 +6,11 @@
 # Trials
 trials/
 
-# Old
+# ingore subfolders
 old/
-
-# FED
 fed/
+01_OecdQna_XX_cache/
+01_OecdQna_XX_files/
 
 # some notes
 some_notes.txt
