@@ -866,7 +866,7 @@ ser.dat$date.dat <- as.Date(as.yearmon(ser.dat$time))
 ser.dat$date.zoo <- as.yearmon(ser.dat$date.dat, "%b%y")
 
 # Subset data
-ser.dat <- subset(ser.dat, date.dat %in% seq(as.Date("2015-01-01"), Sys.Date(), by = "month"))
+ser.dat <- subset(ser.dat, date.dat %in% seq(as.Date("2010-01-01"), Sys.Date(), by = "month"))
 
 # Construct plot
 plot <- ggplot(data = ser.dat, mapping = aes(x = date.zoo, y = values, color = geo)) +
@@ -908,7 +908,7 @@ ser.dat$date.dat <- as.Date(as.yearmon(ser.dat$time))
 ser.dat$date.zoo <- as.yearmon(ser.dat$date.dat, "%b%y")
 
 # Subset data
-ser.dat <- subset(ser.dat, date.dat %in% seq(as.Date("2015-01-01"), Sys.Date(), by = "month"))
+ser.dat <- subset(ser.dat, date.dat %in% seq(as.Date("2010-01-01"), Sys.Date(), by = "month"))
 
 # Construct plot
 plot <- ggplot(data = ser.dat, mapping = aes(x = date.zoo, y = values, color = geo)) +

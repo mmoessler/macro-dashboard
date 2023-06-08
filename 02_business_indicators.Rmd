@@ -909,7 +909,7 @@ tab %>%
 </div>
 <!--..........................................................................-->
 
-```{r,include=FALSE, eval=FALSE}
+```{r,include=FALSE, eval=TRUE}
 
 # Save plot
 ggsave(plot=plot, width=8, height=6, dpi=300, filename = "./figures/EU_INDPRO_lev.pdf")
@@ -1224,7 +1224,7 @@ tab %>%
 </div>
 <!--..........................................................................-->
 
-```{r,include=FALSE, eval=FALSE}
+```{r,include=FALSE, eval=TRUE}
 
 # Save plot
 ggsave(plot=plot, width=8, height=6, dpi=300, filename = "./figures/EU_RETSAL_lev.pdf")
