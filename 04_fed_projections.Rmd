@@ -1,0 +1,182 @@
+---
+output: html_fragment
+editor_options: 
+  chunk_output_type: console
+---
+
+<!--..........................................................................-->
+<!--..........................................................................-->
+
+<!-- Include header -->
+
+````{=html}
+```{r, echo=FALSE, results='asis'}
+xfun::file_string('header_02.html')
+```
+````
+<!--..........................................................................-->
+<!--..........................................................................-->
+
+```{r,include=FALSE}
+library(knitr)
+knitr::opts_chunk$set(
+  include = TRUE,
+  echo = TRUE,
+  warning = FALSE,
+  message = FALSE,
+  fig.height = 6,
+  fig.width = 10,
+  fig.align = 'center')
+options(scipen=1000000)
+```
+
+```{r,klippy, echo=FALSE, include=TRUE}
+# See: https://rlesur.github.io/klippy/articles/klippy.html
+klippy::klippy(tooltip_message = 'Click to copy', tooltip_success = 'Done', position = c('top', 'right'))
+```
+
+```{r, include=FALSE}
+
+library(fredr)
+
+
+```
+
+<!--..........................................................................-->
+<!--..........................................................................-->
+
+
+
+<!--..........................................................................-->
+<hr />
+
+# FED Projektionen {.tabset .tabset-fade}
+
+<hr />
+
+*Dieses Dokument enthält Projektionen der US Federal Reserve Bank für die US Wirtschaft.* 
+
+<hr />
+
+<!------------------------------------------------------------------------------> 
+## Mrz 2023 {.tabset .tabset-fade}
+
+Letzte Prognosen:
+
+<center>
+<embed src="https://www.federalreserve.gov/monetarypolicy/files/fomcprojtabl20230322.pdf" width="900" height="1000" type="application/pdf">
+</center>
+
+<br>
+
+<p class="sou01">
+Quelle: Board of Governors of the Federal Reserve System
+</p>
+
+<!------------------------------------------------------------------------------> 
+## Dez 2022 {.tabset .tabset-fade}
+
+Vorletzte Prognosen:
+
+<center>
+<embed src="https://www.federalreserve.gov/monetarypolicy/files/fomcprojtabl20221214.pdf" width="900" height="1000" type="application/pdf">
+</center>
+
+<br>
+
+<p class="sou01">
+Quelle: Board of Governors of the Federal Reserve System
+</p>
+
+<!------------------------------------------------------------------------------> 
+## Jun 2021 {.tabset .tabset-fade}
+
+Erste Anhebung der Prognosen für die Inflationsrate.
+
+<center>
+<embed src="https://www.federalreserve.gov/monetarypolicy/files/fomcprojtabl20210616.pdf" width="900" height="1000" type="application/pdf">
+</center>
+
+<br>
+
+<p class="sou01">
+Quelle: Board of Governors of the Federal Reserve System
+</p>
+
+<!------------------------------------------------------------------------------> 
+## Jun 2020 {.tabset .tabset-fade}
+
+Anpassung der Prgonosen aufgrund der Corona Pandemie.
+
+<center>
+<embed src="https://www.federalreserve.gov/monetarypolicy/files/fomcprojtabl20200610.pdf" width="900" height="1000" type="application/pdf">
+</center>
+
+<br>
+
+<p class="sou01">
+Quelle: Board of Governors of the Federal Reserve System
+</p>
+
+<!------------------------------------------------------------------------------> 
+## Dez 2019 {.tabset .tabset-fade}
+
+Letzte Prognose vor der Corona Pandemie.
+
+<center>
+<embed src="https://www.federalreserve.gov/monetarypolicy/files/fomcprojtabl20191211.pdf" width="900" height="1000" type="application/pdf">
+</center>
+
+<br>
+
+<p class="sou01">
+Quelle: Board of Governors of the Federal Reserve System
+</p>
+
+
+
+
+
+
+#
+
+<br>
+
+<!--..........................................................................-->
+<hr />
+
+<p class="back01">
+[Zurück zu *Start*](./index.html)
+</p>
+
+<!--..........................................................................-->
+<hr />
+
+
+
+<!--
+
+SOME NOTES
+
+
+-->
+
+<!--..........................................................................-->
+<!-- <hr /> -->
+
+<!-- # References -->
+
+
+
+
+<!--..........................................................................--> 
+<!-- THIS IS THE END --> 
+
+<!-- Include bottom -->
+
+````{=html}
+```{r, echo=FALSE, results='asis'}
+xfun::file_string('bottom_01.html')
+```
+````
+
