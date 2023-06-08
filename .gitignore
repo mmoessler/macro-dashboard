@@ -9,8 +9,8 @@ trials/
 # ingore subfolders
 old/
 fed/
-01_OecdQna_XX_cache/
-01_OecdQna_XX_files/
+01_oecd_qna_cache/
+01_oecd_qna_files/
 data/
 figures/
 
