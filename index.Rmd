@@ -40,11 +40,11 @@ Dies erfordert zum Teil den Einsatz von Software mit entsprechenden Analyse- und
 # Inhalt {#inhalt}
 
 * Wohlstand beschreiben
-  * Volkswirtschaftliche Gesamtrechnung (VGR) [hier](./01_OecdQna_XX.html)
-  * Konjunkturindikatoren [hier](./02_Konjunkturindikatoren_XX.html)
+  * Volkswirtschaftliche Gesamtrechnung (VGR) [hier](./01_oecd_qna.html)
+  * Konjunkturindikatoren [hier](./02_business_indicators.html)
 * Wohlstand erklären und gestalten
-  * Makroökonomische "Mengen" und Preise [hier](./03_MakroVariables_XX.html)
-  * FED Prognosen [hier](./04_FedProjektionen_XX.html)
+  * Makroökonomische "Mengen" und Preise [hier](./03_macro_variables.html)
+  * FED Prognosen [hier](./04_fed_projections.html)
 
   <!-- * Makroökonomische "Mengen" -->
   <!-- * Makroökonomische "Preise" -->
@@ -63,7 +63,7 @@ Bei Interesse können die Ergebnisse anhand der "Codeblöcke" repliziert werden.
 
 Das ist kein *R* Kurs und die Implementierung basiert auf fortgeschrittenen Kenntnissen in *R*.
 
-Weitere Infos zur Installation von *R* und *RStudio* finden Sie [hier](./00_Installation_XX.html).
+Weitere Infos zur Installation von *R* und *RStudio* finden Sie [hier](./00_installation.html).
 
 
 
