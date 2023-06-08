@@ -11,6 +11,8 @@ old/
 fed/
 01_OecdQna_XX_cache/
 01_OecdQna_XX_files/
+data/
+figures/
 
 # some notes
 some_notes.txt
