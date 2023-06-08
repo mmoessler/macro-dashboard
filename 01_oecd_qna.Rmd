@@ -1,5 +1,7 @@
 ---
 output: html_fragment
+editor_options: 
+  chunk_output_type: console
 ---
 
 <!--..........................................................................-->
@@ -32,6 +34,14 @@ options(width=9999)
 # See: https://rlesur.github.io/klippy/articles/klippy.html
 klippy::klippy(tooltip_message = 'Click to copy', tooltip_success = 'Done', position = c('top', 'right'))
 ```
+
+```{r}
+
+upd.dat <- TRUE
+
+```
+
+
 
 
 
@@ -430,6 +440,8 @@ Die Struktur der VGR Daten der OECD kann duch die Funktion `get_data_structure` 
 
 # > Call get_data_structure
 # qna.str <- get_data_structure("QNA")
+
+source("./r-scripts/r_oecd_helper_functions.R")
 qna.str <- OECD_get_data_structure_edit("QNA")
 
 ```
