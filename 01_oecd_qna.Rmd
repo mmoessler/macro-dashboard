@@ -480,7 +480,7 @@ sub <- qna.str$SUBJECT[,1]
 mea <- c("LNBQRSA") # Measure: Constant prices seasonal adjusted
 fre <- c("Q") # Frequency: Quarterly frequency
 sta.dat <- as.Date("2005-01-01") # Periods: "yyyy-mm-dd"
-end.dat <- as.Date("2022-10-01")
+end.dat <- as.Date("2023-01-01")
 # Note: Q1: 2020-01-01; Q2: 2020-04-01; Q3: 2020-07-01; Q4: 2020-10-01
 fil <- list(loc, sub, mea, fre) # Collect inputs for get_dataset function
 
@@ -546,7 +546,7 @@ loc <- c("DEU") # Location: Germany
 mea <- c("LNBQRSA") # Measure: Constant prices seasonal adjusted
 fre <- c("Q") # Frequency: Quarterly frequency
 sta.dat <- as.Date("2005-01-01") # Periods: "yyyy-mm-dd"
-end.dat <- as.Date("2022-10-01")
+end.dat <- as.Date("2023-01-01")
 # Note: Q1: 2020-01-01; Q2: 2020-04-01; Q3: 2020-07-01; Q4: 2020-10-01
 
 sub <- c("B1_GA","B1GVA","B1GVB_E","B1GVF","B1GVG_I","B1GVJ","B1GVK","B1GVL","B1GVM_N","B1GVO_Q","B1GVR_U","D21_D31")
@@ -723,7 +723,7 @@ oecd.qna.out <- function(loc, sta.dat, end.dat){
   mea <- c("LNBQRSA") # Measure: Constant prices seasonal adjusted
   fre <- c("Q") # Frequency: Quarterly frequency
   # sta.dat <- as.Date("2005-01-01") # Periods: "yyyy-mm-dd"
-  # end.dat <- as.Date("2022-10-01")
+  # end.dat <- as.Date("2023-01-01")
   # Note: Q1: 2020-01-01; Q2: 2020-04-01; Q3: 2020-07-01; Q4: 2020-10-01
 
   sub <- c("B1_GA","B1GVA","B1GVB_E","B1GVF","B1GVG_I","B1GVJ","B1GVK","B1GVL","B1GVM_N","B1GVO_Q","B1GVR_U","D21_D31")
@@ -820,7 +820,7 @@ oecd.qna.out <- function(loc, sta.dat, end.dat){
 
 # > Start and end date
 sta.dat <- as.Date("2005-01-01") # Periods: "yyyy-mm-dd"
-end.dat <- as.Date("2022-10-01")
+end.dat <- as.Date("2023-01-01")
 # Note: Q1: 2020-01-01; Q2: 2020-04-01; Q3: 2020-07-01; Q4: 2020-10-01
 
 # > Germany
@@ -955,7 +955,7 @@ loc <- c("DEU") # Location: Germany
 mea <- c("LNBQRSA") # Measure: Constant prices seasonal adjusted
 fre <- c("Q") # Frequency: Quarterly frequency
 sta.dat <- as.Date("2005-01-01") # Periods: "yyyy-mm-dd"
-end.dat <- as.Date("2022-10-01")
+end.dat <- as.Date("2023-01-01")
 # Note: Q1: 2020-01-01; Q2: 2020-04-01; Q3: 2020-07-01; Q4: 2020-10-01
 
 sub <- c("B1_GE","P3","P5","B11")
@@ -1113,7 +1113,7 @@ oecd.qna.exp <- function(loc,sta.dat,end.dat){
   mea <- c("LNBQRSA") # Measure: Constant prices seasonal adjusted
   fre <- c("Q") # Frequency: Quarterly frequency
   # sta.dat <- as.Date("2005-01-01") # Periods: "yyyy-mm-dd"
-  # end.dat <- as.Date("2022-10-01")
+  # end.dat <- as.Date("2023-01-01")
   # Note: Q1: 2020-01-01; Q2: 2020-04-01; Q3: 2020-07-01; Q4: 2020-10-01
 
   sub <- c("B1_GE","P3","P5","B11")
@@ -1202,7 +1202,7 @@ oecd.qna.exp <- function(loc,sta.dat,end.dat){
 
 # > Start and end date
 sta.dat <- as.Date("2005-01-01") # Periods: "yyyy-mm-dd"
-end.dat <- as.Date("2022-10-01")
+end.dat <- as.Date("2023-01-01")
 # Note: Q1: 2020-01-01; Q2: 2020-04-01; Q3: 2020-07-01; Q4: 2020-10-01
 
 # > Germany
