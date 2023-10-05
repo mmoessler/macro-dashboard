@@ -41,10 +41,6 @@ upd.dat <- TRUE
 
 ```
 
-
-
-
-
 <!--..........................................................................-->
 <hr />
 
@@ -85,7 +81,7 @@ library(OECD)
 <button type="button" class="collapsible02"> Auswertung der Daten </button>
 <div class="col_content">
 
-Für die Auswertung verwenden wir vorwiegend *R*-Pakete der *base environment* enthalten sind.
+Für die Auswertung verwenden wir vorwiegend *R*-Pakete Teil der *base* Installation.
 
 Außerde verwenden wir außerdem folgenden R-Pakete:
 
@@ -96,9 +92,9 @@ Außerde verwenden wir außerdem folgenden R-Pakete:
 * `scales`, [Link](https://cran.r-project.org/web/packages/scales/index.html): Scale functions for visualization
 * `zoo`, [Link](https://cran.r-project.org/web/packages/zoo/index.html): S3 Infrastructure for Regular and Irregular Time Series (Z's Ordered Observations)
 
-<p class="note01">
-Hinweis: Eine benutzerfreundlichere Implementierung würde mehr die Pakete `dplyr`, `tidyr` einbeziehen. 
-</p>
+<!-- <p class="note01"> -->
+<!-- Hinweis: Eine benutzerfreundlichere Implementierung würde mehr die Pakete `dplyr`, `tidyr` einbeziehen.  -->
+<!-- </p> -->
 
 ```{r,include=TRUE}
 
@@ -140,13 +136,6 @@ Die folgenden *R*-Funktionen werden verwendet um ausgewählte Transformationen d
 ```{r, include=TRUE, echo=TRUE}
 
 dat.man.fun.xx <- function(dat.fra, arg.lis, col.nam.sel, col.nam.out){
-  
-  # dat.fra <- dat.01
-  # arg.lis <- list(X = NULL, MARGIN = 1, FUN = "sum")
-  # col.nam.sel <- sub.inp.lis[[ii]]
-  # col.nam.out <- sub.inp.lab[[ii]]
-  
-  
   
   # add dat.fra as first element to list
   arg.lis[[1]] <- dat.fra
@@ -215,18 +204,6 @@ dat.man.fun.xx.chk <- function(dat.fra, arg.lis, col.nam.sel, col.nam.out){
 ```{r, include=TRUE, echo=TRUE}
 
 oecd.qna.fun.xx <- function(dat, loc, sub, mea, fre, sta.dat, end.dat, sub.inp.lis) {
-  
-  # # inputs
-  # dat <- qna.dat.00
-  # loc <- loc
-  # sub <- sub
-  # mea <- mea
-  # fre <- fre
-  # sta.dat <- sta.dat
-  # end.dat <- end.dat
-  # sub.inp.lis <- sub.inp.lis
-  
-  
   
   # Download if necessary!
   if(is.null(dat)){
@@ -394,8 +371,6 @@ oecd.qna.fun.xx.chk <- function(dat,loc,sub,mea,fre,sta.dat,end.dat,sub.inp.lis)
 </div>
 <!--..........................................................................--> 
 
-
-
 <!--..........................................................................--> 
 <button type="button" class="collapsible02"> Struktur der Daten: Entstehung </button>
 <div class="col_content">
@@ -426,9 +401,7 @@ Beispiel: Land Deutschland, 2018
 </div>
 <!--..........................................................................--> 
 
-
-
-<!-- IMPORTANT: Note, set eval=FALSE for fast not updated data or eval=TRUE for slow updated data -->
+<!-- IMPORTANT: Note, set eval=FALSE for fast compilation and not updated data or eval=TRUE for slow updated data -->
 
 <!--..........................................................................--> 
 <button type="button" class="collapsible02"> Struktur VGR Daten </button>
@@ -480,7 +453,7 @@ sub <- qna.str$SUBJECT[,1]
 mea <- c("LNBQRSA") # Measure: Constant prices seasonal adjusted
 fre <- c("Q") # Frequency: Quarterly frequency
 sta.dat <- as.Date("2005-01-01") # Periods: "yyyy-mm-dd"
-end.dat <- as.Date("2023-01-01")
+end.dat <- as.Date("2023-04-01")
 # Note: Q1: 2020-01-01; Q2: 2020-04-01; Q3: 2020-07-01; Q4: 2020-10-01
 fil <- list(loc, sub, mea, fre) # Collect inputs for get_dataset function
 
@@ -527,8 +500,6 @@ if (upd.dat) {
 <!--..........................................................................-->
 <hr />
 
-
-
 <!--..........................................................................--> 
 ## Entstehung {.tabset .tabset-fade}
 
@@ -546,7 +517,7 @@ loc <- c("DEU") # Location: Germany
 mea <- c("LNBQRSA") # Measure: Constant prices seasonal adjusted
 fre <- c("Q") # Frequency: Quarterly frequency
 sta.dat <- as.Date("2005-01-01") # Periods: "yyyy-mm-dd"
-end.dat <- as.Date("2023-01-01")
+end.dat <- as.Date("2023-04-01")
 # Note: Q1: 2020-01-01; Q2: 2020-04-01; Q3: 2020-07-01; Q4: 2020-10-01
 
 sub <- c("B1_GA","B1GVA","B1GVB_E","B1GVF","B1GVG_I","B1GVJ","B1GVK","B1GVL","B1GVM_N","B1GVO_Q","B1GVR_U","D21_D31")
@@ -702,10 +673,6 @@ dat %>%
 <!--..........................................................................-->
 <hr />
 
-
-
-
-
 <!--..........................................................................--> 
 ### Vergleich {.tabset .tabset-fade}
 
@@ -723,7 +690,7 @@ oecd.qna.out <- function(loc, sta.dat, end.dat){
   mea <- c("LNBQRSA") # Measure: Constant prices seasonal adjusted
   fre <- c("Q") # Frequency: Quarterly frequency
   # sta.dat <- as.Date("2005-01-01") # Periods: "yyyy-mm-dd"
-  # end.dat <- as.Date("2023-01-01")
+  # end.dat <- as.Date("2023-04-01")
   # Note: Q1: 2020-01-01; Q2: 2020-04-01; Q3: 2020-07-01; Q4: 2020-10-01
 
   sub <- c("B1_GA","B1GVA","B1GVB_E","B1GVF","B1GVG_I","B1GVJ","B1GVK","B1GVL","B1GVM_N","B1GVO_Q","B1GVR_U","D21_D31")
@@ -820,7 +787,7 @@ oecd.qna.out <- function(loc, sta.dat, end.dat){
 
 # > Start and end date
 sta.dat <- as.Date("2005-01-01") # Periods: "yyyy-mm-dd"
-end.dat <- as.Date("2023-01-01")
+end.dat <- as.Date("2023-04-01")
 # Note: Q1: 2020-01-01; Q2: 2020-04-01; Q3: 2020-07-01; Q4: 2020-10-01
 
 # > Germany
@@ -934,10 +901,6 @@ ggsave(plot=oecd.qna.out.EA20$plt.gx,width=10,height=6,dpi=300,filename = "./fig
 <!--..........................................................................-->
 <hr />
 
-
-
-
-
 <!--..........................................................................--> 
 ## Verwendung {.tabset .tabset-fade}
 
@@ -955,7 +918,7 @@ loc <- c("DEU") # Location: Germany
 mea <- c("LNBQRSA") # Measure: Constant prices seasonal adjusted
 fre <- c("Q") # Frequency: Quarterly frequency
 sta.dat <- as.Date("2005-01-01") # Periods: "yyyy-mm-dd"
-end.dat <- as.Date("2023-01-01")
+end.dat <- as.Date("2023-04-01")
 # Note: Q1: 2020-01-01; Q2: 2020-04-01; Q3: 2020-07-01; Q4: 2020-10-01
 
 sub <- c("B1_GE","P3","P5","B11")
@@ -1092,10 +1055,6 @@ ggsave(plot=plt.gx,width=10,height=6,dpi=300,filename = "./figures/DE_QNA_exp_gx
 <!--..........................................................................-->
 <hr />
 
-
-
-
-
 <!--..........................................................................--> 
 ### Vergleich {.tabset .tabset-fade}
 
@@ -1113,7 +1072,7 @@ oecd.qna.exp <- function(loc,sta.dat,end.dat){
   mea <- c("LNBQRSA") # Measure: Constant prices seasonal adjusted
   fre <- c("Q") # Frequency: Quarterly frequency
   # sta.dat <- as.Date("2005-01-01") # Periods: "yyyy-mm-dd"
-  # end.dat <- as.Date("2023-01-01")
+  # end.dat <- as.Date("2023-04-01")
   # Note: Q1: 2020-01-01; Q2: 2020-04-01; Q3: 2020-07-01; Q4: 2020-10-01
 
   sub <- c("B1_GE","P3","P5","B11")
@@ -1202,7 +1161,7 @@ oecd.qna.exp <- function(loc,sta.dat,end.dat){
 
 # > Start and end date
 sta.dat <- as.Date("2005-01-01") # Periods: "yyyy-mm-dd"
-end.dat <- as.Date("2023-01-01")
+end.dat <- as.Date("2023-04-01")
 # Note: Q1: 2020-01-01; Q2: 2020-04-01; Q3: 2020-07-01; Q4: 2020-10-01
 
 # > Germany
@@ -1316,10 +1275,6 @@ ggsave(plot=oecd.qna.exp.EA20$plt.gx,width=10,height=6,dpi=300,filename = "./fig
 
 <!--..........................................................................-->
 <hr />
-
-
-
-
 
 <!--..........................................................................--> 
 <!-- THIS IS THE END --> 
