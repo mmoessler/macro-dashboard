@@ -2,10 +2,10 @@
 library(rsdmx)
 
 # OECD::get_data_structure
-OECD_get_data_structure_edit <- function (dataset) {
+OECD_get_data_structure_fun <- function(dataset) {
   
   # # input
-  # dataset <- "DUR_D"
+  # dataset <- "QNA"
   
   
   
