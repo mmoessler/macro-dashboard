@@ -55,14 +55,9 @@ options(scipen=1)
 ## Einordnung
 
 <!--..........................................................................-->
-<!-- <hr /> -->
-
-<!-- <span style="font-size:20pt;"> Einordnung </span> -->
-
-<!--..........................................................................-->
 <hr />
 
-Für die Einordnung siehe auch Kapitel 2.2 "Vermessung von Wohlstand".
+Für die Einordnung siehe auch Kapitel 2.2 *"Vermessung von Wohlstand"*.
 
 <!--..........................................................................--> 
 <button type="button" class="collapsible02"> Deutschland </button>
@@ -92,34 +87,31 @@ Für die Einordnung siehe auch Kapitel 2.2 "Vermessung von Wohlstand".
 <!--..........................................................................--> 
 
 <!--..........................................................................-->
-<hr />
-
-<p class="back01">
-[Zurück zur *Startseite*](./index.html)
-</p>
-
-<!--..........................................................................-->
-<hr />
-
-
-
-<!--..........................................................................-->
 <!-- <hr /> -->
 
 <!--..........................................................................-->
 ## Vorbereitung {.tabset .tabset-fade}
 
 <!--..........................................................................-->
-<!-- <hr /> -->
-
-<!-- <span style="font-size:20pt;"> Vorbereitung </span> -->
-
-<!--..........................................................................-->
 <hr />
 
-Die Veröffentlichungen der Umfragen der wichtigsten *Stimmungsindikatoren* werden zum größten Teil aus dem Internet heruntergeladen und eingebunden. ([siehe](https://github.com/mmoessler/macro-dashboard/blob/main/r-scripts/r_web_scraping_functions.R))
+Die Veröffentlichungen der Umfragen der wichtigsten *Stimmungsindikatoren* werden zum größten Teil aus dem Internet heruntergeladen und eingebunden.
 
-Die Werte der wichtigsten *Aktivitätsindikatoren* werden zum größten Teil von öffentlich zugänglichen Datenbanken herunterladen, aufereitet und dargestellt.
+<hr>
+
+Die Berichte zu den Veröffentlichungen für das *ifo Geschäftsklima*, *EU Wirtschaftsvertrauen*, *ISM Einkaufsmanager* und das *Gfk Konsumklima* werden über ein *R*-Skript aus dem Internet heruntergeladen
+
+<!-- ([siehe](https://github.com/mmoessler/macro-dashboard/blob/main/r-scripts/r_web_scraping_functions.R)) -->
+
+```{r, eval=FALSE}
+
+source("https://github.com/mmoessler/macro-dashboard/blob/main/r-scripts/r_web_scraping_functions.R")
+
+```
+
+<hr>
+
+Die Werte der aller weiteren wichtigen *Aktivitätsindikatoren* werden zum größten Teil von öffentlich zugänglichen Datenbanken herunterladen, aufereitet und dargestellt.
 
 Dabei können die Daten entweder auf der entsprechenden Website oder über so genannte Programmierschnittstellen (APIs) heruntergeladen werden.
 
@@ -205,11 +197,6 @@ add_rec_shade <- function(st_date, ed_date, shade_color = "darkgray", zoo.mon = 
   library(ggplot2)
   library(zoo)
   
-  # fredr_set_key("insert_your_api_key")
-  # 
-  # st_date <- as.Date("2001-06-01")
-  # ed_date <- as.Date(Sys.Date())
-  
   recession  <-  fredr(series_id = "USRECD",observation_start = as.Date(st_date),observation_end = as.Date(ed_date))
   
   recession$diff <- recession$value-lagpad(recession$value, k = 1)
@@ -263,8 +250,6 @@ add_rec_shade <- function(st_date, ed_date, shade_color = "darkgray", zoo.mon = 
 
 <u>Schritt 6</u>: Lade Grafikvorlage zur Darstellung der Daten
 
-<!-- Grafikvorlage für *ggplot*: -->
-
 ```{r}
 
 mod.theme.01 <- theme_gray() + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, size = 12),
@@ -279,38 +264,16 @@ mod.theme.01$legend.position <- c("bottom")
 ```
 
 <!--..........................................................................-->
-<hr />
-
-<p class="back01">
-[Zurück zur *Startseite*](./index.html)
-</p>
-
-<!--..........................................................................-->
-<hr />
-
-
-
-<!--..........................................................................-->
 <!-- <hr /> -->
 
 <!--..........................................................................-->
 ## Simmung {.tabset .tabset-fade}
 
 <!--..........................................................................-->
-<!-- <hr /> -->
-
-<!-- <span style="font-size:20pt;"> Simmung </span> -->
-
-<!--..........................................................................-->
 <hr />
 
 <!--..........................................................................-->
 ### Produzenten {.tabset .tabset-fade}
-
-<!--..........................................................................-->
-<!-- <hr /> -->
-
-<!-- <span style="font-size:20pt;"> Produzenten </span> -->
 
 <!--..........................................................................-->
 <hr />
@@ -362,18 +325,6 @@ Quelle: Ifo Institut
 
 </div>
 <!--..........................................................................--> 
-
-<!--..........................................................................-->
-<hr />
-
-<p class="back01">
-[Zurück zur *Startseite*](./index.html)
-</p>
-
-<!--..........................................................................-->
-<hr />
-
-
 
 <!--..........................................................................-->
 <!-- <hr /> -->
@@ -431,18 +382,6 @@ Quelle: Europäische Kommission
 
 </div>
 <!--..........................................................................--> 
-
-<!--..........................................................................-->
-<hr />
-
-<p class="back01">
-[Zurück zur *Startseite*](./index.html)
-</p>
-
-<!--..........................................................................-->
-<hr />
-
-
 
 <!--..........................................................................-->
 <!-- <hr /> -->
@@ -517,27 +456,10 @@ Quelle: ISM Institut
 <!--..........................................................................--> 
 
 <!--..........................................................................-->
-<hr />
-
-<p class="back01">
-[Zurück zur *Startseite*](./index.html)
-</p>
-
-<!--..........................................................................-->
-<hr />
-
-
-
-<!--..........................................................................-->
 <!-- <hr /> -->
 
 <!--..........................................................................-->
 ### Konsumenten {.tabset .tabset-fade}
-
-<!--..........................................................................-->
-<!-- <hr /> -->
-
-<!-- <span style="font-size:20pt;"> Konsumenten </span> -->
 
 <!--..........................................................................-->
 <hr />
@@ -589,18 +511,6 @@ Quelle: GfK
 
 </div>
 <!--..........................................................................--> 
-
-<!--..........................................................................-->
-<hr />
-
-<p class="back01">
-[Zurück zur *Startseite*](./index.html)
-</p>
-
-<!--..........................................................................-->
-<hr />
-
-
 
 <!--..........................................................................-->
 <!-- <hr /> -->
@@ -732,20 +642,9 @@ tab %>%
 
 # Save plot
 ggsave(plot = plot, width = 8, height = 6, dpi = 300, filename = "./figures/UMCSENT_lev.pdf")
+ggsave(plot = plot, width = 8, height = 6, dpi = 300, filename = "./figures/UMCSENT_lev.svg")
 
 ```
-
-<!--..........................................................................-->
-<hr />
-
-<p class="back01">
-[Zurück zur *Startseite*](./index.html)
-</p>
-
-<!--..........................................................................-->
-<hr />
-
-
 
 <!--..........................................................................-->
 <!-- <hr /> -->
@@ -754,20 +653,10 @@ ggsave(plot = plot, width = 8, height = 6, dpi = 300, filename = "./figures/UMCS
 ## Aktivität {.tabset .tabset-fade}
 
 <!--..........................................................................-->
-<!-- <hr /> -->
-
-<!-- <span style="font-size:20pt;"> Aktivität </span> -->
-
-<!--..........................................................................-->
 <hr />
 
 <!--..........................................................................-->
 ### Produzenten {.tabset .tabset-fade}
-
-<!--..........................................................................-->
-<!-- <hr /> -->
-
-<!-- <span style="font-size:20pt;"> Produzenten </span> -->
 
 <!--..........................................................................-->
 <hr />
@@ -807,13 +696,13 @@ Die Industrieproduktion ist die wichtigste Messzahl um die Aktivität bei den Pr
 <div class="cod_content">
 ```{r,results=FALSE,fig.show='hide',eval=FALSE}
 
-source("./r-scripts/r_eurostat_helper_functions.R")
+source("https://raw.githubusercontent.com/mmoessler/macro-dashboard/main/r-scripts/r_eurostat_helper_functions.R")
 
 # Url
 url <- "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/sts_inpr_m?format=JSON&geo=DE&geo=FR&geo=EA19&freq=M&unit=I15&s_adj=SCA&indic_bt=PROD&nace_r2=B-D"
 
 # Data
-ser.dat <- get_eurostat_xx(url = url)
+ser.dat <- get_eurostat_fun(url = url)
 
 # Transform date to date class
 ser.dat$date.dat <- as.Date(as.yearmon(ser.dat$time))
@@ -848,13 +737,13 @@ plot
 <div class="cod_content">
 ```{r,echo=FALSE}
 
-source("./r-scripts/r_eurostat_helper_functions.R")
+source("https://raw.githubusercontent.com/mmoessler/macro-dashboard/main/r-scripts/r_eurostat_helper_functions.R")
 
 # Url
 url <- "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/sts_inpr_m?format=JSON&geo=DE&geo=FR&geo=EA19&freq=M&unit=I15&s_adj=SCA&indic_bt=PROD&nace_r2=B-D"
 
 # Data
-ser.dat <- get_eurostat_xx(url = url)
+ser.dat <- get_eurostat_fun(url = url)
 
 # Transform date to date class
 ser.dat$date.dat <- as.Date(as.yearmon(ser.dat$time))
@@ -913,20 +802,9 @@ tab %>%
 
 # Save plot
 ggsave(plot=plot, width=8, height=6, dpi=300, filename = "./figures/EU_INDPRO_lev.pdf")
+ggsave(plot=plot, width=8, height=6, dpi=300, filename = "./figures/EU_INDPRO_lev.svg")
 
 ```
-
-<!--..........................................................................-->
-<hr />
-
-<p class="back01">
-[Zurück zur *Startseite*](./index.html)
-</p>
-
-<!--..........................................................................-->
-<hr />
-
-
 
 <!--..........................................................................-->
 <!-- <hr /> -->
@@ -1058,31 +936,15 @@ tab %>%
 
 # Save plot
 ggsave(plot = plot, width = 8, height = 6, dpi = 300, filename = "./figures/US_INDPRO_lev.pdf")
+ggsave(plot = plot, width = 8, height = 6, dpi = 300, filename = "./figures/US_INDPRO_lev.svg")
 
 ```
-
-<!--..........................................................................-->
-<hr />
-
-<p class="back01">
-[Zurück zur *Startseite*](./index.html)
-</p>
-
-<!--..........................................................................-->
-<hr />
-
-
 
 <!--..........................................................................-->
 <!-- <hr /> -->
 
 <!--..........................................................................-->
 ### Konsumenten {.tabset .tabset-fade}
-
-<!--..........................................................................-->
-<!-- <hr /> -->
-
-<!-- <span style="font-size:20pt;"> Konsumenten </span> -->
 
 <!--..........................................................................-->
 <hr />
@@ -1122,13 +984,13 @@ Die Einzelhandelsumsätze ist eine der wichtigsten Messzahlen um die Aktivität 
 <div class="cod_content">
 ```{r,results=FALSE,fig.show='hide',eval=FALSE}
 
-source("./r-scripts/r_eurostat_helper_functions.R")
+source("https://raw.githubusercontent.com/mmoessler/macro-dashboard/main/r-scripts/r_eurostat_helper_functions.R")
 
 # Url
 url <- "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/sts_inpr_m?format=JSON&geo=DE&geo=FR&geo=EA19&freq=M&unit=I15&s_adj=SCA&indic_bt=PROD&nace_r2=B-D"
 
 # Data
-ser.dat <- get_eurostat_xx(url = url)
+ser.dat <- get_eurostat_fun(url = url)
 
 # Transform date to date class
 ser.dat$date.dat <- as.Date(as.yearmon(ser.dat$time))
@@ -1163,13 +1025,13 @@ plot
 <div class="cod_content">
 ```{r,echo=FALSE}
 
-source("./r-scripts/r_eurostat_helper_functions.R")
+source("https://raw.githubusercontent.com/mmoessler/macro-dashboard/main/r-scripts/r_eurostat_helper_functions.R")
 
 # Url
 url <- "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/sts_inpr_m?format=JSON&geo=DE&geo=FR&geo=EA19&freq=M&unit=I15&s_adj=SCA&indic_bt=PROD&nace_r2=B-D"
 
 # Data
-ser.dat <- get_eurostat_xx(url = url)
+ser.dat <- get_eurostat_fun(url = url)
 
 # Transform date to date class
 ser.dat$date.dat <- as.Date(as.yearmon(ser.dat$time))
@@ -1228,20 +1090,9 @@ tab %>%
 
 # Save plot
 ggsave(plot=plot, width=8, height=6, dpi=300, filename = "./figures/EU_RETSAL_lev.pdf")
+ggsave(plot=plot, width=8, height=6, dpi=300, filename = "./figures/EU_RETSAL_lev.svg")
 
 ```
-
-<!--..........................................................................-->
-<hr />
-
-<p class="back01">
-[Zurück zur *Startseite*](./index.html)
-</p>
-
-<!--..........................................................................-->
-<hr />
-
-
 
 <!--..........................................................................-->
 <!-- <hr /> -->
@@ -1380,22 +1231,21 @@ tab %>%
 
 # Save plot
 ggsave(plot=plot, width=8, height=6, dpi=300, filename = "./figures/US_RETSAL_lev.pdf")
+ggsave(plot=plot, width=8, height=6, dpi=300, filename = "./figures/US_RETSAL_lev.svg")
 
 ```
 
+#
+
 <!--..........................................................................-->
-<hr />
+<hr>
 
 <p class="back01">
-[Zurück zur *Startseite*](./index.html)
+[Zurück zur *Startdatei*](./index.html)
 </p>
 
 <!--..........................................................................-->
-<hr />
-
-
-
-
+<hr>
 
 <!--..........................................................................--> 
 <!-- THIS IS THE END --> 
