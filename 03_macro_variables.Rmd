@@ -71,10 +71,6 @@ library(fredr)
 <!--..........................................................................-->
 ## Einführung {.tabset .tabset-fade}
 
-<!-- <span style="font-size:22pt;"> Einführung </span> -->
-
-<!-- <hr> -->
-
 <!--..........................................................................-->
 ### Einordnung
 
@@ -288,28 +284,8 @@ library(ecb)
 <!--..........................................................................-->
 ## Mengen {.tabset .tabset-fade}
 
-<!-- <span style="font-size:22pt;"> Makroökonomische Mengen: Einkommen </span> -->
-
-<!--..........................................................................-->
-<!-- <hr> -->
-
-<!--..........................................................................-->
-<!-- ### Einkommen {.tabset .tabset-fade} -->
-
-<!--..........................................................................-->
-<!-- <hr> -->
-
-<!-- <span style="font-size:20pt;"> Einkommen </span> -->
-
-<!-- ... -->
-
 <!--..........................................................................-->
 ### USA
-
-<!--..........................................................................-->
-<!-- <hr> -->
-
-<!-- <span style="font-size:18pt;"> USA </span> -->
 
 <span style="text-decoration:underline; font-size:18pt;"> Reales BIP (Niveau) </span>
 
@@ -413,6 +389,7 @@ tab %>%
 ```{r, include=FALSE}
 
 ggsave(plot=plot, width=10, height=6, dpi=300, filename = "./figures/US_GDP_01.pdf")
+ggsave(plot=plot, width=10, height=6, dpi=300, filename = "./figures/US_GDP_01.svg")
 
 ```
 
@@ -515,6 +492,7 @@ tab %>%
 ```{r, include=FALSE}
 
 ggsave(plot=plot, width=10, height=6, dpi=300, filename = "./figures/US_GDP_02.pdf")
+ggsave(plot=plot, width=10, height=6, dpi=300, filename = "./figures/US_GDP_02.svg")
 
 ```
 
@@ -552,6 +530,7 @@ plot <- ggplot(data = ser.dat, mapping = aes(x=date.zoo, y = value, color = seri
 plot
 
 ggsave(plot=plot, width=10, height=6, dpi=300, filename = "./figures/US_GDP_03.pdf")
+ggsave(plot=plot, width=10, height=6, dpi=300, filename = "./figures/US_GDP_03.svg")
 
 #..................................................
 # GDP, nominal
@@ -586,6 +565,7 @@ plot <- ggplot(data = ser.dat, mapping = aes(x=date.zoo, y = value, color = seri
 plot
 
 ggsave(plot=plot, width=10, height=6, dpi=300, filename = "./figures/US_GDP_04.pdf")
+ggsave(plot=plot, width=10, height=6, dpi=300, filename = "./figures/US_GDP_04.svg")
 
 ```
 
@@ -594,11 +574,6 @@ ggsave(plot=plot, width=10, height=6, dpi=300, filename = "./figures/US_GDP_04.p
 <!--..........................................................................-->
 ### Eurozone
 
-<!--..........................................................................-->
-<!-- <hr> -->
-
-<!-- <span style="font-size:18pt;"> Eurozone </span> -->
-
 <span style="text-decoration:underline; font-size:18pt;"> Reales BIP (Niveau) </span>
 
 <!--..........................................................................-->
@@ -606,13 +581,13 @@ ggsave(plot=plot, width=10, height=6, dpi=300, filename = "./figures/US_GDP_04.p
 <div class="cod_content">
 ```{r,results=FALSE,fig.show='hide',eval=FALSE}
 
-source("./r-scripts/r_eurostat_helper_functions.R")
+source("https://raw.githubusercontent.com/mmoessler/macro-dashboard/main/r-scripts/r_eurostat_helper_functions.R")
 
 # Url
 url <- "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/namq_10_gdp?format=JSON&geo=DE&geo=FR&geo=EA19&freq=Q&unit=CLV15_MEUR&na_item=B1G&s_adj=SCA"
 
 # Data
-ser.dat <- get_eurostat_xx(url = url)
+ser.dat <- get_eurostat_fun(url = url)
 
 # Transform date to date class
 ser.dat$date.dat <- as.Date(as.yearqtr(as.character(ser.dat$time), "%Y-Q%q"))
@@ -647,13 +622,13 @@ plot
 <div class="cod_content">
 ```{r,echo=FALSE}
 
-source("./r-scripts/r_eurostat_helper_functions.R")
+source("https://raw.githubusercontent.com/mmoessler/macro-dashboard/main/r-scripts/r_eurostat_helper_functions.R")
 
 # Url
 url <- "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/namq_10_gdp?format=JSON&geo=DE&geo=FR&geo=EA19&freq=Q&unit=CLV15_MEUR&na_item=B1G&s_adj=SCA"
 
 # Data
-ser.dat <- get_eurostat_xx(url = url)
+ser.dat <- get_eurostat_fun(url = url)
 
 # Transform date to date class
 ser.dat$date.dat <- as.Date(as.yearqtr(as.character(ser.dat$time), "%Y-Q%q"))
@@ -711,23 +686,8 @@ tab %>%
 <!--..........................................................................-->
 ## Preise {.tabset .tabset-fade}
 
-<!-- <span style="font-size:22pt;"> Makroökonomische Preise </span> -->
-
-<!--..........................................................................-->
-<!-- <hr> -->
-
 <!--..........................................................................-->
 ### Waren und Diensleistungen {.tabset .tabset-fade}
-
-<!--..........................................................................-->
-<!-- <hr> -->
-
-<!-- <span style="font-size:20pt;"> Waren und Diensleistungen </span> -->
-
-<!-- ... -->
-
-<!--..........................................................................-->
-<!-- <hr> -->
 
 <!--..........................................................................-->
 #### USA
@@ -835,6 +795,7 @@ tab %>%
 ```{r, include=FALSE}
 
 ggsave(plot=plot,width=10,height=6,dpi=300,filename = "./figures/US_CPI.pdf")
+ggsave(plot=plot,width=10,height=6,dpi=300,filename = "./figures/US_CPI.svg")
 
 ```
 
@@ -852,13 +813,13 @@ ggsave(plot=plot,width=10,height=6,dpi=300,filename = "./figures/US_CPI.pdf")
 <div class="cod_content">
 ```{r,results=FALSE,fig.show='hide',eval=FALSE}
 
-source("./r-scripts/r_eurostat_helper_functions.R")
+source("https://raw.githubusercontent.com/mmoessler/macro-dashboard/main/r-scripts/r_eurostat_helper_functions.R")
 
 # Url
 url <- "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/prc_hicp_manr?format=JSON&geo=DE&geo=FR&geo=EA19&freq=M&unit=RCH_A&coicop=CP00"
 
 # Data
-ser.dat <- get_eurostat_xx(url = url)
+ser.dat <- get_eurostat_fun(url = url)
 
 # Transform date to date class
 ser.dat$date.dat <- as.Date(as.yearmon(ser.dat$time))
@@ -894,13 +855,13 @@ plot
 <div class="cod_content">
 ```{r,echo=FALSE}
 
-source("./r-scripts/r_eurostat_helper_functions.R")
+source("https://raw.githubusercontent.com/mmoessler/macro-dashboard/main/r-scripts/r_eurostat_helper_functions.R")
 
 # Url
 url <- "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/prc_hicp_manr?format=JSON&geo=DE&geo=FR&geo=EA19&freq=M&unit=RCH_A&coicop=CP00"
 
 # Data
-ser.dat <- get_eurostat_xx(url = url)
+ser.dat <- get_eurostat_fun(url = url)
 
 # Transform date to date class
 ser.dat$date.dat <- as.Date(as.yearmon(ser.dat$time))
@@ -964,6 +925,7 @@ tab %>%
 ```{r, include=FALSE}
 
 ggsave(plot=plot,width=10,height=6,dpi=300,filename = "./figures/EURO_CPI.pdf")
+ggsave(plot=plot,width=10,height=6,dpi=300,filename = "./figures/EURO_CPI.svg")
 
 ```
 
@@ -971,16 +933,6 @@ ggsave(plot=plot,width=10,height=6,dpi=300,filename = "./figures/EURO_CPI.pdf")
 
 <!--..........................................................................-->
 ### Liquidität {.tabset .tabset-fade}
-
-<!--..........................................................................-->
-<!-- <hr> -->
-
-<!-- <span style="font-size:20pt;"> Liquidität </span> -->
-
-<!-- ... -->
-
-<!--..........................................................................-->
-<!-- <hr> -->
 
 <!--..........................................................................-->
 #### USA
@@ -1228,6 +1180,7 @@ tab %>%
 ```{r, include=FALSE}
 
 ggsave(plot=plot,width=10,height=6,dpi=300,filename = "./figures/EURO_MLF.pdf")
+ggsave(plot=plot,width=10,height=6,dpi=300,filename = "./figures/EURO_MLF.svg")
 
 ```
 
@@ -1431,6 +1384,7 @@ tab %>%
 ```{r, include=FALSE, eval=TRUE}
 
 ggsave(plot=plot,width=10,height=6,dpi=300,filename = "./figures/EURO_MRO.pdf")
+ggsave(plot=plot,width=10,height=6,dpi=300,filename = "./figures/EURO_MRO.svg")
 
 ```
 
@@ -1442,17 +1396,9 @@ ggsave(plot=plot,width=10,height=6,dpi=300,filename = "./figures/EURO_MRO.pdf")
 ### Festverzinsliche Wertpapiere {.tabset .tabset-fade}
 
 <!--..........................................................................-->
-<!-- <hr> -->
+#### Risiko
 
-<!-- <span style="font-size:20pt;"> Festverzinsliche Wertpapiere </span> -->
-
-<!--..........................................................................-->
-<!-- <hr> -->
-
-<!--..........................................................................-->
-#### Risiken
-
-<span style="font-size:18pt;"> Risiken </span>
+<span style="font-size:18pt;"> Risiko </span>
 
 <!--..........................................................................-->
 <button type="button" class="collapsible01"> *Show Code* </button>
@@ -1561,6 +1507,7 @@ tab %>%
 ```{r, include=FALSE}
 
 ggsave(plot = plot, width = 10, height = 6, dpi = 300, filename = "./figures/INT_RIS.pdf")
+ggsave(plot = plot, width = 10, height = 6, dpi = 300, filename = "./figures/INT_RIS.svg")
 
 ```
 
@@ -1678,6 +1625,7 @@ tab %>%
 ```{r, include=FALSE}
 
 ggsave(plot=plot,width=10,height=6,dpi=300,filename = "./figures/INT_MAT.pdf")
+ggsave(plot=plot,width=10,height=6,dpi=300,filename = "./figures/INT_MAT.svg")
 
 ```
 
@@ -1685,14 +1633,6 @@ ggsave(plot=plot,width=10,height=6,dpi=300,filename = "./figures/INT_MAT.pdf")
 
 <!--..........................................................................-->
 ### Wechsekurse {.tabset .tabset-fade}
-
-<!--..........................................................................-->
-<!-- <hr> -->
-
-<!-- <span style="font-size:20pt;"> Wechselkurse </span> -->
-
-<!--..........................................................................-->
-<!-- <hr> -->
 
 <!--..........................................................................-->
 #### EUR-USD
@@ -1798,6 +1738,7 @@ tab %>%
 ```{r, include=FALSE}
 
 ggsave(plot = plot, width = 10, height = 6, dpi = 300, filename = "./figures/FX_EURUSD.pdf")
+ggsave(plot = plot, width = 10, height = 6, dpi = 300, filename = "./figures/FX_EURUSD.svg")
 
 ```
 
@@ -1905,6 +1846,7 @@ tab %>%
 ```{r, include=FALSE}
 
 ggsave(plot = plot, width = 10, height = 6, dpi = 300, filename = "./figures/FX_USDJPY.pdf")
+ggsave(plot = plot, width = 10, height = 6, dpi = 300, filename = "./figures/FX_USDJPY.svg")
 
 ```
 
@@ -2012,6 +1954,7 @@ tab %>%
 ```{r, include=FALSE}
 
 ggsave(plot = plot, width = 10, height = 6, dpi = 300, filename = "./figures/FX_UKPUSD.pdf")
+ggsave(plot = plot, width = 10, height = 6, dpi = 300, filename = "./figures/FX_UKPUSD.svg")
 
 ```
 
