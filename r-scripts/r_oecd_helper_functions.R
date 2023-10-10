@@ -4,11 +4,6 @@ library(rsdmx)
 # OECD::get_data_structure
 OECD_get_data_structure_fun <- function(dataset) {
   
-  # # input
-  # dataset <- "QNA"
-  
-  
-  
   url <- paste0("https://stats.oecd.org/restsdmx/sdmx.ashx/GetDataStructure/", dataset)
   # data_structure <- readsdmx::read_sdmx(url)
   # see: https://github.com/expersso/OECD/issues/24
@@ -32,5 +27,3 @@ OECD_get_data_structure_fun <- function(dataset) {
   full_df_list <- c(VAR_DESC = list(variable_desc), code_list)
   full_df_list
 }
-# <bytecode: 0x000001f136934450>
-#   <environment: namespace:OECD>

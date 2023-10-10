@@ -8,8 +8,6 @@ library(dplyr)
 # ifo index ----
 ifo_scrap_fun <- function(destfile = c("./reports/ifo_index.pdf")) {
   
-  # destfile = c("./reports/ifo_index.pdf")
-  
   #..................................................
   # 1st web scrapping
   url.01 <- read_html("https://www.ifo.de/umfrage/ifo-geschaeftsklima-deutschland")
@@ -98,8 +96,6 @@ eu_scrap_fun()
 # ism manufacturing pmi ----
 ism_man_load_fun <- function(per.01){
   
-  # per.01 <- c("202205")
-  
   url <- paste0("https://www.ismworld.org/globalassets/pub/research-and-surveys/rob/pmi/rob",per.01,"pmi.pdf")
 
   destfile <- paste0("./reports/ism_man_index.pdf")
@@ -130,8 +126,6 @@ paste0("ISM Manufacturing - current month:", ii)
 
 # ism service pmi ----
 ism_ser_load_fun <- function(per.01){
-  
-  # per.01 <- c("202205")
   
   url <- paste0("https://www.ismworld.org/globalassets/pub/research-and-surveys/rob/nmi/rob",per.01,"svcs.pdf")
   
@@ -164,8 +158,6 @@ paste0("ISM Service - current month:", ii)
 # gfk konsumklima ----
 gfk_load_fun <- function(per.01){
   
-  # per.01 <- per.vec[ii]
-
   url <- paste0("https://www.gfk.com/hubfs/website/editorial_ui_pdfs/",per.01,"_PM_Konsumklima_Deutschland_dfin.pdf")
 
   destfile <- paste0("./reports/gfk_index.pdf")
