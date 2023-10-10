@@ -45,8 +45,6 @@ library(fredr)
 <!--..........................................................................-->
 <!--..........................................................................-->
 
-
-
 <!--..........................................................................-->
 <hr />
 
@@ -54,17 +52,24 @@ library(fredr)
 
 <hr />
 
-*Dieses Dokument enthält Projektionen der US Federal Reserve Bank für die US Wirtschaft.* 
+*Dieses Dokument enthält Projektionen der US Federal Reserve Bank (FED) für die US Wirtschaft.* 
 
 <hr />
 
+<!--..........................................................................-->
+## Vorbereitung {.tabset .tabset-fade}
+
+Die FED veröffentlicht zu ungefähr jedem zweiten Treffen Projektionen für die wichtigsten Daten der US Wirtschaft u.a. für gesamtwirtschafltiches Einkommen, Arbeitslosigkeit und Preisniveau.
+
+Die Projektionen können von der Webseite der FED heruntegeladen werden ([siehe](https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm)).
+
 <!------------------------------------------------------------------------------> 
-## Mrz 2023 {.tabset .tabset-fade}
+## Sep 2023 {.tabset .tabset-fade}
 
 Letzte Prognosen:
 
 <center>
-<embed src="https://www.federalreserve.gov/monetarypolicy/files/fomcprojtabl20230322.pdf" width="900" height="1000" type="application/pdf">
+<embed src="https://www.federalreserve.gov/monetarypolicy/files/fomcprojtabl20230920.pdf" width="900" height="1000" type="application/pdf">
 </center>
 
 <br>
@@ -74,12 +79,12 @@ Quelle: Board of Governors of the Federal Reserve System
 </p>
 
 <!------------------------------------------------------------------------------> 
-## Dez 2022 {.tabset .tabset-fade}
+## Mrz 2023 {.tabset .tabset-fade}
 
 Vorletzte Prognosen:
 
 <center>
-<embed src="https://www.federalreserve.gov/monetarypolicy/files/fomcprojtabl20221214.pdf" width="900" height="1000" type="application/pdf">
+<embed src="https://www.federalreserve.gov/monetarypolicy/files/fomcprojtabl20230322.pdf" width="900" height="1000" type="application/pdf">
 </center>
 
 <br>
@@ -147,25 +152,12 @@ Quelle: Board of Governors of the Federal Reserve System
 <hr />
 
 <p class="back01">
-[Zurück zu *Start*](./index.html)
+[Zurück zur *Startdatei*](./index.html)
 </p>
 
 <!--..........................................................................-->
 <hr />
 
-
-
-<!--
-
-SOME NOTES
-
-
--->
-
-<!--..........................................................................-->
-<!-- <hr /> -->
-
-<!-- # References -->
 
 
 
