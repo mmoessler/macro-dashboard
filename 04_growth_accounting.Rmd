@@ -1,0 +1,365 @@
+---
+output: html_fragment
+editor_options: 
+  chunk_output_type: console
+---
+
+<!--..........................................................................-->
+<!--..........................................................................-->
+
+<!-- Include header -->
+
+````{=html}
+```{r, echo=FALSE, results='asis'}
+xfun::file_string('header_02.html')
+```
+````
+
+<!-- SOME NOTES -->
+
+<!-- 
+
+...
+
+-->
+
+<!--..........................................................................-->
+<!--..........................................................................-->
+
+```{r}
+
+rm(list=ls())
+
+```
+
+```{r,include=FALSE}
+library(knitr)
+knitr::opts_chunk$set(
+  include = TRUE,
+  echo = TRUE,
+  warning = FALSE,
+  message = FALSE,
+  fig.height = 6,
+  fig.width = 10,
+  fig.align = 'center')
+options(scipen=1000000)
+```
+
+```{r,klippy, echo=FALSE, include=TRUE}
+# See: https://rlesur.github.io/klippy/articles/klippy.html
+klippy::klippy(tooltip_message = 'Click to copy', tooltip_success = 'Done', position = c('top', 'right'))
+```
+
+```{r, include=FALSE}
+
+library(pwt10)
+
+```
+
+<!--..........................................................................-->
+<!--..........................................................................-->
+
+
+
+<!--..........................................................................-->
+<hr>
+
+# Wohlstand Beschreiben und Erklären {.tabset .tabset-fade}
+
+<hr>
+
+*Dieses Dokument enthält ausgewählter Zeitreihen zur Analyse von Wohlstand.* 
+
+<hr>
+
+
+
+<!--..........................................................................-->
+## Vorbereitung
+
+<span style="font-size:20pt;"> Vorbereitung </span>
+
+<hr>
+
+Vorbereitung des *R*-Skripts:
+
+1) Setzen des Arbeitspfades
+
+```{r}
+
+# setwd("... insert-you-directory-here ...")
+
+```
+
+2) Laden der nötigen Pakete zu Datenverarbeitung
+
+```{r}
+
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(kableExtra)
+library(scales)
+library(zoo)
+library(ecm)
+
+```
+
+```{r,include=FALSE}
+
+# see: https://stackoverflow.com/questions/11610377/how-do-i-change-the-formatting-of-numbers-on-an-axis-with-ggplot
+
+```
+
+3) Laden der Grafikvorlage
+
+```{r}
+
+mod.theme.01 <- theme_gray() + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, size = 12),
+                                     axis.text.y = element_text(size = 12),
+                                     plot.title = element_text(size = 16),
+                                     plot.subtitle = element_text(size = 12),
+                                     plot.caption = element_text(size = 12),
+                                     legend.text = element_text(size = 12))
+
+mod.theme.01$legend.position <- c("bottom")
+
+```
+
+```{r, include=FALSE}
+
+# See: https://bookdown.org/rdpeng/RProgDA/building-a-new-theme.html
+
+```
+
+<hr>
+
+Die Daten werden von unterschiedlichen öffentlich zugänglichen Datenbanken heruntergeladen.
+
+Die Daten können entweder auf der Website oder über so genannte Programmierschnittstellen (APIs) heruntergeladen werden.
+
+
+
+
+<span style="font-size:18pt;"> Penn World Table </span>
+
+<hr>
+
+Die Daten von der Federal Reserve Bank of St. Louis können mit dem *R*-Paket `pwt10` heruntergeladen werden.
+
+* Link: [Penn World Table version 10.01](https://www.rug.nl/ggdc/productivity/pwt/)
+
+```{r}
+
+library(pwt10)
+
+data(pwt10.01)
+
+str(pwt10.01)
+
+```
+
+
+
+<hr>
+
+Zur Schattierung der Rezessionen (siehe: [NBER](https://www.nber.org/research/business-cycle-dating)) verwenden wir die folgende *R*-Funktion.
+
+<!--..........................................................................--> 
+<button type="button" class="collapsible02"> Schattierung Rezessionen </button>
+<div class="cod_content">
+
+```{r}
+
+# See: https://rpubs.com/FSl/609471 (and edite by MM)
+add_rec_shade <- function(st_date, ed_date, shade_color = "darkgray", zoo.mon = FALSE, zoo.qtr = FALSE) {
+  
+  recession  <-  fredr(series_id = "USRECD",observation_start = as.Date(st_date),observation_end = as.Date(ed_date))
+  
+  recession$diff <- recession$value-lagpad(recession$value, k = 1)
+  recession <- recession[!is.na(recession$diff),]
+  recession.start <- recession[recession$diff == 1,]$date
+  recession.end <- recession[recession$diff == (-1),]$date
+  
+  if(length(recession.start) > length(recession.end)) {
+    recession.end <- c(recession.end, Sys.Date())
+  }
+  if(length(recession.end)>length(recession.start)) {
+    recession.start <- c(min(recession$date), recession.start)
+  }
+  
+  recs <- as.data.frame(cbind(recession.start, recession.end))
+  recs$recession.start <- as.Date(as.numeric(recs$recession.start), origin = as.Date("1970-01-01"))
+  
+  if(zoo.mon == TRUE){
+    recs$recession.start <- as.yearmon(recs$recession.start, "%b%y")
+  }
+  if(zoo.qtr == TRUE){
+    recs$recession.start <- as.yearqtr(recs$recession.start, "%y-Q%q")
+  }
+  
+  recs$recession.end <- as.Date(recs$recession.end, origin = as.Date("1970-01-01"))
+  
+  if(zoo.mon == TRUE){
+    recs$recession.end <- as.yearmon(recs$recession.end, "%b%y")
+  }
+  if(zoo.qtr == TRUE){
+    recs$recession.end <- as.yearqtr(recs$recession.end, "%y-Q%q")
+  }
+  
+  if(nrow(recs) > 0) {
+    rec_shade <- geom_rect(data = recs, inherit.aes = FALSE, 
+                           aes(xmin = recession.start, xmax = recession.end, ymin = -Inf, ymax = +Inf), 
+                           fill = shade_color, alpha = 0.5)
+    
+    return(rec_shade)
+  }
+  
+}
+
+```
+
+</div>
+<!--..........................................................................--> 
+
+
+
+<!--..........................................................................-->
+## Total Factor Productivity (TFP) {.tabset .tabset-fade}
+
+<!--..........................................................................-->
+<button type="button" class="collapsible01"> *Show Code* </button>
+<div class="cod_content">
+```{r,results=FALSE,fig.show='hide',eval=FALSE}
+
+
+
+
+# Meta data
+met.dat <- fredr_series_search_text("GDPC1")
+
+# Data
+ser.dat <- fredr_series_observations(series_id = met.dat$id[1],
+                                     observation_start = as.Date("1947-01-01"),
+                                     units = "lin")
+
+# Transform date to yearmon class
+ser.dat$date.zoo <- as.yearqtr(ser.dat$date, "%y-Q%q")
+
+# Construct plot
+plot <- ggplot(data = ser.dat, mapping = aes(x=date.zoo, y = value, color = series_id)) +
+  add_rec_shade(min(ser.dat$date), max(ser.dat$date), zoo.mon = FALSE, zoo.qtr = TRUE) +
+  geom_line(color = "black", size = 1) +
+  scale_x_yearqtr(breaks = seq(from = min(ser.dat$date.zoo), to = max(ser.dat$date.zoo), by = 8),
+                  minor_breaks = seq(from = min(ser.dat$date.zoo), to = max(ser.dat$date.zoo), by = 4),
+                  format = "%Y-Q%q",
+                  expand = c(0, 0)) +
+  scale_y_continuous(labels = comma_format(big.mark = ".", decimal.mark = ",")) +
+  labs(title = "Reales Bruttoinlandsprodukt (saisonbereinigt)",
+       subtitle = paste0(c("(Letzter Beobachtungswert: "), as.yearqtr(as.Date(met.dat$observation_end)), c(")")),
+       caption = "Quelle: U.S. Bureau of Economic Analysis", 
+       x = "", y = "Verkettete 2012 US Dollar in Milliarden") +
+  mod.theme.01
+
+# Return plot
+plot
+
+```
+</div>
+<!--..........................................................................-->
+<button type="button" class="collapsible01"> *Show Output* </button>
+<div class="cod_content">
+```{r,echo=FALSE, eval=FALSE}
+
+# Meta data
+met.dat <- fredr_series_search_text("GDPC1")
+
+# Data
+ser.dat <- fredr_series_observations(series_id = met.dat$id[1],
+                                     observation_start = as.Date("1947-01-01"),
+                                     # observation_start = as.Date("1960-01-01"),
+                                     units = "lin")
+
+# Transform date to yearmon class
+ser.dat$date.zoo <- as.yearqtr(ser.dat$date, "%y-Q%q")
+
+# Construct plot
+plot <- ggplot(data = ser.dat, mapping = aes(x=date.zoo, y = value, color = series_id)) +
+  add_rec_shade(min(ser.dat$date), max(ser.dat$date), zoo.mon = FALSE, zoo.qtr = TRUE) +
+  geom_line(color = "black", size = 1) +
+  scale_x_yearqtr(breaks = seq(from = min(ser.dat$date.zoo), to = max(ser.dat$date.zoo), by = 8),
+                  minor_breaks = seq(from = min(ser.dat$date.zoo), to = max(ser.dat$date.zoo), by = 4),
+                  format = "%Y-Q%q",
+                  expand = c(0, 0)) +
+  scale_y_continuous(labels = comma_format(big.mark = ".", decimal.mark = ",")) +
+  labs(title = "Reales Bruttoinlandsprodukt (saisonbereinigt)",
+       subtitle = paste0(c("(Letzter Beobachtungswert: "), as.yearqtr(as.Date(met.dat$observation_end)), c(")")),
+       caption = "Quelle: U.S. Bureau of Economic Analysis", 
+       x = "", y = "Verkettete 2012 US Dollar in Milliarden") +
+  mod.theme.01
+
+# Return plot
+plot
+
+```
+
+```{r, include=FALSE, eval=FALSE}
+# Check unit
+met.dat$units[1]
+```
+
+</div>
+<!--..........................................................................-->
+
+<!--..........................................................................-->
+<button type="button" class="collapsible01"> *Letzte Werte* </button>
+<div class="cod_content">
+```{r, echo=FALSE, results=TRUE, eval=FALSE}
+
+tab <- tail(ser.dat,10)[,c(1,6,3)]
+colnames(tab) <- c("Date", "Period", "Value")
+
+tab %>%
+  kbl(format.args = list(decimal.mark = ',', big.mark = ".")) %>%
+  kable_styling()
+
+```
+</div>
+<!--..........................................................................-->
+
+```{r, include=FALSE, eval=FALSE}
+
+ggsave(plot=plot, width=10, height=6, dpi=300, filename = "./figures/US_GDP_01.pdf")
+ggsave(plot=plot, width=10, height=6, dpi=300, filename = "./figures/US_GDP_01.svg")
+
+```
+
+
+
+
+#
+
+<!--..........................................................................-->
+<hr>
+
+<p class="back01">
+[Zurück zur *Startdatei*](./index.html)
+</p>
+
+<!--..........................................................................-->
+<hr>
+
+
+
+
+
+<!--..........................................................................--> 
+<!-- THIS IS THE END --> 
+
+<!-- Include bottom -->
+
+````{=html}
+```{r, echo=FALSE, results='asis'}
+xfun::file_string('bottom_01.html')
+```
+````
