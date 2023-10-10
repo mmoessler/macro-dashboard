@@ -37,14 +37,14 @@ klippy::klippy(tooltip_message = 'Click to copy', tooltip_success = 'Done', posi
 
 ```{r}
 
-upd.dat <- TRUE
+upd.dat <- FALSE
 
 ```
 
 <!--..........................................................................-->
 <hr />
 
-# VGR: Entstehung, Verwendung und Veteilung {.tabset .tabset-fade}
+# VGR: Entstehung, Verwendung und Verteilung {.tabset .tabset-fade}
 
 <hr />
 
@@ -83,7 +83,7 @@ library(OECD)
 
 Für die Auswertung verwenden wir vorwiegend *R*-Pakete Teil der *base* Installation.
 
-Außerde verwenden wir außerdem folgenden R-Pakete:
+Außerde verwenden wir außerdem folgenden *R*-Pakete:
 
 * `ggplot2`, [Link](https://cran.r-project.org/web/packages/ggplot2/index.html): Create elegant data visualisations using the grammar of graphics
 * `dplyr`, [Link](https://cran.r-project.org/web/packages/dplyr/index.html): A grammar of data manipulation
@@ -123,19 +123,19 @@ Die folgenden *R*-Funktionen werden zur Berechnung von Anteilen, Differenzen, un
 
 ```{r, include=TRUE, echo=TRUE}
 
-L01.fun  <- function(x) (lag(x, n = 1)) # Construct lag
-D01.fun  <- function(x) (lag(x, n = 0) - lag(x, n = 1)) # Construct difference
-G01.fun  <- function(x) ((lag(x, n = 0) - lag(x, n = 1))/lag(x, n = 1)*100) # Construct growth rate
-X00.fun  <- function(x,y) (x/y)*100 # Construct share
-GX01.fun <- function(x,y) ((lag(x, n = 0) - lag(x, n = 1))/lag(x, n = 1)*100*lag(x, n = 1)/lag(y, n = 1)) # Construct growth contribution
+L01_fun  <- function(x) (lag(x, n = 1)) # Construct lag
+D01_fun  <- function(x) (lag(x, n = 0) - lag(x, n = 1)) # Construct difference
+G01_fun  <- function(x) ((lag(x, n = 0) - lag(x, n = 1))/lag(x, n = 1)*100) # Construct growth rate
+X00_fun  <- function(x,y) (x/y)*100 # Construct share
+GX01_fun <- function(x,y) ((lag(x, n = 0) - lag(x, n = 1))/lag(x, n = 1)*100*lag(x, n = 1)/lag(y, n = 1)) # Construct growth contribution
 
 ```
 
-Die folgenden *R*-Funktionen werden verwendet um ausgewählte Transformationen der Daten vorzunehmen.
+Die folgenden *R*-Funktionen werden verwendet um bestimmte Umformungen der Daten vorzunehmen.
 
 ```{r, include=TRUE, echo=TRUE}
 
-dat.man.fun.xx <- function(dat.fra, arg.lis, col.nam.sel, col.nam.out){
+dat_man_fun <- function(dat.fra, arg.lis, col.nam.sel, col.nam.out){
   
   # add dat.fra as first element to list
   arg.lis[[1]] <- dat.fra
@@ -162,7 +162,7 @@ dat.man.fun.xx <- function(dat.fra, arg.lis, col.nam.sel, col.nam.out){
 
 ```{r}
 
-dat.man.fun.xx.chk <- function(dat.fra, arg.lis, col.nam.sel, col.nam.out){
+dat_man_fun_chk <- function(dat.fra, arg.lis, col.nam.sel, col.nam.out){
   
   # Note:
   # -> Use margin 1 to apply transformation row-by-row
@@ -174,7 +174,7 @@ dat.man.fun.xx.chk <- function(dat.fra, arg.lis, col.nam.sel, col.nam.out){
   # # fun.nam <- L.fun
   # col.nam.sel <- c("B1_GA")
   # col.nam.out <- c("L01_B1_GA")
-  # arg.lis <- list(X=NULL, MARGIN=2, FUN="L01.fun")
+  # arg.lis <- list(X=NULL, MARGIN=2, FUN="L01_fun")
   # arg.lis
   
   
@@ -203,7 +203,7 @@ dat.man.fun.xx.chk <- function(dat.fra, arg.lis, col.nam.sel, col.nam.out){
 
 ```{r, include=TRUE, echo=TRUE}
 
-oecd.qna.fun.xx <- function(dat, loc, sub, mea, fre, sta.dat, end.dat, sub.inp.lis) {
+oecd_qna_fun <- function(dat, loc, sub, mea, fre, sta.dat, end.dat, sub.inp.lis) {
   
   # Download if necessary!
   if(is.null(dat)){
@@ -235,7 +235,7 @@ oecd.qna.fun.xx <- function(dat, loc, sub, mea, fre, sta.dat, end.dat, sub.inp.l
   dat.01 <- dat.w.00
   for (ii in (1:nn)) {
     dat.01 <- dat.01 %>%
-      dat.man.fun.xx(list(X = NULL, MARGIN = 1, FUN = "sum"), sub.inp.lis[[ii]], sub.inp.lab[[ii]])
+      dat_man_fun(list(X = NULL, MARGIN = 1, FUN = "sum"), sub.inp.lis[[ii]], sub.inp.lab[[ii]])
   }
 
   # > Construct sector shares
@@ -245,9 +245,9 @@ oecd.qna.fun.xx <- function(dat, loc, sub, mea, fre, sta.dat, end.dat, sub.inp.l
   sub.gx <-  paste(sub.sel, "_GX01", sep = "")
   
   dat.02 <- dat.01 %>% 
-    dat.man.fun.xx(list(X = NULL, MARGIN = 2, FUN = "X00.fun", y = dat.01$tot), sub.sel, sub.x) %>%
-    dat.man.fun.xx(list(X = NULL, MARGIN = 2, FUN = "G01.fun"), sub.sel, sub.g) %>%
-    dat.man.fun.xx(list(X = NULL, MARGIN = 2, FUN = "GX01.fun", y = dat.01$tot), sub.sel, sub.gx)
+    dat_man_fun(list(X = NULL, MARGIN = 2, FUN = "X00_fun", y = dat.01$tot), sub.sel, sub.x) %>%
+    dat_man_fun(list(X = NULL, MARGIN = 2, FUN = "G01_fun"), sub.sel, sub.g) %>%
+    dat_man_fun(list(X = NULL, MARGIN = 2, FUN = "GX01_fun", y = dat.01$tot), sub.sel, sub.gx)
 
   dat.03 <- dat.02 %>%
     subset(select = c("LOCATION", "Time", sub.sel, sub.x,sub.g,sub.gx))
@@ -272,7 +272,7 @@ oecd.qna.fun.xx <- function(dat, loc, sub, mea, fre, sta.dat, end.dat, sub.inp.l
 
 ```{r}
 
-oecd.qna.fun.xx.chk <- function(dat,loc,sub,mea,fre,sta.dat,end.dat,sub.inp.lis) {
+oecd_qna_fun_chk <- function(dat,loc,sub,mea,fre,sta.dat,end.dat,sub.inp.lis) {
   
   # # inputs
   # dat <- qna.dat.00
@@ -318,7 +318,7 @@ oecd.qna.fun.xx.chk <- function(dat,loc,sub,mea,fre,sta.dat,end.dat,sub.inp.lis)
   dat.01 <- dat.w.00
   for (ii in (1:nn)) {
     dat.01 <- dat.01 %>%
-      dat.man.fun.xx(list(X=NULL, MARGIN=1, FUN="sum"), sub.inp.lis[[ii]], sub.inp.lab[[ii]])
+      dat_man_fun(list(X=NULL, MARGIN=1, FUN="sum"), sub.inp.lis[[ii]], sub.inp.lab[[ii]])
   }
   head(dat.01)
 
@@ -329,9 +329,9 @@ oecd.qna.fun.xx.chk <- function(dat,loc,sub,mea,fre,sta.dat,end.dat,sub.inp.lis)
   sub.gx <-  paste(sub.sel,"_GX01",sep="")
   
   dat.02 <- dat.01 %>% 
-    dat.man.fun.xx(list(X=NULL, MARGIN=2, FUN="X00.fun", y=dat.01$tot), sub.sel, sub.x) %>%
-    dat.man.fun.xx(list(X=NULL, MARGIN=2, FUN="G01.fun"), sub.sel, sub.g) %>%
-    dat.man.fun.xx(list(X=NULL, MARGIN=2, FUN="GX01.fun", y=dat.01$tot), sub.sel, sub.gx)
+    dat_man_fun(list(X=NULL, MARGIN=2, FUN="X00_fun", y=dat.01$tot), sub.sel, sub.x) %>%
+    dat_man_fun(list(X=NULL, MARGIN=2, FUN="G01_fun"), sub.sel, sub.g) %>%
+    dat_man_fun(list(X=NULL, MARGIN=2, FUN="GX01_fun", y=dat.01$tot), sub.sel, sub.gx)
   head(dat.02)
   View(dat.02)
 
@@ -354,7 +354,6 @@ oecd.qna.fun.xx.chk <- function(dat,loc,sub,mea,fre,sta.dat,end.dat,sub.inp.lis)
   # yyy <- subset(xxx,select = c("LOCATION","Time","SUBJECT","ObsValue"))
   # head(yyy)
 
-  
   ret.lis <- list(dat=dat.02,
                   dat.03=dat.03,
                   dat.04=dat.04,
@@ -409,17 +408,27 @@ Beispiel: Land Deutschland, 2018
 
 Die Struktur der VGR Daten der OECD kann duch die Funktion `get_data_structure` heruntergalden werden.
 
-```{r,include=TRUE,cache=FALSE,eval=TRUE,echo=TRUE}
+```{r,include=TRUE,cache=FALSE,eval=FALSE,echo=TRUE}
+
+source("https://raw.githubusercontent.com/mmoessler/macro-dashboard/main/r-scripts/r_oecd_helper_functions.R")
+qna.str <- OECD_get_data_structure_fun("QNA")
+
+```
+
+```{r,include=FALSE,cache=FALSE,eval=TRUE,echo=TRUE}
 
 # > Call get_data_structure
 # qna.str <- get_data_structure("QNA")
 
-source("./r-scripts/r_oecd_helper_functions.R")
-qna.str <- OECD_get_data_structure_edit("QNA")
+source("https://raw.githubusercontent.com/mmoessler/macro-dashboard/main/r-scripts/r_oecd_helper_functions.R")
+
+if (upd.dat) {
+  qna.str <- OECD_get_data_structure_fun("QNA")
+}
 
 ```
 
-```{r, include=FALSE}
+```{r, include=FALSE, eval=TRUE}
 
 if (upd.dat) {
   save(qna.str, file = "./data/qna_str.RData")
@@ -444,7 +453,7 @@ qna.str$VAR_DESC
 
 Die Daten können duch die Funktion `get_dataset` heruntergalden werden.
 
-```{r,include=TRUE,cache=FALSE,eval=TRUE,echo=TRUE}
+```{r,include=TRUE,cache=FALSE,eval=FALSE,echo=TRUE}
 
 # > Inputs for download
 # loc <- qna.str$LOCATION[,1]
@@ -458,15 +467,7 @@ end.dat <- as.Date("2023-04-01")
 fil <- list(loc, sub, mea, fre) # Collect inputs for get_dataset function
 
 # > Download
-# qna.dat.00 <- get_dataset(dataset = "QNA", filter = fil) %>%
-#   mutate(Time = Time) %>%
-#   subset(yq(Time) %in% seq(sta.dat, end.dat, by = "quarter")) # filter time period
-
-# > Download
 qna.dat.00 <- get_dataset(dataset = "QNA", filter = fil)
-
-# qna.dat.00 <- get_dataset(dataset = "QNA", filter = fil) %>%
-#   subset(yq(Time) %in% seq(sta.dat, end.dat, by = "quarter")) # filter time period
 
 qna.dat.00 <- get_dataset(dataset = "QNA", filter = fil) %>%
   subset(yq(Time) %in% seq(sta.dat, end.dat, by = "quarter")) # filter time period
@@ -477,12 +478,47 @@ head(qna.dat.00)
 
 ```
 
-```{r,include=FALSE,cache=TRUE}
+```{r,include=TRUE,cache=FALSE,eval=TRUE,echo=TRUE}
+
+# > Inputs for download
+# loc <- qna.str$LOCATION[,1]
+loc <- c("DEU", "FRA", "ITA", "EA20", "GBR", "USA")
+sub <- qna.str$SUBJECT[,1]
+mea <- c("LNBQRSA") # Measure: Constant prices seasonal adjusted
+fre <- c("Q") # Frequency: Quarterly frequency
+sta.dat <- as.Date("2005-01-01") # Periods: "yyyy-mm-dd"
+end.dat <- as.Date("2023-04-01")
+# Note: Q1: 2020-01-01; Q2: 2020-04-01; Q3: 2020-07-01; Q4: 2020-10-01
+fil <- list(loc, sub, mea, fre) # Collect inputs for get_dataset function
 
 if (upd.dat) {
-  save(qna.dat.00, file = "./data/qna_dat_00.RData")
+
+  # > Download
+  # qna.dat.00 <- get_dataset(dataset = "QNA", filter = fil) %>%
+  #   mutate(Time = Time) %>%
+  #   subset(yq(Time) %in% seq(sta.dat, end.dat, by = "quarter")) # filter time period
+  
+  # > Download
+  qna.dat.00 <- get_dataset(dataset = "QNA", filter = fil)
+  
+  # qna.dat.00 <- get_dataset(dataset = "QNA", filter = fil) %>%
+  #   subset(yq(Time) %in% seq(sta.dat, end.dat, by = "quarter")) # filter time period
+  
+  qna.dat.00 <- get_dataset(dataset = "QNA", filter = fil) %>%
+    subset(yq(Time) %in% seq(sta.dat, end.dat, by = "quarter")) # filter time period
+  
+  qna.dat.00$ObsValue <- as.numeric(qna.dat.00$ObsValue)
+  
+  head(qna.dat.00)
+
 } else {
+  
   load("./data/qna_dat_00.RData")
+  
+  qna.dat.00$ObsValue <- as.numeric(qna.dat.00$ObsValue)
+  
+  head(qna.dat.00)
+  
 }
 
 ```
@@ -534,7 +570,7 @@ sub.inp.lis <- list(agr = sub.agr,
                     tls = sub.tls,
                     tot = sub.tot)
 
-ger.out.01.res <- oecd.qna.fun.xx(qna.dat.00, loc, sub, mea, fre, sta.dat, end.dat, sub.inp.lis)
+ger.out.01.res <- oecd_qna_fun(qna.dat.00, loc, sub, mea, fre, sta.dat, end.dat, sub.inp.lis)
 
 ```
 
@@ -593,6 +629,7 @@ plt.x
 
 # # Save plot
 # ggsave(plot=plt.x,width=10,height=6,dpi=300,filename = "./figures/DE_QNA_out_x_01.pdf")
+# ggsave(plot=plt.x,width=10,height=6,dpi=300,filename = "./figures/DE_QNA_out_x_01.svg")
 
 ```
 
@@ -627,7 +664,7 @@ plt.gx <- dat.inp %>%
   geom_line(aes(y = ObsValue, x = as.yearqtr(Time, "%Y-Q%q")), subset(dat.inp,SUBJECT %in% oecd.qna.res$sub.gx[oecd.qna.res$nn]), size = 0.5) +
   scale_fill_discrete(name="",labels = lab.inp) +
   theme(legend.position = "bottom") +
-  labs(x = "",y = "Veränd. in Prozentpunkte (QoQ)",
+  labs(x = "",y = "Veränderung in Prozentpunkte (QoQ)",
        caption = "Quelle: OECD, vierteljährliche VGR") +
   theme(axis.text.x = element_text(angle = 90),
         plot.caption = element_text(face = "italic")) +  
@@ -643,6 +680,9 @@ plt.gx
 ```{r}
 
 # Save plot
+ggsave(plot=plt.x,width=6,height=6,dpi=300,filename = "./figures/DE_QNA_out_x_01.pdf")
+ggsave(plot=plt.x,width=6,height=6,dpi=300,filename = "./figures/DE_QNA_out_x_01.svg")
+
 ggsave(plot=plt.gx,width=10,height=6,dpi=300,filename = "./figures/DE_QNA_out_gx_01.pdf")
 ggsave(plot=plt.gx,width=10,height=6,dpi=300,filename = "./figures/DE_QNA_out_gx_01.svg")
 
@@ -682,7 +722,8 @@ dat %>%
 
 ```{r,include=TRUE,echo=TRUE}
 
-oecd.qna.out <- function(loc, sta.dat, end.dat){
+oecd_qna_out_fun <- function(loc, sta.dat, end.dat,
+                             plt.x.tit = "", plt.gx.tit = ""){
   
   
   # > Data preparation
@@ -707,7 +748,7 @@ oecd.qna.out <- function(loc, sta.dat, end.dat){
                       tls = sub.tls,
                       tot = sub.tot)
 
-  out.01.res <- oecd.qna.fun.xx(qna.dat.00, loc, sub, mea, fre, sta.dat, end.dat, sub.inp.lis)
+  out.01.res <- oecd_qna_fun(qna.dat.00, loc, sub, mea, fre, sta.dat, end.dat, sub.inp.lis)
   
   
   # > Illustration share levels
@@ -732,6 +773,7 @@ oecd.qna.out <- function(loc, sta.dat, end.dat){
     scale_fill_discrete(name = "", labels = lab.inp) +
     theme(legend.position = "bottom") +
     labs(x = "Anteil in Prozent", y = dat.inp[1,"Time"],
+         title = plt.x.tit,
          caption = "Quelle: OECD, vierteljährliche VGR") +
     theme(plot.caption = element_text(face = "italic"))
   
@@ -758,7 +800,8 @@ oecd.qna.out <- function(loc, sta.dat, end.dat){
     geom_line(aes(y = ObsValue, x = as.yearqtr(Time, "%Y-Q%q")), subset(dat.inp,SUBJECT %in% oecd.qna.res$sub.gx[oecd.qna.res$nn]), size = 0.5) +
     scale_fill_discrete(name = "", labels = lab.inp) +
     theme(legend.position = "bottom") +
-    labs(x = "", y = "Veränd. in Prozentpunkte (QoQ)",
+    labs(x = "", y = "Veränderung in Prozentpunkte (QoQ)",
+         title = plt.gx.tit,
          caption = "Quelle: OECD, vierteljährliche VGR") +
     theme(axis.text.x = element_text(angle = 90),
           plot.caption = element_text(face = "italic")) +  
@@ -792,22 +835,22 @@ end.dat <- as.Date("2023-04-01")
 
 # > Germany
 loc <- c("DEU")
-oecd.qna.out.ger <- oecd.qna.out(loc, sta.dat, end.dat)
+oecd.qna.out.ger <- oecd_qna_out_fun(loc, sta.dat, end.dat, plt.x.tit = "Deutschland (Anteile)", plt.gx.tit = "Deutschland (Wachstumsbeiträge)")
 # > France
 loc <- c("FRA")
-oecd.qna.out.fra <- oecd.qna.out(loc, sta.dat, end.dat)
+oecd.qna.out.fra <- oecd_qna_out_fun(loc, sta.dat, end.dat, plt.x.tit = "Frankreich (Anteile)", plt.gx.tit = "Frankreich (Wachstumsbeiträge)")
 # > Italy
 loc <- c("ITA")
-oecd.qna.out.ita <- oecd.qna.out(loc, sta.dat, end.dat)
+oecd.qna.out.ita <- oecd_qna_out_fun(loc, sta.dat, end.dat, plt.x.tit = "Italien (Anteile)", plt.gx.tit = "Italien (Wachstumsbeiträge)")
 # # > USA
 # loc <- c("USA")
-# oecd.qna.out.usa <- oecd.qna.out(loc, sta.dat, end.dat)
+# oecd.qna.out.usa <- oecd_qna_out_fun(loc, sta.dat, end.dat, plt.x.tit = "Vereinigte Staaten (Anteile)", plt.gx.tit = "Vereinigte Staaten (Wachstumsbeiträge)")
 # > Eurozone
 loc <- c("EA20")
-oecd.qna.out.EA20 <- oecd.qna.out(loc, sta.dat, end.dat)
+oecd.qna.out.ea20 <- oecd_qna_out_fun(loc, sta.dat, end.dat, plt.x.tit = "Euroraum (Anteile)", plt.gx.tit = "Euroraum (Wachstumsbeiträge)")
 # > United Kingdom
 loc <- c("GBR")
-oecd.qna.out.gbr <- oecd.qna.out(loc, sta.dat, end.dat)
+oecd.qna.out.gbr <- oecd_qna_out_fun(loc, sta.dat, end.dat, plt.x.tit = "Vereinigtes Königreich (Anteile)", plt.gx.tit = "Vereinigtes Königreich (Wachstumsbeiträge)")
 
 ```
 
@@ -821,34 +864,30 @@ oecd.qna.out.gbr <- oecd.qna.out(loc, sta.dat, end.dat)
 ```{r,include=FALSE,fig.width=8,fig.height=4}
 
 # > Germany ----
-grid.arrange(oecd.qna.out.ger$plt.x, oecd.qna.out.ger$plt.gx, ncol = 2, top = "Deutchland")
+grid.arrange(oecd.qna.out.ger$plt.x, oecd.qna.out.ger$plt.gx, ncol = 2)
 # > France ----
-grid.arrange(oecd.qna.out.fra$plt.x, oecd.qna.out.fra$plt.gx, ncol = 2, top = "Frankreich")
+grid.arrange(oecd.qna.out.fra$plt.x, oecd.qna.out.fra$plt.gx, ncol = 2)
 # # > USA ----
-# grid.arrange(oecd.qna.out.usa$plt.x,oecd.qna.out.usa$plt.gx,ncol=2,top="USA")
+# grid.arrange(oecd.qna.out.usa$plt.x,oecd.qna.out.usa$plt.gx,ncol=2)
 # > Italy ----
-grid.arrange(oecd.qna.out.ita$plt.x, oecd.qna.out.ita$plt.gx, ncol = 2, top = "Italien")
+grid.arrange(oecd.qna.out.ita$plt.x, oecd.qna.out.ita$plt.gx, ncol = 2)
 # > Euro Area ----
-grid.arrange(oecd.qna.out.EA20$plt.x, oecd.qna.out.EA20$plt.gx, ncol=2, top = "Eurozone")
+grid.arrange(oecd.qna.out.ea20$plt.x, oecd.qna.out.ea20$plt.gx, ncol = 2)
 # > United Kingdom ----
-grid.arrange(oecd.qna.out.gbr$plt.x, oecd.qna.out.gbr$plt.gx, ncol = 2, top = "Vereinigtes Königreich")
+grid.arrange(oecd.qna.out.gbr$plt.x, oecd.qna.out.gbr$plt.gx, ncol = 2)
 
 ```
 
 ```{r,include=TRUE,fig.width=10,fig.height=5}
 
-# > Germany ----
-grid.arrange(oecd.qna.out.ger$plt.x, ncol = 1, top = "Deutchland")
-# > France ----
-grid.arrange(oecd.qna.out.fra$plt.x, ncol = 1, top = "Frankreich")
+# > Germany & France----
+grid.arrange(oecd.qna.out.ger$plt.x, oecd.qna.out.fra$plt.x, ncol = 2)
+# > Italy & United Kingdom ----
+grid.arrange(oecd.qna.out.ita$plt.x, oecd.qna.out.gbr$plt.x, ncol = 2)
 # # > USA ----
-# grid.arrange(oecd.qna.out.usa$plt.x, ncol = 1, top = "USA")
-# > Italy ----
-grid.arrange(oecd.qna.out.ita$plt.x, ncol = 1, top = "Italien")
+# grid.arrange(oecd.qna.out.usa$plt.x, ncol = 1)
 # > Euro Area ----
-grid.arrange(oecd.qna.out.EA20$plt.x,ncol = 1, top = "Eurozone")
-# > United Kingdom ----
-grid.arrange(oecd.qna.out.gbr$plt.x, ncol = 1, top = "Vereinigtes Königreich")
+grid.arrange(oecd.qna.out.ea20$plt.x,ncol = 2)
 
 ```
 
@@ -862,29 +901,30 @@ grid.arrange(oecd.qna.out.gbr$plt.x, ncol = 1, top = "Vereinigtes Königreich")
 ```{r,include=TRUE,fig.width=10,fig.height=5}
 
 # > Germany ----
-grid.arrange(oecd.qna.out.ger$plt.gx, ncol = 1, top = "Deutchland")
+grid.arrange(oecd.qna.out.ger$plt.gx, ncol = 1)
 # > France ----
-grid.arrange(oecd.qna.out.fra$plt.gx, ncol = 1, top = "Frankreich")
-# # > USA ----
-# grid.arrange(oecd.qna.out.usa$plt.gx, ncol = 1, top = "USA")
+grid.arrange(oecd.qna.out.fra$plt.gx, ncol = 1)
 # > Italy ----
-grid.arrange(oecd.qna.out.ita$plt.gx, ncol = 1, top = "Italien")
-# > Euro Area ----
-grid.arrange(oecd.qna.out.EA20$plt.gx, ncol = 1, top = "Eurozone")
+grid.arrange(oecd.qna.out.ita$plt.gx, ncol = 1)
 # > United Kingdom ----
-grid.arrange(oecd.qna.out.gbr$plt.gx, ncol = 1, top = "Vereinigtes Königreich")
+grid.arrange(oecd.qna.out.gbr$plt.gx, ncol = 1)
+# > Euro Area ----
+grid.arrange(oecd.qna.out.ea20$plt.gx, ncol = 1)
+# # > USA ----
+# grid.arrange(oecd.qna.out.usa$plt.gx, ncol = 1)
 
 ```
 
-```{r}
+```{r,include=FALSE,fig.width=10,fig.height=5}
 
-# Save plots
-# ggsave(plot=oecd.qna.out.fra$plt.gx,width=10,height=6,dpi=300,filename = "./figures/FRA_QNA_out_gx_01.pdf")
-# ggsave(plot=oecd.qna.out.ita$plt.gx,width=10,height=6,dpi=300,filename = "./figures/ITA_QNA_out_gx_01.pdf")
-ggsave(plot=oecd.qna.out.EA20$plt.gx,width=10,height=6,dpi=300,filename = "./figures/EA20_QNA_out_gx_01.pdf")
-# ggsave(plot=oecd.qna.out.gbr$plt.gx,width=10,height=6,dpi=300,filename = "./figures/GBR_QNA_out_gx_01.pdf")
-
-ggsave(plot=oecd.qna.out.EA20$plt.gx,width=10,height=6,dpi=300,filename = "./figures/EA20_QNA_out_gx_01.svg")
+# > Germany & France ----
+grid.arrange(oecd.qna.out.ger$plt.gx, oecd.qna.out.fra$plt.gx, ncol = 2)
+# > Italy & United Kingdom ----
+grid.arrange(oecd.qna.out.ita$plt.gx, oecd.qna.out.gbr$plt.gx, ncol = 2)
+# > Euro Area ----
+grid.arrange(oecd.qna.out.ea20$plt.gx, ncol = 2)
+# # > USA ----
+# grid.arrange(oecd.qna.out.usa$plt.gx, ncol = 1)
 
 ```
 
@@ -931,7 +971,7 @@ sub.inp.lis <- list(con = sub.con,
                     ext = sub.ext,
                     tot = sub.tot)
 
-ger.exp.01.res <- oecd.qna.fun.xx(qna.dat.00, loc,sub, mea, fre, sta.dat, end.dat, sub.inp.lis)
+ger.exp.01.res <- oecd_qna_fun(qna.dat.00, loc,sub, mea, fre, sta.dat, end.dat, sub.inp.lis)
 
 ```
 
@@ -984,13 +1024,6 @@ plt.x
 
 ```
 
-```{r}
-
-# # Save plot
-# ggsave(plot = plt.x, width = 10, height = 6, dpi = 300, filename = "./figures/DE_QNA_exp_x_01.pdf")
-
-```
-
 </div>
 <!--..........................................................................--> 
 
@@ -1037,6 +1070,9 @@ plt.gx
 ```{r}
 
 # Save plot
+ggsave(plot=plt.x,width=6,height=6,dpi=300,filename = "./figures/DE_QNA_exp_x_01.pdf")
+ggsave(plot=plt.x,width=6,height=6,dpi=300,filename = "./figures/DE_QNA_exp_x_01.svg")
+
 ggsave(plot=plt.gx,width=10,height=6,dpi=300,filename = "./figures/DE_QNA_exp_gx_01.pdf")
 ggsave(plot=plt.gx,width=10,height=6,dpi=300,filename = "./figures/DE_QNA_exp_gx_01.svg")
 
@@ -1064,7 +1100,8 @@ ggsave(plot=plt.gx,width=10,height=6,dpi=300,filename = "./figures/DE_QNA_exp_gx
 
 ```{r,include=TRUE,echo=TRUE}
 
-oecd.qna.exp <- function(loc,sta.dat,end.dat){
+oecd_qna_exp_fun <- function(loc,sta.dat,end.dat,
+                             plt.x.tit = "", plt.gx.tit = ""){
   
   
   # > Data preparation
@@ -1085,7 +1122,7 @@ oecd.qna.exp <- function(loc,sta.dat,end.dat){
                       ext = sub.ext,
                       tot = sub.tot)
 
-  exp.01.res <- oecd.qna.fun.xx(qna.dat.00, loc, sub, mea, fre, sta.dat, end.dat, sub.inp.lis)
+  exp.01.res <- oecd_qna_fun(qna.dat.00, loc, sub, mea, fre, sta.dat, end.dat, sub.inp.lis)
   
   
   # > Illustration share levels
@@ -1108,6 +1145,7 @@ oecd.qna.exp <- function(loc,sta.dat,end.dat){
     scale_fill_discrete(name = "", labels = lab.inp) +
     theme(legend.position = "bottom") +
     labs(x = "Anteil in Prozent", y = dat.inp[1,"Time"],
+         title = plt.x.tit,
          caption = "Quelle: OECD, vierteljährliche VGR") +
     theme(plot.caption = element_text(face = "italic"))
   
@@ -1132,7 +1170,8 @@ oecd.qna.exp <- function(loc,sta.dat,end.dat){
     geom_line(aes(y = ObsValue, x = as.yearqtr(Time, "%Y-Q%q")), subset(dat.inp,SUBJECT %in% oecd.qna.res$sub.gx[oecd.qna.res$nn]), size = 0.5) +
     scale_fill_discrete(name = "", labels = lab.inp) +
     theme(legend.position = "bottom") +
-    labs(x = "", y = "Veränd. in Prozentpunkte (QoQ)",
+    labs(x = "", y = "Veränderung in Prozentpunkte (QoQ)",
+         title = plt.gx.tit,
          caption = "Quelle: OECD, vierteljährliche VGR") +
     theme(axis.text.x = element_text(angle = 90),
           plot.caption = element_text(face = "italic")) +  
@@ -1166,22 +1205,22 @@ end.dat <- as.Date("2023-04-01")
 
 # > Germany
 loc <- c("DEU")
-oecd.qna.exp.ger <- oecd.qna.exp(loc, sta.dat, end.dat)
+oecd.qna.exp.ger <- oecd_qna_exp_fun(loc, sta.dat, end.dat, plt.x.tit =  "Deutschland (Anteile)", plt.gx.tit = "Deutschland (Wachstumsbeiträge)")
 # > France
 loc <- c("FRA")
-oecd.qna.exp.fra <- oecd.qna.exp(loc, sta.dat, end.dat)
+oecd.qna.exp.fra <- oecd_qna_exp_fun(loc, sta.dat, end.dat, plt.x.tit =  "Frankreich (Anteile)", plt.gx.tit = "Frankreich (Wachstumsbeiträge)")
 # > Italy
 loc <- c("ITA")
-oecd.qna.exp.ita <- oecd.qna.exp(loc, sta.dat, end.dat)
+oecd.qna.exp.ita <- oecd_qna_exp_fun(loc, sta.dat, end.dat, plt.x.tit =  "Italien (Anteile)", plt.gx.tit = "Italien (Wachstumsbeiträge)")
 # > USA
 loc <- c("USA")
-oecd.qna.exp.usa <- oecd.qna.exp(loc, sta.dat, end.dat)
+oecd.qna.exp.usa <- oecd_qna_exp_fun(loc, sta.dat, end.dat, plt.x.tit =  "Vereinigte Staaten (Anteile)", plt.gx.tit = "Vereinigte Staaten (Wachstumsbeiträge)")
 # > Eurozone
 loc <- c("EA20")
-oecd.qna.exp.EA20 <- oecd.qna.exp(loc, sta.dat, end.dat)
+oecd.qna.exp.ea20 <- oecd_qna_exp_fun(loc, sta.dat, end.dat, plt.x.tit =  "Euroraum (Anteile)", plt.gx.tit = "Euroraum (Wachstumsbeiträge)")
 # > United Kingdom
 loc <- c("GBR")
-oecd.qna.exp.gbr <- oecd.qna.exp(loc, sta.dat, end.dat)
+oecd.qna.exp.gbr <- oecd_qna_exp_fun(loc, sta.dat, end.dat, plt.x.tit =  "Vereinigtes Königreich (Anteile)", plt.gx.tit = "Vereinigtes Köngreich (Wachstumsbeiträge)")
 
 ```
 
@@ -1195,35 +1234,47 @@ oecd.qna.exp.gbr <- oecd.qna.exp(loc, sta.dat, end.dat)
 ```{r,include=FALSE,fig.width=8,fig.height=4}
 
 # > Germany ----
-grid.arrange(oecd.qna.exp.ger$plt.x,oecd.qna.exp.ger$plt.gx,ncol=2,top="Deutchland")
+grid.arrange(oecd.qna.exp.ger$plt.x, oecd.qna.exp.ger$plt.gx, ncol=2)
 # > France ----
-grid.arrange(oecd.qna.exp.fra$plt.x,oecd.qna.exp.fra$plt.gx,ncol=2,top="Frankreich")
+grid.arrange(oecd.qna.exp.fra$plt.x, oecd.qna.exp.fra$plt.gx, ncol=2)
 # > USA ----
-grid.arrange(oecd.qna.exp.usa$plt.x,oecd.qna.exp.usa$plt.gx,ncol=2,top="USA")
+grid.arrange(oecd.qna.exp.usa$plt.x, oecd.qna.exp.usa$plt.gx, ncol=2)
 # > Italy ----
-grid.arrange(oecd.qna.exp.ita$plt.x,oecd.qna.exp.ita$plt.gx,ncol=2,top="Italien")
+grid.arrange(oecd.qna.exp.ita$plt.x, oecd.qna.exp.ita$plt.gx, ncol=2)
 # > Euro Area ----
-grid.arrange(oecd.qna.exp.EA20$plt.x,oecd.qna.exp.EA20$plt.gx,ncol=2,top="Eurozone")
+grid.arrange(oecd.qna.exp.ea20$plt.x, oecd.qna.exp.ea20$plt.gx, ncol=2)
 # > United Kingdom ----
-grid.arrange(oecd.qna.exp.gbr$plt.x,oecd.qna.exp.gbr$plt.gx,ncol=2,top="Vereinigtes Königreich")
+grid.arrange(oecd.qna.exp.gbr$plt.x, oecd.qna.exp.gbr$plt.gx, ncol=2)
+
+```
+
+```{r,include=FALSE,fig.width=10,fig.height=5}
+
+# > Germany ----
+grid.arrange(oecd.qna.exp.ger$plt.x, ncol = 1)
+# > France ----
+grid.arrange(oecd.qna.exp.fra$plt.x, ncol = 1)
+# > USA ----
+grid.arrange(oecd.qna.exp.usa$plt.x, ncol = 1)
+# > Italy ----
+grid.arrange(oecd.qna.exp.ita$plt.x, ncol = 1)
+# > Euro Area ----
+grid.arrange(oecd.qna.exp.ea20$plt.x,ncol = 1)
+# > United Kingdom ----
+grid.arrange(oecd.qna.exp.gbr$plt.x, ncol = 1)
 
 ```
 
 ```{r,include=TRUE,fig.width=10,fig.height=5}
 
-# > Germany ----
-grid.arrange(oecd.qna.exp.ger$plt.x, ncol = 1, top = "Deutschland")
-# > France ----
-grid.arrange(oecd.qna.exp.fra$plt.x, ncol = 1, top = "Frankreich")
-# > USA ----
-grid.arrange(oecd.qna.exp.usa$plt.x, ncol = 1, top = "USA")
-# > Italy ----
-grid.arrange(oecd.qna.exp.ita$plt.x, ncol = 1, top = "Italien")
+# > Germany & France----
+grid.arrange(oecd.qna.exp.ger$plt.x, oecd.qna.out.fra$plt.x, ncol = 2)
+# > Italy & United Kingdom ----
+grid.arrange(oecd.qna.exp.ita$plt.x, oecd.qna.out.gbr$plt.x, ncol = 2)
+# # > USA ----
+# grid.arrange(oecd.qna.out.usa$plt.x, ncol = 1)
 # > Euro Area ----
-grid.arrange(oecd.qna.exp.EA20$plt.x,ncol = 1, top = "Eurozone")
-# > United Kingdom ----
-grid.arrange(oecd.qna.exp.gbr$plt.x, ncol = 1, top = "Vereinigtes Königreich")
-
+grid.arrange(oecd.qna.exp.ea20$plt.x,ncol = 2)
 
 ```
 
@@ -1237,29 +1288,17 @@ grid.arrange(oecd.qna.exp.gbr$plt.x, ncol = 1, top = "Vereinigtes Königreich")
 ```{r,include=TRUE,fig.width=10,fig.height=5}
 
 # > Germany ----
-grid.arrange(oecd.qna.exp.ger$plt.gx, ncol = 1, top = "Deutschland")
+grid.arrange(oecd.qna.exp.ger$plt.gx, ncol = 1)
 # > France ----
-grid.arrange(oecd.qna.exp.fra$plt.gx, ncol = 1, top = "Frankreich")
+grid.arrange(oecd.qna.exp.fra$plt.gx, ncol = 1)
 # > USA ----
-grid.arrange(oecd.qna.exp.usa$plt.gx, ncol = 1, top = "USA")
+grid.arrange(oecd.qna.exp.usa$plt.gx, ncol = 1)
 # > Italy ----
-grid.arrange(oecd.qna.exp.ita$plt.gx, ncol = 1, top = "Italien")
+grid.arrange(oecd.qna.exp.ita$plt.gx, ncol = 1)
 # > Euro Area ----
-grid.arrange(oecd.qna.exp.EA20$plt.gx, ncol = 1, top = "Eurozone")
+grid.arrange(oecd.qna.exp.ea20$plt.gx, ncol = 1)
 # > United Kingdom ----
-grid.arrange(oecd.qna.exp.gbr$plt.gx, ncol = 1, top = "Vereinigtes Königreich")
-
-```
-
-```{r}
-
-# Save plots
-# ggsave(plot=oecd.qna.exp.fra$plt.gx,width=10,height=6,dpi=300,filename = "./figures/FRA_QNA_exp_gx_01.pdf")
-# ggsave(plot=oecd.qna.exp.ita$plt.gx,width=10,height=6,dpi=300,filename = "./figures/ITA_QNA_exp_gx_01.pdf")
-ggsave(plot=oecd.qna.exp.EA20$plt.gx,width=10,height=6,dpi=300,filename = "./figures/EA20_QNA_exp_gx_01.pdf")
-# ggsave(plot=oecd.qna.exp.gbr$plt.gx,width=10,height=6,dpi=300,filename = "./figures/GBR_QNA_exp_gx_01.pdf")
-
-ggsave(plot=oecd.qna.exp.EA20$plt.gx,width=10,height=6,dpi=300,filename = "./figures/EA20_QNA_exp_gx_01.svg")
+grid.arrange(oecd.qna.exp.gbr$plt.gx, ncol = 1)
 
 ```
 
