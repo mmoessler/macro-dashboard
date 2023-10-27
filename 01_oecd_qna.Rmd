@@ -1268,11 +1268,11 @@ grid.arrange(oecd.qna.exp.gbr$plt.x, ncol = 1)
 ```{r,include=TRUE,fig.width=10,fig.height=5}
 
 # > Germany & France----
-grid.arrange(oecd.qna.exp.ger$plt.x, oecd.qna.out.fra$plt.x, ncol = 2)
+grid.arrange(oecd.qna.exp.ger$plt.x, oecd.qna.exp.fra$plt.x, ncol = 2)
 # > Italy & United Kingdom ----
-grid.arrange(oecd.qna.exp.ita$plt.x, oecd.qna.out.gbr$plt.x, ncol = 2)
+grid.arrange(oecd.qna.exp.ita$plt.x, oecd.qna.exp.gbr$plt.x, ncol = 2)
 # # > USA ----
-# grid.arrange(oecd.qna.out.usa$plt.x, ncol = 1)
+# grid.arrange(oecd.qna.exp.usa$plt.x, ncol = 1)
 # > Euro Area ----
 grid.arrange(oecd.qna.exp.ea20$plt.x,ncol = 2)
 
