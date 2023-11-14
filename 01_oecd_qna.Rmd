@@ -37,7 +37,7 @@ klippy::klippy(tooltip_message = 'Click to copy', tooltip_success = 'Done', posi
 
 ```{r}
 
-upd.dat <- FALSE
+upd.dat <- TRUE
 
 ```
 
