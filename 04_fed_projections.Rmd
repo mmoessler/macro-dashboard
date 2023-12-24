@@ -57,12 +57,12 @@ Die FED veröffentlicht zu ungefähr jedem zweiten Treffen Projektionen für die
 Die Projektionen können von der Webseite der FED heruntegeladen werden ([siehe](https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm)).
 
 <!------------------------------------------------------------------------------> 
-## Sep 2023 {.tabset .tabset-fade}
+## Dez 2023 {.tabset .tabset-fade}
 
 Letzte Prognosen:
 
 <center>
-<embed src="https://www.federalreserve.gov/monetarypolicy/files/fomcprojtabl20230920.pdf" width="900" height="1000" type="application/pdf">
+<embed src="https://www.federalreserve.gov/monetarypolicy/files/fomcprojtabl20221214.pdf" width="900" height="1000" type="application/pdf">
 </center>
 
 <br>
@@ -72,12 +72,12 @@ Quelle: Board of Governors of the Federal Reserve System
 </p>
 
 <!------------------------------------------------------------------------------> 
-## Jun 2023 {.tabset .tabset-fade}
+## Sep 2023 {.tabset .tabset-fade}
 
 Vorletzte Prognosen:
 
 <center>
-<embed src="https://www.federalreserve.gov/monetarypolicy/files/fomcprojtabl20230614.pdf" width="900" height="1000" type="application/pdf">
+<embed src="https://www.federalreserve.gov/monetarypolicy/files/fomcprojtabl20230920.pdf" width="900" height="1000" type="application/pdf">
 </center>
 
 <br>
