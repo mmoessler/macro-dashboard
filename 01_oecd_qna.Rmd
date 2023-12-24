@@ -931,6 +931,14 @@ grid.arrange(oecd.qna.out.ea20$plt.gx, ncol = 2)
 </div>
 <!--..........................................................................--> 
 
+```{r}
+
+# Save plot
+ggsave(plot=oecd.qna.out.ea20$plt.gx,width=10,height=6,dpi=300,filename = "./figures/EA_QNA_out_gx_01.pdf")
+ggsave(plot=oecd.qna.out.ea20$plt.gx,width=10,height=6,dpi=300,filename = "./figures/EA_QNA_out_gx_01.svg")
+
+```
+
 <!--..........................................................................-->
 <hr />
 
@@ -1304,6 +1312,14 @@ grid.arrange(oecd.qna.exp.gbr$plt.gx, ncol = 1)
 
 </div>
 <!--..........................................................................--> 
+
+```{r}
+
+# Save plot
+ggsave(plot=oecd.qna.exp.ea20$plt.gx,width=10,height=6,dpi=300,filename = "./figures/EA_QNA_exp_gx_01.pdf")
+ggsave(plot=oecd.qna.exp.ea20$plt.gx,width=10,height=6,dpi=300,filename = "./figures/EA_QNA_exp_gx_01.svg")
+
+```
 
 <!--..........................................................................-->
 <hr />
