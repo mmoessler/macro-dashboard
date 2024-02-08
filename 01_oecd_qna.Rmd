@@ -462,7 +462,7 @@ sub <- qna.str$SUBJECT[,1]
 mea <- c("LNBQRSA") # Measure: Constant prices seasonal adjusted
 fre <- c("Q") # Frequency: Quarterly frequency
 sta.dat <- as.Date("2005-01-01") # Periods: "yyyy-mm-dd"
-end.dat <- as.Date("2023-04-01")
+end.dat <- as.Date("2023-07-01")
 # Note: Q1: 2020-01-01; Q2: 2020-04-01; Q3: 2020-07-01; Q4: 2020-10-01
 fil <- list(loc, sub, mea, fre) # Collect inputs for get_dataset function
 
@@ -475,6 +475,7 @@ qna.dat.00 <- get_dataset(dataset = "QNA", filter = fil) %>%
 qna.dat.00$ObsValue <- as.numeric(qna.dat.00$ObsValue)
 
 head(qna.dat.00)
+tail(qna.dat.00)
 
 ```
 
@@ -487,7 +488,7 @@ sub <- qna.str$SUBJECT[,1]
 mea <- c("LNBQRSA") # Measure: Constant prices seasonal adjusted
 fre <- c("Q") # Frequency: Quarterly frequency
 sta.dat <- as.Date("2005-01-01") # Periods: "yyyy-mm-dd"
-end.dat <- as.Date("2023-04-01")
+end.dat <- as.Date("2023-07-01")
 # Note: Q1: 2020-01-01; Q2: 2020-04-01; Q3: 2020-07-01; Q4: 2020-10-01
 fil <- list(loc, sub, mea, fre) # Collect inputs for get_dataset function
 
@@ -510,6 +511,7 @@ if (upd.dat) {
   qna.dat.00$ObsValue <- as.numeric(qna.dat.00$ObsValue)
   
   head(qna.dat.00)
+  tail(qna.dat.00)
 
 } else {
   
@@ -518,6 +520,7 @@ if (upd.dat) {
   qna.dat.00$ObsValue <- as.numeric(qna.dat.00$ObsValue)
   
   head(qna.dat.00)
+  tail(qna.dat.00)
   
 }
 
@@ -553,7 +556,7 @@ loc <- c("DEU") # Location: Germany
 mea <- c("LNBQRSA") # Measure: Constant prices seasonal adjusted
 fre <- c("Q") # Frequency: Quarterly frequency
 sta.dat <- as.Date("2005-01-01") # Periods: "yyyy-mm-dd"
-end.dat <- as.Date("2023-04-01")
+end.dat <- as.Date("2023-07-01")
 # Note: Q1: 2020-01-01; Q2: 2020-04-01; Q3: 2020-07-01; Q4: 2020-10-01
 
 sub <- c("B1_GA","B1GVA","B1GVB_E","B1GVF","B1GVG_I","B1GVJ","B1GVK","B1GVL","B1GVM_N","B1GVO_Q","B1GVR_U","D21_D31")
@@ -679,12 +682,12 @@ plt.gx
 
 ```{r}
 
-# Save plot
-ggsave(plot=plt.x,width=6,height=6,dpi=300,filename = "./figures/DE_QNA_out_x_01.pdf")
-ggsave(plot=plt.x,width=6,height=6,dpi=300,filename = "./figures/DE_QNA_out_x_01.svg")
-
-ggsave(plot=plt.gx,width=10,height=6,dpi=300,filename = "./figures/DE_QNA_out_gx_01.pdf")
-ggsave(plot=plt.gx,width=10,height=6,dpi=300,filename = "./figures/DE_QNA_out_gx_01.svg")
+# # Save plot
+# ggsave(plot=plt.x,width=6,height=6,dpi=300,filename = "./figures/DE_QNA_out_x_01.pdf")
+# ggsave(plot=plt.x,width=6,height=6,dpi=300,filename = "./figures/DE_QNA_out_x_01.svg")
+# 
+# ggsave(plot=plt.gx,width=10,height=6,dpi=300,filename = "./figures/DE_QNA_out_gx_01.pdf")
+# ggsave(plot=plt.gx,width=10,height=6,dpi=300,filename = "./figures/DE_QNA_out_gx_01.svg")
 
 ```
 
@@ -701,7 +704,6 @@ dat %>%
   geom_line(aes(y=B1_GA,x=as.yearqtr(Time,"%Y-Q%q")))
 
 ```
-
 
 <!--..........................................................................-->
 <hr />
@@ -830,7 +832,7 @@ oecd_qna_out_fun <- function(loc, sta.dat, end.dat,
 
 # > Start and end date
 sta.dat <- as.Date("2005-01-01") # Periods: "yyyy-mm-dd"
-end.dat <- as.Date("2023-04-01")
+end.dat <- as.Date("2023-07-01")
 # Note: Q1: 2020-01-01; Q2: 2020-04-01; Q3: 2020-07-01; Q4: 2020-10-01
 
 # > Germany
@@ -933,7 +935,10 @@ grid.arrange(oecd.qna.out.ea20$plt.gx, ncol = 2)
 
 ```{r}
 
-# Save plot
+# Save plots
+ggsave(plot=oecd.qna.out.ger$plt.gx,width=10,height=6,dpi=300,filename = "./figures/DE_QNA_out_gx_01.pdf")
+ggsave(plot=oecd.qna.out.ger$plt.gx,width=10,height=6,dpi=300,filename = "./figures/DE_QNA_out_gx_01.svg")
+
 ggsave(plot=oecd.qna.out.ea20$plt.gx,width=10,height=6,dpi=300,filename = "./figures/EA_QNA_out_gx_01.pdf")
 ggsave(plot=oecd.qna.out.ea20$plt.gx,width=10,height=6,dpi=300,filename = "./figures/EA_QNA_out_gx_01.svg")
 
@@ -966,7 +971,7 @@ loc <- c("DEU") # Location: Germany
 mea <- c("LNBQRSA") # Measure: Constant prices seasonal adjusted
 fre <- c("Q") # Frequency: Quarterly frequency
 sta.dat <- as.Date("2005-01-01") # Periods: "yyyy-mm-dd"
-end.dat <- as.Date("2023-04-01")
+end.dat <- as.Date("2023-07-01")
 # Note: Q1: 2020-01-01; Q2: 2020-04-01; Q3: 2020-07-01; Q4: 2020-10-01
 
 sub <- c("B1_GE","P3","P5","B11")
@@ -1077,12 +1082,12 @@ plt.gx
 
 ```{r}
 
-# Save plot
-ggsave(plot=plt.x,width=6,height=6,dpi=300,filename = "./figures/DE_QNA_exp_x_01.pdf")
-ggsave(plot=plt.x,width=6,height=6,dpi=300,filename = "./figures/DE_QNA_exp_x_01.svg")
-
-ggsave(plot=plt.gx,width=10,height=6,dpi=300,filename = "./figures/DE_QNA_exp_gx_01.pdf")
-ggsave(plot=plt.gx,width=10,height=6,dpi=300,filename = "./figures/DE_QNA_exp_gx_01.svg")
+# # Save plot
+# ggsave(plot=plt.x,width=6,height=6,dpi=300,filename = "./figures/DE_QNA_exp_x_01.pdf")
+# ggsave(plot=plt.x,width=6,height=6,dpi=300,filename = "./figures/DE_QNA_exp_x_01.svg")
+# 
+# ggsave(plot=plt.gx,width=10,height=6,dpi=300,filename = "./figures/DE_QNA_exp_gx_01.pdf")
+# ggsave(plot=plt.gx,width=10,height=6,dpi=300,filename = "./figures/DE_QNA_exp_gx_01.svg")
 
 ```
 
@@ -1208,7 +1213,7 @@ oecd_qna_exp_fun <- function(loc,sta.dat,end.dat,
 
 # > Start and end date
 sta.dat <- as.Date("2005-01-01") # Periods: "yyyy-mm-dd"
-end.dat <- as.Date("2023-04-01")
+end.dat <- as.Date("2023-07-01")
 # Note: Q1: 2020-01-01; Q2: 2020-04-01; Q3: 2020-07-01; Q4: 2020-10-01
 
 # > Germany
@@ -1315,7 +1320,10 @@ grid.arrange(oecd.qna.exp.gbr$plt.gx, ncol = 1)
 
 ```{r}
 
-# Save plot
+# Save plots
+ggsave(plot=oecd.qna.exp.ger$plt.gx,width=10,height=6,dpi=300,filename = "./figures/DE_QNA_exp_gx_01.pdf")
+ggsave(plot=oecd.qna.exp.ger$plt.gx,width=10,height=6,dpi=300,filename = "./figures/DE_QNA_exp_gx_01.svg")
+
 ggsave(plot=oecd.qna.exp.ea20$plt.gx,width=10,height=6,dpi=300,filename = "./figures/EA_QNA_exp_gx_01.pdf")
 ggsave(plot=oecd.qna.exp.ea20$plt.gx,width=10,height=6,dpi=300,filename = "./figures/EA_QNA_exp_gx_01.svg")
 
